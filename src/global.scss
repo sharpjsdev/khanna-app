@@ -1,0 +1,973 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+
+
+@font-face {
+    font-family: poiret;
+    src: url(assets/fonts/poiret-one/PoiretOne-Regular.ttf);
+    }
+@font-face {
+    font-family: light;
+    src: url(assets/fonts/poppins/Poppins-Light.ttf);
+}
+@font-face {
+    font-family: regular;
+    src: url(assets/fonts/poppins/Poppins-Regular.ttf);
+}
+@font-face {
+    font-family: medium;
+    src: url(assets/fonts/poppins/Poppins-Medium.ttf);
+}
+@font-face {
+    font-family: noto_medium;
+    src: url(assets/fonts/noto-sans/NotoSans-Medium.ttf);
+}
+
+.light {
+    font-family: light !important;
+}
+.regular {
+    font-family: regular !important;
+}
+.medium {
+    font-family: medium !important;
+}
+.poiret {
+    font-family: poiret !important;
+}
+.noto_medium {
+    font-family: noto_medium !important;
+}
+
+
+
+.size_20 {
+    font-size:20px !important;
+}
+.size_18 {
+    font-size:18px !important;
+}
+.size_16 {
+    font-size:16px !important;
+}
+.size_15 {
+    font-size:15px !important;
+}
+.size_14 {
+    font-size:14px !important;
+}
+.size_13 {
+    font-size:13px !important;
+}
+.size_12 {
+    font-size:12px !important;
+}
+.size_10 {
+    font-size:10px !important;
+}
+
+
+
+.black {
+    color:#363636 !important;
+}
+.red {
+    color:#E8604C !important;
+}
+.green {
+    color:#419B95 !important;
+}
+.light_green {
+    color:#56E84C !Important;
+}
+.grey {
+    color:#A3A2A2 !important;
+}
+.light_grey {
+    color:#B8B8B8 !important;
+}
+.grey_font {
+    color:#B7B7B7 !important;
+}
+.white {
+    color:white !important;
+}
+
+
+.center {
+    text-align:center !important;
+}
+.right {
+    text-align:right !important;
+}
+a {
+    text-decoration: none !important;
+}
+a:hover {
+    text-decoration: none !important;
+}
+.flex {
+    display:flex !important;
+}
+.vertical_col {
+    margin-top: 10px;
+}
+
+
+
+@media only screen and (max-width: 319px) {
+    ion-row {
+      display: block;
+     }
+     .how_food {
+      text-align: center !important;
+      margin-top: 10px;
+    }
+}
+@media only screen and (max-width: 346px) {
+    .donor_header {
+        display: grid;
+    }
+    .donor_title_sub {
+        text-align: left !important;
+    }
+}
+
+
+
+
+
+:root{
+--ion-color-primary:#E8604C !important;
+}
+html {
+    ion-font-family: inherit;
+}
+div {
+    font-family: medium !important;
+    color:#363636;
+    font-size:14px;
+}
+.ion-padding {
+    padding: 35px;
+}
+.ion-padding.theme_width {
+    padding: 0px 12px;
+}
+.app_button {
+    text-align:center;
+}
+.app_btn {
+    font-family: medium !important;
+    font-size: 16px;
+    background: #419B95;
+    color: white;
+    min-width: 195px;
+    padding: 20px 20px;
+    border-radius: 30px;
+}
+.app_btn:focus {
+    outline: none;
+}
+:focus {
+    outline: none;
+}
+input::placeholder {
+    font-family: regular !important;
+    color:#A3A2A2 !important;
+}
+input {
+    font-family: regular !important;
+}
+.custom_app_input {
+    background: #F2F1EF;
+    border: none;
+    padding: 17px 20px;
+    width: 100%;
+    border-radius: 30px;
+}
+.big_header {
+    background-color: #419B95;
+    border-radius: 0px 0px 50px 50px;
+    text-align: center;
+}
+.title {
+    margin-top: 12px;
+    font-size: 20px;
+    color: white;
+}
+.big_header_bottom {
+    color: white;
+    margin-top: 90px;
+    margin-bottom: 20px;
+}
+.app_input_text input {
+    background: #F2F1EF;
+    border: none;
+    padding: 17px 30px;
+    width: 100%;
+    /*max-width: 320px;*/
+    border-radius: 30px;
+    padding-right: 50px;
+	
+}
+
+
+.center_input {
+    text-align: center;
+    position: relative;
+    margin-top: 30%;
+}
+.green_check {
+    position: absolute;
+    right: 20px;
+    top: 18px;
+}
+.horizontal_center {
+    text-align: center;
+}
+
+.input_text_bottom input[type=checkbox] + label {
+    display: block;
+    margin: 0.2em;
+    cursor: pointer;
+    padding: 0.2em;
+  }
+  
+  .input_text_bottom input[type=checkbox] {
+    display: none;
+  }
+  
+  .input_text_bottom input[type=checkbox] + label:before {
+    content: "\2714";
+    content: "✔";
+    border: 0.1em solid #B8B8B8;
+    border-radius: 4px;
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    padding-left: 0.2em;
+    padding-bottom: 0.3em;
+    margin-right: 0.2em;
+    vertical-align: bottom;
+    color: transparent;
+    transition: 0.2s;
+    margin-right: 8px;
+    margin-bottom: 2px;
+  }
+  
+  .input_text_bottom input[type=checkbox] + label:active:before {
+    transform: scale(0);
+  }
+  
+  .input_text_bottom input[type=checkbox]:checked + label:before {
+    background-color: #419b95;
+    border-color: #419b95;
+  }
+  
+  .input_text_bottom input[type=checkbox]:disabled + label:before {
+    transform: scale(1);
+    border-color: #aaa;
+  }
+  
+  .input_text_bottom input[type=checkbox]:checked:disabled + label:before {
+    transform: scale(1);
+    background-color: #bfb;
+    border-color: #bfb;
+  }
+.input_text_bottom {
+    display: flex;
+    margin-top: 8px;
+}
+.menu_image {
+    margin: 25px;
+}
+.big_content {
+    padding: 130px 24px;
+    text-align: center;
+    background-image: url(assets/images/image_watermark.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 140px;
+    letter-spacing: -0.1px;
+}
+.app_btn.big.button {
+    text-align: center;
+    margin: 0 auto;
+    border-radius: 10px;
+    padding: 60px 0px;
+    width: 100%;
+    max-width: 400px;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+ion-segment {
+    background: #F7F6F4;
+    border-radius: 35px;
+    padding: 6px 0px; 
+}
+ion-segment-button {
+    text-transform: capitalize;
+    width: 33.33%;
+}
+ion-segment-button.ios.in-segment.in-segment-color.segment-button-has-label.segment-button-has-label-only.segment-button-checked.segment-button-layout-icon-top.ion-activatable.ion-activatable-instant.ion-focusable.hydrated ion-label.size_12.medium.sc-ion-label-ios-h.sc-ion-label-ios-s.ios.hydrated {
+    color: #E8604C;
+}
+ion-label.size_12.medium.sc-ion-label-ios-h.sc-ion-label-ios-s.ios.hydrated {
+    color: #A3A2A2;
+}
+ion-footer {
+    padding: 25px 10px;
+}
+.footer-md::before {
+    position: inherit;
+}
+ion-footer ion-label {
+    margin: 2px 0px;
+}
+.ion-color-tertiary {
+    --ion-color-base: #e8604c !important;
+}
+.search_food_bg {
+    background: #F7F6F4;
+    min-height: 452px;
+    border-radius: 20px;
+    padding: 42px 13px;
+    margin-top: 6px;
+}
+button-has-label-only.segment-button-checked.segment-button-layout-icon-top.ion-activatable.ion-activatable-instant.ion-focusable.hydrated {
+    --ion-color-base: none !important;
+}
+ion-header ion-toolbar {
+    margin-top: -17px;
+}
+ion-menu-button {
+    margin-left: -15px;
+}
+ion-header ion-buttons.buttons-last-slot.sc-ion-buttons-md-h.sc-ion-buttons-md-s.md.hydrated {
+    margin-right: 0px;
+}
+ion-toolbar {
+    margin-top: -12px;
+    margin-bottom: -13px;
+}
+ion-list-header {
+    border-bottom: 1px solid #e8604c;
+    color: #e8604c;
+    padding-bottom: 5px;
+}
+.menu_img img {
+    height: 26px;
+    position: absolute;
+    top: 0;
+}
+.menu_content {
+    margin-left: 40px;
+    padding-bottom: 18px;
+    padding-right: 27px;
+}
+ion-item.menu_item {
+    padding-top: 20px;
+}
+ion-list#inbox-list {
+    border-bottom: none !important;
+}
+
+#inbox-list {
+    margin: 0px 20px;
+}
+.custom_header {
+    margin-left: -10px;
+    font-weight: 400 !important;
+}
+.grey_title {
+    background: #B7B7B7;
+    padding: 7px;
+}
+.sorting {
+    background: #F7F6F4;
+    margin-bottom: 20px;
+}
+.sorting ion-col {
+    text-align: center;
+    padding: 10px 0px;
+    color: #A3A2A2;
+    font-family: regular !important;
+}
+.sorting img {
+    margin-left: 4px;
+}
+.right_border {
+    border-right: 2px solid white;
+}
+.donor_title_sub {
+    text-align: right;
+}
+.donor_list_inner ion-col {
+    text-align: center;
+    line-height: 14px;
+}
+.donor_icon {
+    margin-bottom: 5px;
+    height: 28px;
+    position: relative;
+}
+.donor_icon img {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    bottom: 0;
+}
+.donor_single_btn {
+    background: #419B95;
+    color: white;
+    padding: 13px 16px;
+    text-align: center;
+    border-radius: 30px;
+    margin-top: 5px;
+    line-height: 16px;
+}
+hr.donor_single_line {
+    width: 83%;
+    background: #EAF4F3;
+    height: 1px;
+    text-align: center;
+    margin-top: 18px;
+}
+.register_volunteer.app_input_text {
+    margin-top: 5%;
+}
+.register_volunteer.app_input_text input {
+    padding-right: 22px;
+    padding-left: 50px;
+}
+.register_volunteer.app_input_text img {
+    position: absolute;
+    left: 18px;
+    top: 15px;
+}
+.btn-group {
+    display: flex;
+    margin: 10px 0px;
+}
+.btn-group button {
+    background-color: #F2F1EF; 
+    color: grey;
+    padding: 10px 24px;
+    cursor: pointer;
+    float: left; 
+}  
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}  
+
+.btn2.active {
+    background: white !important;
+    color: #56E84C !important;
+    border: 1px solid #56E84C;
+}
+.btn-group button {
+    margin: 4px;
+    border-radius: 30px;
+    padding: 21px 4px;
+    width: 33.33%;
+}
+.btn1.active{
+    background: white !important;
+    color:#419B95 !important;
+}
+.app_input_text ion-datetime {
+    position: absolute;
+    top: 8px;
+    left: 35px;
+    width: 88%;
+    text-align: left;
+    /*color: transparent;*/
+}
+.profile.app_input_text.center_input {
+    margin-top: 16px;
+}
+.profile.app_input_text.center_input ion-datetime {
+    left: 15px;
+}
+.single_page_title {
+    border-bottom: 1px solid #363636;
+    padding-bottom: 3px;
+    margin-top: 7px;
+    margin-bottom: -23px;
+    margin-left: 7px;
+}
+
+.custom_otp_modal .modal-wrapper.ion-overlay-wrapper.sc-ion-modal-md {
+    height: 145px;
+    position: absolute !important;
+    width: 100%;
+    bottom: 0 !important;
+    border-radius: 40px 40px 0px 0px;
+}
+.blank_buttons {
+    margin-top: 30px;
+}
+.blank_btn {
+    color: #B7B7B7;
+    border: 1px solid #A3A2A2;
+    padding: 7px 23px;
+    margin-right: 20px;
+    border-radius: 30px;
+}
+.app_divider {
+    height: 1px;
+    background: #EAF4F3;
+}
+.add_btn {
+    text-align: center;
+}
+.close_btn {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    z-index: 999;
+}
+.map-icon {
+    float: left;
+    margin-right: 13px;
+}
+.map_desc {
+    padding-left: 38px;
+}
+.map_input ion-item {
+    margin-left: -15px;
+}
+.btn3.active {
+    background: white !important;
+    color: #419B95 !important;
+    border: 1px solid #419B95;
+}
+.btn-group .btn3 {
+    padding: 10px 4px;
+}
+.input_line {
+    background: #DADADA;
+    height: 1px;
+    width: 100%;
+    margin-top: -5px;
+}
+.modal_content .close_btn {
+    position: absolute;
+    right: 30px;
+    top: 18px;
+    z-index: 999;
+}
+.custom_filter_modal .modal-wrapper.ion-overlay-wrapper.sc-ion-modal-md {
+    height: 455px;
+    position: absolute !important;
+    width: 100%;
+    bottom: 0 !important;
+    border-radius: 40px 40px 0px 0px;
+}
+
+
+  .search_food_buttons ion-item.item.md.ion-activatable.ion-focusable.hydrated.item-label.item-radio-checked {
+    color: #419B95;
+    --background: white !important;
+    height: 100%;
+  }
+  .search_food_buttons ion-radio {
+    opacity: 0;
+      width: 0px;
+      margin-right: 0;
+      margin-left: 0;
+  }
+  .search_food_buttons ion-radio-group {
+    display: flex;
+    margin-top: 12px;
+  }
+  .search_food_buttons ion-label {
+    overflow: inherit !important;
+    padding: 6px 0px;  
+    white-space: normal;
+  }
+  .search_food_buttons ion-item {
+    width: 33.33%;
+    text-align: center;
+    border-radius: 40px;
+    margin: 4px;
+    --background: #F2F1EF !important;
+      background-color: #F2F1EF;
+  }
+  .search_single {
+    margin-bottom: 40px;
+  }
+  .how_food input {
+    background: #F2F1EF;
+    border: none;
+    margin: 1px;
+    color: #B7B7B7;
+    font-size: 18px;
+    padding: 7px 0px;
+  }
+  .how_food {
+    text-align: right;
+  }
+  .plus {
+    width: 34px;
+    border-radius: 0px 20px 20px 0px;
+  }
+  .minus {
+    width: 34px;
+    border-radius: 20px 0px 0px 20px;
+  }
+  .food_value {
+    width: 32px;
+    text-align: center;
+    color: #419B95 !important;
+  }
+  .food_location {
+    position: relative;
+    margin-right: 24px;
+  }
+  .food_location p {
+    float: left;
+    margin-top: 9px;
+    margin-right: 7px;
+  }
+  .location_input {
+    position:relative;
+  }
+  .location_input input {
+    width: 100%;
+    max-width: 180px;
+    position: absolute;
+    background: #F2F1EF;
+    border: none;
+    padding: 10px;
+    padding-left: 39px;
+    border-radius: 30px;  
+  }
+  .location_input img {
+    position: absolute;
+    left: 30px;
+    top: 8px;
+    z-index: 9;
+  }
+.video_numbers {
+    float: left;
+}  
+.video_title {
+    padding-left: 24px;
+}
+.video iframe {
+    width: 100% !important;
+    max-width: 100%;
+    min-width: 100%;
+    border: none;
+}
+.single_video {
+    margin-top: 27px;
+}
+.video {
+    text-align: center;
+    margin-top: 11px;
+}
+.video img {
+    width: 100%;
+    max-width: 400px;
+}
+.custom_current_location_modal .modal-wrapper.ion-overlay-wrapper.sc-ion-modal-md {
+    height: 650px;
+    position: absolute !important;
+    width: 100%;
+    bottom: 0 !important;
+    border-radius: 40px 40px 0px 0px;
+}
+.map.current_location {
+    margin-bottom: -18px;
+}
+
+
+
+
+
+.big_heading {
+    border-bottom: 1px solid #363636;
+    margin-top: -25px;
+    margin-bottom: 30px;
+}
+.custom_donate_food_modal .modal-wrapper.ion-overlay-wrapper.sc-ion-modal-md {
+    height: 440px;
+    position: absolute !important;
+    width: 100%;
+    bottom: 0 !important;
+    border-radius: 40px 40px 0px 0px;
+}
+.grey_title2 {
+    background: #79919D;
+    padding: 7px;
+}
+.btn4.active {
+    background: #419B95 !important;    
+}
+.btn-group .btn4 {
+    padding: 2px 5px 5px 5px;
+    background: white;
+}
+.volunteer_location {
+    margin-top: -27px;
+    margin-bottom: -12px;
+}
+.call {
+    background: #419B95;
+    color: white;
+    padding: 9px 20px;
+    border-radius: 30px;
+    float: right;
+    margin-top: -40px;
+}
+.grey_btn {
+    background: #F7F6F4;
+    color: #B7B7B7;
+    min-width: 172px;
+    height: 55px;
+    border-radius: 30px;
+    width: 100%;
+}
+.vertical_center {
+    position: absolute;
+    top: 25%;
+}
+.custom_padding {
+    padding: 35px 25px;
+}
+textarea.native-textarea.sc-ion-textarea-md {
+    background: #F2F1EF;
+    border-radius: 28px;
+    padding: 20px 32px;
+    margin-top: -4px;
+}
+.custom_feedback_modal .modal-wrapper.ion-overlay-wrapper.sc-ion-modal-md {
+    height: 440px;
+    position: absolute !important;
+    width: 100%;
+    bottom: 0 !important;
+    border-radius: 40px 40px 0px 0px;
+}
+.volunteer_info {
+    background: #F7F6F4;
+    border-radius: 20px;
+    padding: 40px 25px 55px 25px;
+    position:relative;
+}
+.volunteer_input {
+    width: 100%;
+    margin-top: -18px;
+    margin-left: 15px;
+}
+.info_single {
+    margin-bottom: 20px;
+}  
+.desgin_btn {
+    background: #419B95;
+    width: 100%;
+    height: 50px;
+    border-radius: 0px 0px 20px 20px;
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+}
+.food_request {
+    margin: 15px 0px;
+    padding: 18px 26px;
+    background: #f7f6f4;
+    border-radius: 20px;
+    min-height: 295px;
+}
+.food_request_heading {
+    border-bottom: 1px solid #363636;
+}
+.food_request_entry {
+    display: flex;
+    width: 100%;
+    margin-top: 20px;
+}
+.activity_graph {
+    background: #F7F6F4;
+    min-height: 283px;
+    border-radius: 20px;
+}
+.top_volunteers {
+    margin: 15px 0px;
+    padding: 30px 26px;
+    background: #f7f6f4;
+    border-radius: 20px;
+    min-height: 249px;
+    position:relative;
+}
+.top_volunteers_heading {
+    border-bottom: 1px solid #363636;
+    margin-bottom: 20px;
+}
+.top_volunteer_single {
+    display: flex;
+    margin: 10px 0px;
+}
+.top_volunteer_name {
+    width: 60%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.donations_count.green {
+    width: 40%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: right;
+}
+.total_box {
+    margin: 0 auto;
+    display: table;
+}
+.graph_total {
+    display: flex;
+}
+.graph_total_single {
+    background: white;
+    margin: 8px;
+    padding: 4px 9px;
+    border-radius: 30px;
+    text-align: center;
+}
+.thanks_msg {
+    background: #F7F6F4;
+    margin: 15px 0px;
+    padding: 30px 38px;
+    position:relative;
+    text-align: left;
+	width: 100%;
+	min-height: 132px;
+}
+.thanks_msg img {
+    position: absolute;
+    top: 20px;
+    right: -50px;
+}
+ion-list.custom_menu ion-item {
+    position: relative;
+    margin: -9px;
+    margin-bottom: 9px;
+} 
+.menu_img {
+    padding-left: 40px;
+}
+.s_number {
+    float: left;
+}
+.heading {
+    padding-left: 15px;
+}
+.start_number {
+    margin-left: 6px;
+}
+.left_space {
+    margin-left: 14px;
+}
+.left_space_2 {
+    margin-left: 27px !important;
+}
+.donor_name {
+    text-align: left;
+}
+ion-grid {
+    padding: 3px 11px;
+}
+.vertical_center {
+    position: absolute;
+    top: 66%;
+    max-width: 302px !important;
+    width: 100%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+}
+.custom_menubar {
+    margin: -9px;
+    margin-bottom: 10px;
+    margin-top: 32px;
+}
+.dark_grey_title {
+    background: #79919D;
+    padding: 7px;
+}
+.volunteer_for_donor_map {
+    margin-top: 12px;
+    width: 100%;
+    height: 285px;
+    margin-bottom: 14px;
+} 
+.vfd_box {
+    margin: 10px 22px;
+}
+.vfd_name {
+    padding-left: 4px;
+    margin-bottom: 10px;
+}
+.vfd_location img {
+    float: left;
+}
+.vfd_address {
+    padding-left: 25px;
+}
+.vfd_single_entry {
+    border-bottom: 1px solid #EAF4F3;
+    padding: 0px 5px;
+    padding-bottom: 17px;
+    margin-bottom: 17px;
+}
+.left_padding {
+    padding-left: 7px;
+}
+.thanks_msg.second_slide img {
+    left: -48px;
+}
+.thanks_msg.second_slide {
+    padding-left: 90px;
+    padding-right: 20px;
+}
+.swipe_msg {
+    margin-top: -5px;
+    margin-bottom: -21px;
+}
+
+
+
+  
+

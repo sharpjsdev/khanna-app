@@ -1,0 +1,76 @@
+<ion-app>
+  <ion-split-pane contentId="main-content">
+    <ion-menu contentId="main-content" type="overlay">
+      <ion-content>
+        <ion-list id="inbox-list" style="margin: 0px 30px;">
+          <ion-list-header class="medium size_18 custom_header">More</ion-list-header>          
+
+          <!--<ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+            <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">
+              <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-label>{{ p.title }}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>-->
+        </ion-list>
+
+        <div class="custom_menubar">
+			<ion-list class="custom_menu" style="margin-top: -40px !important; margin-bottom:12px;">
+				<ion-menu-toggle>
+					<ion-item class="item-icon-left menu_item" menu-close [routerLink]="['/register-volunteer']">
+						<div class="menu_img"><img src="assets/images/menu_1.svg"> </div>
+						<div class="menu_content">
+							<div class="menu_title size_16 medium">Register as Volunteer</div>
+							<div class="menu_sub green regular size_12">Become a hero of your area by registering as volunteer</div>
+						</div>
+					</ion-item>
+					<ion-item class="item-icon-left menu_item" menu-close [routerLink]="['/profile']" >
+						<div class="menu_img"><img src="assets/images/menu_2.svg"> </div>
+						<div class="menu_content">
+							<div class="menu_title size_16 medium">Profile</div>
+							<div class="menu_sub green regular size_12">Your profile containing your personal information</div>
+						</div>
+					</ion-item>
+					<ion-item class="item-icon-left menu_item" menu-close [routerLink]="['/saved-addresses',user_id]">
+						<div class="menu_img"><img src="assets/images/menu_3.svg"> </div>
+						<div class="menu_content">
+							<div class="menu_title size_16 medium">Saved Addresses</div>
+							<div class="menu_sub green regular size_12">Your previously Saved Addresses </div>
+						</div>
+					</ion-item>
+					<ion-item class="item-icon-left menu_item" menu-close [routerLink]="['/choose-language']">
+						<div class="menu_img"><img src="assets/images/menu_4.svg"> </div>
+						<div class="menu_content">
+							<div class="menu_title size_16 medium">Choose Language</div>
+							<div class="menu_sub green regular size_12">Your preferred language to use Khanaa.app</div>
+						</div>
+					</ion-item>
+					<ion-item class="item-icon-left menu_item" menu-close [routerLink]="['/help']">
+						<div class="menu_img"><img src="assets/images/menu_5.svg"> </div>
+						<div class="menu_content">
+							<div class="menu_title size_16 medium">Help</div>
+							<div class="menu_sub green regular size_12">Short tutorial videos on how to use Khanaa.app</div>
+						</div>
+					</ion-item>
+					<ion-item class="item-icon-left menu_item" menu-close ng-click="login()">
+						<div class="menu_img"><img src="assets/images/menu_6.svg"> </div>
+						<div class="menu_content">
+							<div class="menu_title size_16 medium">About Us</div>
+							<div class="menu_sub green regular size_12">Know more about the humble team of Khanaa.app</div>
+						</div>
+					</ion-item>  
+				</ion-menu-toggle>			
+			</ion-list>
+        </div>
+        <!--<ion-list id="labels-list">
+          <ion-list-header>Labels</ion-list-header>
+
+          <ion-item *ngFor="let label of labels" lines="none">
+            <ion-icon slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
+            <ion-label>{{ label }}</ion-label>
+          </ion-item>
+        </ion-list>-->
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
+</ion-app>

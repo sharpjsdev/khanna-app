@@ -1,0 +1,41 @@
+<ion-header class="ion-no-border ion-padding">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button>
+        <img src="assets/images/icon_menu.svg">
+      </ion-menu-button>
+    </ion-buttons>
+    <!--<ion-title>home</ion-title>-->
+    <ion-buttons slot="end">      
+        <img src="assets/images/icon_notification.svg">
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<div class="dark_grey_title regular size_18 white center">
+  Nearest Volunteer Locations
+</div>
+
+<div class="ion-padding theme_width">
+ <!--  <div class="volunteer_for_donor_map">
+    <img src="assets/images/map_dummy.jpg">
+  </div> -->
+<div #map id="map"></div> 
+  <div class="vfd_box">
+    <div class="vfd_single_entry" *ngFor = "let x of req_data; let i = index;">
+      <div class="vfd_name green">
+        {{i+1}}. {{x.username}}
+      </div>
+      <div class="vfd_location">
+        <img src="assets/images/location_black.svg">
+        <div class="vfd_address regular">
+          {{x.colony_name}}, {{x.city}},
+          {{x.state}}, {{x.country}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</ion-content>

@@ -1,0 +1,34 @@
+<ion-content>
+<div class="big_header">
+  <div class="ion-padding">
+    <div class="title light poiret">
+      {{app_title}}
+    </div>
+    <div class="big_header_bottom regular size_18">
+      {{this.page_key1}}<br>
+      {{this.page_key2}}
+    </div>
+  </div>
+</div>
+
+<div class="ion-padding">
+  <div class="app_input_text center_input vertical_center">
+    <input type="number" placeholder="{{mobile_no}}" [(ngModel)]='value' (input)='check_no($event.target.value)' class="check_number"  (ionChange)="check_no(value)">
+    <img src="assets/images/done.svg" class="green_check" style="display:none" >
+  </div>  
+</div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>    
+    <div class="app_button">
+      <!-- <ion-router-link href="otp">
+        <button class="app_btn">{{next_btn}}</button>
+      </ion-router-link> -->
+	   <button class="app_btn" (click)="save()">{{next_btn}}</button>
+    </div>
+  </ion-toolbar>
+</ion-footer>
+
+

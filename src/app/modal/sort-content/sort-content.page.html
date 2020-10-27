@@ -1,0 +1,47 @@
+<ion-content class="modal_content">
+  <img (click)="closeModal()" src="assets/images/close_btn.svg" class="close_btn">
+  <br><br><br>
+  <div class="modal_inner">
+    <div class="sorting">
+      <ion-row>
+        <ion-col size="6" class="right_border black">
+          {{model.key_text1}} <img src="assets/images/icon_sort_black.svg">
+        </ion-col>
+        <ion-col size="6" (click)="openModalFilter()">
+          {{model.key_text2}} <img src="assets/images/icon_filter.svg">
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+  <div class="ion-padding">   
+
+    <div style="margin-top: -24px;">
+      <div class="input_text_bottom">
+        <div class="left">
+          <div style="margin-top: -10px; margin-bottom: 15px;">
+            <input type="checkbox" id="distance" name="sort1" value="1">
+            <label for="distance" class="light light_grey size_12">{{model.key_text3}}</label>
+          </div>
+          <div>
+            <input type="checkbox" id="time" name="sort2" value="2">
+            <label for="time" class="light light_grey size_12">{{model.key_text4}}</label>
+          </div>
+        </div>        
+      </div>
+    </div>
+    
+  </div>
+</ion-content>  
+
+<ion-footer>
+  <ion-toolbar>    
+    <div class="app_button modal_btn">
+      <!-- <ion-router-link href="nearest-donors">
+        <button class="app_btn">Save Changes</button>
+      </ion-router-link>-->
+	  <span (click)="save()">
+        <button class="app_btn">{{model.key_text5}}</button>
+      </span> 
+    </div>
+  </ion-toolbar>
+</ion-footer>

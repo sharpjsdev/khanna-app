@@ -1,0 +1,37 @@
+.bg {
+    background-color: #419B95;
+    height: 60%;
+    text-align: center;
+    color: white;
+    position: relative;
+    border-radius: 0px 0px 50px 50px;
+}
+
+.mobile_img {
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    right: 0;
+}
+.title_bottom {
+    position: absolute;
+    bottom: 70px;
+    left: 5px;
+    right: 0;
+    z-index: 9;
+    text-align: center;
+    font-size: 18px;
+    color: white;
+}
+.splash_content {
+    text-align: center;
+    margin-top: 50px;
+}
+.splash_content span {
+    margin-top: 25px !important;
+    display: block;
+}
+a {
+    color: inherit;
+    text-decoration: none;
+}

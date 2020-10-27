@@ -1,0 +1,8 @@
+{
+  "name": "khanaa",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

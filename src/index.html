@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Ionic App</title>
+
+  <base href="/" />
+
+  <meta name="color-scheme" content="light dark" />
+  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+
+  <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+<!-- google map api -->
+
+<script src="//maps.google.com/maps/api/js?key=AIzaSyDFf3YK0MWDI1dYyVcJONOwdaaXW_eO3aU&libraries=&v=weekly"></script>
+
+  <!-- add to homescreen for ios -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <script type="text/javascript" src="assets/js/TwilioVoicePlugin.js"></script>
+</head>
+
+<body>
+  <app-root></app-root>
+</body>
+
+</html>
+
+
+<!--increment and decrement-->
+<script type="text/javascript">
+
+  function incrementValue()
+  {
+      var value = parseInt(document.getElementById('number').value, 10);
+      value = isNaN(value) ? 0 : value;
+      
+          value++;
+              document.getElementById('number').value = value;
+      
+  }
+  function decrementValue()
+  {
+      var value = parseInt(document.getElementById('number').value, 10);
+      value = isNaN(value) ? 0 : value;
+      if(value>1){
+          value--;
+              document.getElementById('number').value = value;
+      }
+  
+  }
+  function incrementValue2()
+  {
+      var value = parseInt(document.getElementById('number2').value, 10);
+      value = isNaN(value) ? 0 : value;
+      
+          value++;
+              document.getElementById('number2').value = value;
+      
+  }
+  function decrementValue2()
+  {
+      var value = parseInt(document.getElementById('number2').value, 10);
+      value = isNaN(value) ? 0 : value;
+      if(value>1){
+          value--;
+              document.getElementById('number2').value = value;
+      }
+  
+  }function incrementValueReviewPacket()
+  {
+      var value = parseInt(document.getElementById('number3').value, 10);
+      value = isNaN(value) ? 0 : value;
+      
+          value++;
+              document.getElementById('number3').value = value;
+      
+  }
+  function decrementValueReviewPacket()
+  {
+      var value = parseInt(document.getElementById('number3').value, 10);
+      value = isNaN(value) ? 0 : value;
+      if(value>1){
+          value--;
+              document.getElementById('number3').value = value;
+      }
+  
+  }
+  function incrementValueReviewPerson()
+  {
+      var value = parseInt(document.getElementById('number4').value, 10);
+      value = isNaN(value) ? 0 : value;
+      
+          value++;
+              document.getElementById('number4').value = value;
+      
+  }
+  function decrementValueReviewPerson()
+  {
+      var value = parseInt(document.getElementById('number4').value, 10);
+      value = isNaN(value) ? 0 : value;
+      if(value>1){
+          value--;
+              document.getElementById('number4').value = value;
+      }
+  
+  }
+  function getFoodIncrementValue()
+  {
+      var value = parseInt(document.getElementById('get_food_number').value, 10);
+      value = isNaN(value) ? 0 : value;
+      
+          value++;
+              document.getElementById('get_food_number').value = value;
+      
+  }
+  function getFoodDecrementValue()
+  {
+      var value = parseInt(document.getElementById('get_food_number').value, 10);
+      value = isNaN(value) ? 0 : value;
+      if(value>1){
+          value--;
+              document.getElementById('get_food_number').value = value;
+      }
+  
+  }
+  function filter_incrementValue()
+  {
+      var value = parseInt(document.getElementById('filter_food_needed').value, 10);
+      value = isNaN(value) ? 0 : value;
+      
+          value++;
+              document.getElementById('filter_food_needed').value = value;
+      
+  }
+  function filter_decrementValue()
+  {
+      var value = parseInt(document.getElementById('filter_food_needed').value, 10);
+      value = isNaN(value) ? 0 : value;
+      if(value>1){
+          value--;
+              document.getElementById('filter_food_needed').value = value;
+      }
+  
+  }
+  function volunteerIncrementValue()
+  {
+      var value = parseInt(document.getElementById('v_r_number').value, 10);
+      value = isNaN(value) ? 0 : value;
+      
+          value++;
+              document.getElementById('v_r_number').value = value;
+      
+  }
+  function volunteerDecrementValue()
+  {
+      var value = parseInt(document.getElementById('v_r_number').value, 10);
+      value = isNaN(value) ? 0 : value;
+      if(value>1){
+          value--;
+              document.getElementById('v_r_number').value = value;
+      }
+  
+  }
+  </script>

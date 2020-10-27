@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <g id="wrong_sign" transform="translate(-2495 44)">
+    <circle id="Ellipse_8" data-name="Ellipse 8" cx="10" cy="10" r="10" transform="translate(2495 -44)" fill="#ff4848"/>
+    <path id="letter-x" d="M.113.659a.393.393,0,0,1,0-.548.393.393,0,0,1,.548,0L3.949,3.4,7.242.111a.385.385,0,0,1,.542.548L4.5,3.947,7.784,7.24a.385.385,0,0,1-.542.548L3.949,4.495.661,7.788a.393.393,0,0,1-.548,0,.393.393,0,0,1,0-.548L3.4,3.947Z" transform="translate(2500.998 -38)" fill="#fff" stroke="#fff" stroke-width="1.2"/>
+  </g>
+</svg>

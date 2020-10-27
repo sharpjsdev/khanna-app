@@ -1,0 +1,51 @@
+<ion-content class="modal_content">
+  <img (click)="closeModal()" src="assets/images/close_btn.svg" class="close_btn">
+  <br><br><br>
+  <div class="modal_inner">
+    <div class="sorting">
+      <ion-row>
+        <ion-col size="6" class="right_border" (click)="openModalSort()">
+          {{model.key_text1}} <img src="assets/images/icon_sort.svg">
+        </ion-col>
+        <ion-col size="6" class="black">
+          {{model.key_text2}} <img src="assets/images/icon_filter_black.svg">
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+  <div class="ion-padding">      
+    <div style="margin-top: -24px; margin-left: 15px;">{{model.key_text3}}:</div>
+    <div class="btn-group">
+      <button class="grey regular btn2" id="filter_food_1" (click)="food_type(1)">{{model.key_text4}}.</button>
+      <button class="grey regular btn2" id="filter_food_2" (click)="food_type(2)">{{model.key_text5}}.</button>
+      <button class="grey regular btn2" id="filter_food_3" (click)="food_type(3)">{{model.key_text6}}</button>
+    </div>
+
+    <ion-row style="margin-top: 25px; margin-left: 13px;">
+      <ion-col size="6" class="custom_left" style="margin-top: 14px;">
+        {{model.key_text7}} :
+      </ion-col>
+      <ion-col size="6" class="custom_right">
+        <div class="how_food">
+          <input type="button" class="minus" onclick="filter_decrementValue()" value="-" />
+          <input type="text" class="food_value" name="quantity" value="1" maxlength="2" max="10" size="1" id="filter_food_needed" disabled/>
+          <input type="button" class="plus" onclick="filter_incrementValue()" value="+" />
+        </div>
+      </ion-col>
+    </ion-row>
+
+  </div>
+</ion-content>  
+
+<ion-footer>
+  <ion-toolbar>    
+    <div class="app_button modal_btn">
+      <!-- <ion-router-link href="nearest-donors/{{receiver_id}}">
+        <button class="app_btn">Save Changes</button>
+      </ion-router-link> -->
+	  <span (click)="filter()">
+        <button class="app_btn">{{model.key_text8}}</button>
+      </span>
+    </div>
+  </ion-toolbar>
+</ion-footer>

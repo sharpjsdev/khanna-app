@@ -1,0 +1,100 @@
+<ion-header class="ion-no-border ion-padding">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button>
+        <img src="assets/images/icon_menu.svg">
+      </ion-menu-button>
+    </ion-buttons>
+    <!--<ion-title>home</ion-title>-->
+    <ion-buttons slot="end">      
+        <img src="assets/images/icon_notification.svg">
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<div class="ion-padding theme_width"> 
+  <div class="search_food_bg">
+    <div class="search_single">
+      1. Select type of Food :
+      <div class="search_food_buttons">
+        <div class="btn-group">
+          <button class="grey regular btn1">Veg.</button>
+          <button class="grey regular btn1">Non Veg.</button>
+          <button class="grey regular btn1">Both</button>
+        </div>
+      </div>  
+    </div>
+
+    <div class="search_single">
+      <ion-row>
+        <ion-col size="6" class="custom_left">
+          2. Food needed for how many people
+        </ion-col>
+        <ion-col size="1" class="center">
+          :
+        </ion-col>
+        <ion-col size="5" class="custom_right">
+          <div class="how_food">
+            <input type="button" class="minus" onclick="decrementValue()" value="-" />
+            <input type="text" class="food_value" name="quantity" value="2" maxlength="2" max="10" size="1" id="number" />
+            <input type="button" class="plus" onclick="incrementValue()" value="+" />
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div class="search_single">
+      <div class="food_location">
+        <p>3.</p>
+        <div class="location_input">
+          <img src="assets/images/food_location_icon.svg">
+          <input type="text" value="Current Location">
+        </div>        
+      </div>      
+    </div> 
+
+    <div class="size_15 regular green" style="margin-top: 90px; padding-left: 20px;">
+      Rajsamrat Colony, Ayodhya Nagar,<br>
+      Bhopal, Madhya Pradesh<br>
+      462041, India
+    </div>
+
+  </div>   
+</div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>    
+    <div class="app_button">
+      <ion-router-link href="nearest-donors">
+        <button class="app_btn">Search Food</button>
+      </ion-router-link>
+    </div>
+    <br>
+    <ion-segment value="home">
+      <ion-segment-button value="home">
+        <img src="assets/images/red_footer_home.svg">
+        <!--<ion-img src="assets/images/grey_footer_home.svg"></ion-img>-->
+        <ion-label class="size_12 medium">Home</ion-label>    
+      </ion-segment-button>
+      <ion-segment-button value="activity">
+        <!--<ion-img src="assets/images/red_footer_activity.svg"></ion-img>-->
+        <img src="assets/images/grey_footer_activity.svg">
+        <ion-label class="size_12 medium">Activity</ion-label>    
+      </ion-segment-button>
+      <ion-segment-button value="volunteer">
+        <!--<ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>-->
+        <img src="assets/images/grey_footer_volunteer.svg">
+        <ion-label class="size_12 medium">Volunteer</ion-label>    
+      </ion-segment-button>
+    </ion-segment>      
+  </ion-toolbar>
+</ion-footer>
+
+
+
+
+  
+

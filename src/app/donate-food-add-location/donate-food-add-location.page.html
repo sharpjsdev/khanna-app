@@ -1,0 +1,56 @@
+<center class="current_location_spinner_position" id="add_fav_location_spinner"><ion-spinner class="current_location_sppiner"></ion-spinner></center>
+<ion-content class="current_location_page_show">
+  <div class="map edit">
+    <a href="donate-food">
+      <img src="assets/images/close_btn.svg" class="close_btn">
+    </a>
+    <!-- <img src="assets/images/map.svg"> -->
+  </div>
+  <div #map id="map"></div>
+  <div class="ion-padding">
+    <div class="map-icon">
+      <img src="assets/images/location_red.svg">
+    </div>
+    <div class="map_desc">
+      <div class="size_18"> 
+        {{model.colony_name}}
+      </div>
+      <div class="regular size_12">
+        {{model.colony_name}}<br>
+        {{model.city}}, {{model.state}} {{model.postalCode}}, {{model.country}}
+      </div>
+      <br>
+      <div class="map_input">
+        <ion-item lines="none">
+          <ion-label position="stacked" class="size_10 regular" style="color: #DADADA;">{{model.key_text1}} / {{model.key_text2}} / {{model.key_text3}} NO.</ion-label>
+          <ion-input class="size_12 regular" id="donor_house_no"></ion-input>
+          <hr class="input_line">
+        </ion-item>
+        <br>
+        <ion-item lines="none"> 
+          <ion-label position="stacked" class="size_10 regular" style="color: #DADADA;">{{model.key_text4}}</ion-label>
+          <ion-input class="size_12 regular" id="donor_landmark"></ion-input>
+          <hr class="input_line">
+        </ion-item>
+      </div>
+      <div class="btn-group buttons2">
+        <button class="grey regular btn3 size_12 medium" id="d_add_food_type_1" (click)="address_type(1)">{{model.key_text5}}</button>
+        <button class="grey regular btn3 size_12 medium" id="d_add_food_type_2" (click)="address_type(2)">{{model.key_text6}}</button>
+        <button class="grey regular btn3 size_12 medium" id="d_add_food_type_3" (click)="address_type(3)">{{model.key_text7}}</button>
+      </div>
+    </div>
+  </div>
+  
+  </ion-content>
+  
+  <ion-footer>
+    <ion-toolbar>    
+      <div class="app_button">
+        <!-- <ion-router-link href="select-location">
+          <button class="app_btn">Add Location</button>
+        </ion-router-link> -->
+		<button class="app_btn" (click)="save()">{{model.key_text8}}</button>
+      </div>
+    </ion-toolbar>
+  </ion-footer>
+  

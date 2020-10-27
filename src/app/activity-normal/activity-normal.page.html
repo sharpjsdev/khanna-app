@@ -1,0 +1,153 @@
+<ion-header class="ion-no-border ion-padding">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button>
+        <img src="assets/images/icon_menu.svg">
+      </ion-menu-button>
+    </ion-buttons>
+    <!--<ion-title>home</ion-title>-->
+    <ion-buttons slot="end">      
+        <img src="assets/images/icon_notification.svg">
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header> 
+
+<ion-content>
+<span id="activity_normal_content">
+<div class="ion-padding theme_width">
+  <div class="activity_graph">
+    <div class="search_food_bg" style="min-height: 234px;">
+    <div class="search_single">
+      <div class="size_18 medium big_heading">Your Pending Donations</div>
+
+      <ion-row *ngFor="let x of pending_data;let i = index;">
+        <ion-col size="8" style="padding: 0;">
+          {{i+1}}. {{x.food_type | foodType}}. food for {{x.total_food_for}} persons
+        </ion-col>
+        <ion-col size="4" style="padding: 0;">
+          <div class="grey_font right">{{x.updated_at | date:'shortTime'}}</div> 
+        </ion-col>
+      </ion-row>  
+      
+    </div>
+
+  </div> 
+    <form class="form" id="myForm">     
+      <div class="switch-field" (change)="state()">
+        <input type="radio" id="radio-one" name="switch-one" value="yes" checked/>
+        <label for="radio-one" class="regular size_12">Weekly</label>
+        <input type="radio" id="radio-two" name="switch-one" value="no" />
+        <label for="radio-two" class="regular size_12">Monthly</label>
+      </div> 
+    </form> 
+    <div id="highcharts" style="width:100%;"></div>
+    <div class="total_box">
+      <div class="graph_total">
+        <div class="graph_total_single size_12">
+          Blessings this {{model.blessing_quote}} -&nbsp;&nbsp;&nbsp;<span class="green">{{model.blessing_this_week}}</span>
+        </div>
+        <div class="graph_total_single size_12">
+          Total Blessings -&nbsp;&nbsp;&nbsp;<span class="green">{{model.total_blessings}}</span>
+        </div>
+      </div>
+    </div>
+	<!-- <ion-row>
+		<ion-col>
+			<div id="pieChart" style="width:100%;"></div>
+		</ion-col>
+		<ion-col>
+			<div id="pieChart2" style="width:100%;"></div>
+		</ion-col>
+	</ion-row> -->
+	
+	<div id="food_quality" ></div>
+		
+	<div class="total_box">
+		<div class="graph_total">
+			<div class="graph_total_single size_12">
+				Average Rating -&nbsp;&nbsp;&nbsp;<span class="green">{{model.quality_rating}}</span>
+			</div>
+		</div>
+    </div>
+		
+	<div id="packaging" ></div>
+		
+	<div class="total_box">
+		<div class="graph_total">
+			<div class="graph_total_single size_12">
+				Average Rating -&nbsp;&nbsp;&nbsp;<span class="green">{{model.packaging_rating}}</span>
+			</div>
+		</div>
+    </div>
+	
+	<div id="behaviour" ></div>
+	
+    <div class="total_box">
+		<div class="graph_total">
+			<div class="graph_total_single size_12">
+				Average Rating -&nbsp;&nbsp;&nbsp;<span class="green">{{model.behaviour_rating}}</span>
+			</div>
+		</div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<ion-slides class="swipe_msg">
+	<ion-slide *ngFor="let x of model.feedback_data;let i = index ">
+		<div class="thanks_msg" *ngIf=" i % 2 === 0">
+			<div style="margin-bottom: 5px;">{{x.username}} says</div>
+			<div class="size_15 regular green">
+				{{x.comment}}
+			</div>
+			<img src="assets/images/smile.svg">
+		</div> 
+		<div class="thanks_msg second_slide" *ngIf=" i % 2 !== 0">
+			<img src="assets/images/smile.svg">
+			<div style="margin-bottom: 5px;">{{x.username}} says</div>
+			<div class="size_15 regular green">
+				{{x.comment}}
+			</div>      
+		</div> 
+	</ion-slide>
+	
+</ion-slides>
+
+<div class="ion-padding theme_width">
+	<div class="top_volunteers">
+		<div class="top_volunteers_heading size_18">Top Donors from your city</div>
+		<span *ngFor="let x of model.top_donors; let i = index;">
+			<div class="top_volunteer_single">
+				<div class="top_volunteer_name">{{i+1}}. {{x.username}}</div>
+				<div class="donations_count green">{{x.cnt}} donations</div>
+			</div>
+		</span>
+	</div>
+</div>
+</span>
+<center class="current_location_spinner_position" id="activity_normal_spinner"><ion-spinner class="current_location_sppiner"></ion-spinner></center>
+</ion-content> 
+
+<ion-footer>
+	<ion-toolbar>     
+		<ion-segment color="tertiary" value="activity">
+			<ion-segment-button value="home" [routerLink]="['/home']">
+				<!--<img src="assets/images/red_footer_home.svg">-->
+				<ion-img src="assets/images/grey_footer_home.svg"></ion-img>
+				<ion-label class="size_12 medium">Home</ion-label>    
+			</ion-segment-button>
+			<ion-segment-button value="activity">
+				<ion-img src="assets/images/red_footer_activity.svg"></ion-img>
+				<!--<img src="assets/images/grey_footer_activity.svg">-->
+				<ion-label class="size_12 medium">Activity</ion-label>    
+			</ion-segment-button>        
+			<ion-segment-button value="volunteer" [routerLink]="['/volunteer']">            
+				<!--<ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>-->
+				<img src="assets/images/grey_footer_volunteer.svg">
+				<ion-label class="size_12 medium">Volunteer</ion-label>                
+			</ion-segment-button>        
+		</ion-segment>      
+	</ion-toolbar>
+</ion-footer>

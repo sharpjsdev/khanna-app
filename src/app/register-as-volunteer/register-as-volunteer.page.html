@@ -1,0 +1,51 @@
+<ion-content>
+  <div class="big_header">
+    <div class="ion-padding">
+      <div class="title light poiret">
+        {{app_title}}
+      </div>
+      <div class="big_header_bottom regular size_18">
+       {{page_key1}}<br>
+        {{page_key2}}
+      </div>
+    </div>
+  </div>
+  
+  <div class="ion-padding">
+    <div class="register_volunteer app_input_text center_input">
+      <img src="assets/images/icon_user_input.svg">
+      <input type="text" placeholder="{{model.username}}" class="input_username">      
+    </div>  
+    
+    <div class="register_volunteer app_input_text center_input">
+      <img src="assets/images/icon_calendar_input.svg">
+      <input type="text" disabled>  
+      <ion-datetime placeholder="{{model.dob}}" class="regular input_dob" displayFormat="MM / DD / YYYY"></ion-datetime>    
+    </div> 
+    <br><br>
+    <div class="grey" style="margin-left: 23px;">{{model.food_type}} : </div>
+
+    <div class="btn-group">
+      <button class="grey regular btn2" id="r_food_1" (click)="food_type(1)">{{model.veg}}.</button>
+      <button class="grey regular btn2" id="r_food_2" (click)="food_type(2)">{{model.non_veg}}.</button>
+      <button class="grey regular btn2" id="r_food_3" (click)="food_type(3)">{{model.both}}</button>
+    </div>
+
+
+  </div>
+  
+  </ion-content>
+  
+  <ion-footer> 
+    <ion-toolbar>     
+      <div class="app_button">
+        <!-- <ion-router-link href="home">
+          <button class="app_btn">Get Started</button>
+        </ion-router-link> -->
+		<button class="app_btn" (click)="save()">{{model.get_start}}</button>
+      </div>
+    </ion-toolbar>
+  </ion-footer>
+  
+  
+  

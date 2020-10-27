@@ -1,0 +1,49 @@
+<ion-content>
+
+  <div class="ion-padding">
+    <div class="single_page_title medium size_18">{{model.key_text9}}</div>
+  </div>
+
+  <div class="ion-padding custom_padding"> 
+    
+    <div>1. {{model.key_text1}}</div>
+    <div class="btn-group">
+      <button class="size_15 grey regular btn2" id="food_quality_1" (click)="food_quality(1)">{{model.key_text2}}</button>
+      <button class="size_15 grey regular btn2" id="food_quality_2" (click)="food_quality(2)">{{model.key_text3}}</button>
+      <button class="size_15 grey regular btn2" id="food_quality_3" (click)="food_quality(3)">{{model.key_text4}}</button>
+    </div>
+
+    <br>
+    <div>2. {{model.key_text5}}</div>
+    <div class="btn-group">
+      <button class="size_15 grey regular btn2" id="packaging_1" (click)="packaging(1)">{{model.key_text2}}</button>
+      <button class="size_15 grey regular btn2" id="packaging_2" (click)="packaging(2)">{{model.key_text3}}</button>
+      <button class="size_15 grey regular btn2" id="packaging_3" (click)="packaging(3)">{{model.key_text4}}</button>
+    </div>
+
+    <br>
+    <div>3. {{model.key_text6}}</div>
+    <div class="btn-group">
+      <button class="size_15 grey regular btn2" id="behaviour_1" (click)="behaviour(1)">{{model.key_text2}}</button>
+      <button class="size_15 grey regular btn2" id="behaviour_2" (click)="behaviour(2)">{{model.key_text3}}</button>
+      <button class="size_15 grey regular btn2" id="behaviour_3" (click)="behaviour(3)">{{model.key_text4}}</button>
+    </div>
+
+    <br>
+    <div>4. {{model.key_text7}}</div>
+    <div class="btn-group">
+      <ion-textarea rows="4" placeholder="{{model.key_text8}}. . ." class="custom_textarea" id="feedback_comment"></ion-textarea>
+    </div>
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>    
+    <div class="app_button" (click)="submit()">
+      
+        <button class="app_btn">{{model.key_text10}}</button>
+      
+    </div>
+  </ion-toolbar>
+</ion-footer>

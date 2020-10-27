@@ -1,0 +1,53 @@
+<ion-content>
+  <div class="big_header">
+    <div class="ion-padding">
+      <div class="title light poiret">
+        {{model.key_text1}}
+      </div>
+      <div class="big_header_bottom regular size_18">
+        {{model.key_text2}}<br>
+        {{model.key_text3}}
+      </div>
+    </div>
+  </div>
+  
+  <div class="ion-padding">
+    <div class="app_input_text center_input vertical_center">
+      
+      <input type="number" placeholder="Please Enter 1234" id="check_otp" [(ngModel)]='value' (input)='check_otp($event.target.value)'>
+      
+      <img src="assets/images/done.svg" class="green_check" id="right" style="display:none;">
+      <img src="assets/images/wrong_sign.svg" class="green_check" id="wrong" style="display:none;">
+      
+      <div class="input_text_bottom">
+        <div class="otp_left">
+          <input type="checkbox" id="fruit1" name="fruit-1" value="Apple">
+          <label for="fruit1" class="light light_grey size_12 left_space_2">{{model.key_text4}}</label>
+        </div>
+        <div class="otp_right">
+          <div class="resend_otp light light_grey size_12" (click)="resend_otp()">
+            <img src="assets/images/icon_resend.svg">
+            {{model.key_text5}}
+          </div>
+        </div>
+      </div>
+
+    </div>
+    
+  </div>
+    
+  </ion-content>
+
+  <ion-footer>
+    <ion-toolbar>    
+      <div class="app_button">
+        <!-- <ion-router-link href="register-as-volunteer">
+          <button class="app_btn">Next</button>
+        </ion-router-link> -->
+		<button class="app_btn" (click)="next()">{{model.key_text6}}</button>
+      </div>
+    </ion-toolbar>
+  </ion-footer>
+
+  
+  

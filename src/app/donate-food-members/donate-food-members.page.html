@@ -1,0 +1,108 @@
+<ion-header class="ion-no-border ion-padding">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button>
+        <img src="assets/images/icon_menu.svg">
+      </ion-menu-button>
+    </ion-buttons>
+    <!--<ion-title>home</ion-title>-->
+    <ion-buttons slot="end">      
+        <img src="assets/images/icon_notification.svg">
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<div class="ion-padding theme_width"> 
+  <div class="search_food_bg" style="min-height: 370px;">
+    <div class="">
+	
+	<div class="start_number left_padding">
+        <div class="s_number">1.</div>
+        <div class="heading">{{model.key_text1}} :</div> 
+      </div>    
+	
+      
+      <div class="search_food_buttons">
+        <div class="btn-group">
+          <button class="grey regular btn1" id="d_food_1" (click)="food_type(1)">{{model.key_text2}}.</button>
+          <button class="grey regular btn1" id="d_food_2" (click)="food_type(2)">{{model.key_text3}}.</button>
+          <button class="grey regular btn1" id="d_food_3" (click)="food_type(3)">{{model.key_text4}}</button>
+        </div>
+      </div>  
+      <br><br>
+      <ion-row>
+        <ion-col size="6" class="custom_left left_padding" style="padding-left: 12px;">
+          <div class="s_number">2.</div>
+          <div class="heading">{{model.key_text5}}</div>   
+        </ion-col>
+        <ion-col size="1" class="center vertical_col">
+          :
+        </ion-col>
+        <ion-col size="5" class="custom_right">
+          <div class="how_food">
+            <input type="button" class="minus" onclick="decrementValue()" value="-" />
+            <input type="text" class="food_value" name="quantity" value="1" maxlength="2" max="10" size="1" id="number" disabled/>
+            <input type="button" class="plus" onclick="incrementValue()" value="+" />
+          </div>
+        </ion-col>
+      </ion-row>
+      <br><br>
+      <ion-row>
+        <ion-col size="6" class="custom_left left_padding" style="padding-left: 12px;">
+          <div class="s_number">3.</div>
+          <div class="heading">{{model.key_text6}}</div>
+        </ion-col>
+        <ion-col size="1" class="center vertical_col">
+          :
+        </ion-col>
+        <ion-col size="5" class="custom_right">
+          <div class="how_food">
+            <input type="button" class="minus" onclick="decrementValue2()" value="-" />
+            <input type="text" class="food_value" name="quantity" value="1" maxlength="2" max="10" size="1" id="number2" disabled/>
+            <input type="button" class="plus" onclick="incrementValue2()" value="+" />
+          </div>
+        </ion-col>
+      </ion-row>        
+      
+    </div>
+
+  </div>   
+</div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>    
+    <div class="app_button">
+      <!-- <ion-router-link href="donate-food-review">
+        <button class="app_btn">Review your Donation</button>
+      </ion-router-link> -->
+	  <button class="app_btn" (click)="review()">{{model.key_text7}}</button>
+    </div>
+    <br>
+    <ion-segment value="home">
+      <ion-segment-button value="home" [routerLink]="['/home']">
+        <img src="assets/images/red_footer_home.svg">
+        <!--<ion-img src="assets/images/grey_footer_home.svg"></ion-img>-->
+        <ion-label class="size_12 medium">{{model.key_text8}}</ion-label>    
+      </ion-segment-button>
+      <ion-segment-button value="activity" [routerLink]="['/activity-normal']">
+        <!--<ion-img src="assets/images/red_footer_activity.svg"></ion-img>-->
+        <img src="assets/images/grey_footer_activity.svg">
+        <ion-label class="size_12 medium">{{model.key_text9}}</ion-label>    
+      </ion-segment-button>
+      <ion-segment-button value="volunteer" [routerLink]="['/volunteer']">
+        <!--<ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>-->
+        <img src="assets/images/grey_footer_volunteer.svg">
+        <ion-label class="size_12 medium">{{model.key_text10}}</ion-label>    
+      </ion-segment-button>
+    </ion-segment>      
+  </ion-toolbar>
+</ion-footer>
+
+
+
+
+  
+

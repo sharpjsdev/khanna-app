@@ -1,0 +1,143 @@
+<ion-header class="ion-no-border ion-padding">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button>
+        <img src="assets/images/icon_menu.svg">
+      </ion-menu-button>
+    </ion-buttons>
+    <!--<ion-title>home</ion-title>-->
+    <ion-buttons slot="end">      
+        <img src="assets/images/icon_notification.svg">
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<div class="ion-padding theme_width"> 
+  <div class="search_food_bg" style="min-height: 234px;">
+    <div class="search_single">
+      <div class="size_18 medium big_heading">{{model.key_text1}}</div>
+
+      <ion-row *ngFor="let x of pending_data;let i = index;">
+        <ion-col size="8" style="padding: 0;">
+          {{i+1}}. {{x.food_type | foodType}}. {{model.key_text2}} {{x.total_food_for}} {{model.key_text3}}
+        </ion-col>
+        <ion-col size="4" style="padding: 0;">
+          <div class="grey_font right">{{x.updated_at | date:'shortTime'}}</div> 
+        </ion-col>
+      </ion-row>  
+      
+    </div>
+
+  </div>   
+  
+  <div class="search_food_bg" style="min-height: 306px; margin-top: 15px;">
+    <div class="">
+
+      <div class="size_18 medium big_heading">{{model.key_text4}}</div>
+
+      <ion-row>
+        <ion-col size="6">
+         {{model.key_text11}}
+        </ion-col>
+        <ion-col size="1" class="center">
+          :
+        </ion-col>
+        <ion-col size="5">
+          <div class="light_green center">{{food_data.food_type | foodType}}.</div> 
+        </ion-col>
+      </ion-row> 
+      <br>
+      <br>
+      <ion-row>
+        <ion-col size="6" class="custom_left">
+          {{model.key_text5}}
+        </ion-col>
+        <ion-col size="1" class="center">
+          :
+        </ion-col>
+        <ion-col size="5" class="custom_right">
+          <div class="how_food">
+            <input type="button" class="minus" onclick="decrementValueReviewPacket()" value="-" (click)="packets()"/>
+            <input type="text" class="food_value" name="quantity" value="{{food_data.total_no_of_packet}}" maxlength="2" max="10" size="1" id="number3" disabled/>
+            <input type="button" class="plus" onclick="incrementValueReviewPacket()" value="+" (click)="packets()" />
+          </div>
+        </ion-col>
+      </ion-row>
+      <br><br>
+      <ion-row>
+        <ion-col size="6" class="custom_left">
+          {{model.key_text6}}
+        </ion-col>
+        <ion-col size="1" class="center">
+          :
+        </ion-col>
+        <ion-col size="5" class="custom_right">
+          <div class="how_food">
+            <input type="button" class="minus" onclick="decrementValueReviewPerson()" value="-" (click)="food_for()"/>
+            <input type="text" class="food_value" name="quantity" value="{{food_data.each_packet_contain_food_for}}" maxlength="2" max="10" size="1" id="number4" disabled/>
+            <input type="button" class="plus" onclick="incrementValueReviewPerson()" value="+" (click)="food_for()"/>
+          </div>
+        </ion-col>
+      </ion-row>   
+      <br><br>
+      <ion-row>
+        <ion-col size="6" class="custom_left">
+          {{model.key_text7}}
+        </ion-col>
+        <ion-col size="1" class="center">
+          :
+        </ion-col>
+        <ion-col size="5" class="custom_right">
+          <div class="size_15 center green">
+            {{food_data.total_food_for}} {{model.key_text12}}
+          </div>
+        </ion-col>
+      </ion-row>    
+      
+    </div>
+
+  </div>  
+  <br>
+</div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>    
+    <!-- <div class="app_button" (click)="openModalDonateFood()">
+      
+        <button class="app_btn">Donate Food</button>
+      
+    </div> -->
+	<div class="app_button" (click)="donate_food()">
+      
+        <button class="app_btn">{{model.key_text13}}</button>
+      
+    </div>
+    <br>
+    <ion-segment value="home">
+      <ion-segment-button value="home" [routerLink]="['/home']">
+        <img src="assets/images/red_footer_home.svg">
+        <!--<ion-img src="assets/images/grey_footer_home.svg"></ion-img>-->
+        <ion-label class="size_12 medium">{{model.key_text8}}</ion-label>    
+      </ion-segment-button>
+      <ion-segment-button value="activity" [routerLink]="['/activity-normal']">
+        <!--<ion-img src="assets/images/red_footer_activity.svg"></ion-img>-->
+        <img src="assets/images/grey_footer_activity.svg">
+        <ion-label class="size_12 medium">{{model.key_text9}}</ion-label>    
+      </ion-segment-button>
+      <ion-segment-button value="volunteer" [routerLink]="['/volunteer']">
+        <!--<ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>-->
+        <img src="assets/images/grey_footer_volunteer.svg">
+        <ion-label class="size_12 medium">{{model.key_text10}}</ion-label>    
+      </ion-segment-button>
+    </ion-segment>      
+  </ion-toolbar>
+</ion-footer>
+
+
+
+
+  
+

@@ -1,0 +1,86 @@
+<ion-header class="ion-no-border ion-padding">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button>
+        <img src="assets/images/icon_menu.svg">
+      </ion-menu-button>
+    </ion-buttons>
+    <!--<ion-title>home</ion-title>-->
+    <ion-buttons slot="end">      
+        <img src="assets/images/icon_notification.svg">
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<div class="grey_title regular size_18 white center">
+  {{model.key_text1}}
+</div>
+<div class="sorting">
+  <ion-row>
+    <ion-col size="6" (click)="openModalSort()" class="right_border">
+      {{model.key_text2}} <img src="assets/images/icon_sort.svg">
+    </ion-col>
+    <ion-col size="6" (click)="openModal()">
+      Filter <img src="assets/images/icon_filter.svg">
+    </ion-col>
+  </ion-row>
+</div>
+
+<div class="donor_list" id="nearest_donors_list">
+	<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+		<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+			<ion-grid class="donor_list_single" *ngFor="let x of model.donor_data; let i = index;">
+				<ion-row>
+					<ion-col size="5">
+						<div class="donor_name medium">
+						  {{i+1}}. {{x.username}}
+						</div>
+					</ion-col>
+					<ion-col size="7">
+						<div class="donor_title_sub size_13 regular">
+							Food available for <span class="green">{{x.total_food_for}} persons</span>
+						</div>
+					</ion-col>
+				</ion-row>
+				<ion-row class="donor_list_inner">
+					<ion-col size="2">
+						<div class="donor_icon">
+							<img src="assets/images/icon_donor_walk.svg">
+						</div>
+						<div class="grey size_10">
+							{{x.time_distance_walking.rows[0].elements[0].duration.text}}  {{model.key_text6}}
+						</div>
+					</ion-col>
+					<ion-col size="3">
+						<div class="donor_icon">
+							<img src="assets/images/icon_donor_bike.svg">
+						</div>
+						<div class="grey size_10">
+							{{x.time_distance_driving.rows[0].elements[0].duration.text}} {{model.key_text7}}
+						</div>
+					</ion-col>
+					<ion-col size="3">
+						<div class="donor_icon">
+							<img src="assets/images/icon_donor_bus.svg">
+						</div>
+						<div class="grey size_10" >
+							{{x.time_distance_transit.rows[0].elements[0].duration.text}} {{model.key_text8}}
+						</div>
+					</ion-col>
+					<ion-col size="4">
+						<a (click)="collect_food(x)">
+							<div class="donor_single_btn">
+								{{model.key_text5}}
+							</div>
+						</a>
+					</ion-col>
+					<hr class="donor_single_line">
+				</ion-row>  
+			</ion-grid>
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+	<input type="hidden" id="start_page" value="0">
+</div>
+<center class="current_location_spinner_position" id="nearest_donors_spinner"><ion-spinner class="current_location_sppiner"></ion-spinner></center>
+</ion-content>

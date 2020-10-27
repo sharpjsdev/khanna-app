@@ -1,0 +1,19 @@
+<ion-content>
+
+	<div class="ion-padding">
+		<div class="single_page_title medium size_18">{{model.key_page_name}}</div>
+	</div>
+
+	<div class="ion-padding theme_width" id="help_list">
+		<div class="single_video" *ngFor="let x of model.data;let i = index">
+			<div class="video_numbers size_16 medium green">{{i+1}}.</div>
+			<div class="video_title size_16 medium green">{{x.title}}</div>
+			<div class="video">
+			<!-- <img src="assets/images/dummy_video.svg"> -->
+				<iframe [src]="x.video_url | safe"></iframe>
+			</div>
+		</div>
+	</div>
+	<br>
+<center class="current_location_spinner_position" id="help_spinner"><ion-spinner class="current_location_sppiner"></ion-spinner></center>
+</ion-content>

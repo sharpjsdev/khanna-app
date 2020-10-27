@@ -1,0 +1,62 @@
+<ion-content>
+	<div class="big_header">
+		<div class="ion-padding">
+			<div class="title light poiret">
+				{{model.key_text1}}
+			</div>
+			<div class="big_header_bottom regular size_18">
+				{{model.key_text2}} 
+			</div>
+		</div>
+	</div>
+  
+	<div class="ion-padding">
+		<div class="register_volunteer app_input_text center_input">
+		  <img src="assets/images/icon_user_input.svg">
+		  <input type="text" placeholder="{{model.key_text4}}" id="v_username" value="{{volunteer_data.username}}">      
+		</div>  
+		
+		<div class="register_volunteer app_input_text center_input">
+		  <img src="assets/images/icon_calendar_input.svg">
+		  <input type="text" disabled>  
+		  <ion-datetime placeholder="{{model.key_text3}}" class="regular" id="v_dob" displayFormat="MM / DD / YYYY" value="{{volunteer_data.dob}}"></ion-datetime>    
+		</div> 
+
+		<div class="register_volunteer app_input_text center_input">
+		  <img src="assets/images/food_location_icon.svg">
+		  <input type="text" placeholder="{{model.key_text5}}" (click)="openModalCurrentLocation()">      
+		</div> 
+		<!-- <div class="size_13 green medium left_space" *ngIf="location_data != null">
+			{{location_data.colony_name}},<br>
+			{{location_data.city}}, {{location_data.state}}<br>
+			{{location_data.postalCode}}, {{location_data.country}}
+		</div>	 -->
+		<div class="vfd_location" style="margin: 13px 23px;" *ngIf="location_data != '' && volunteer_data == ''">
+			<img src="assets/images/location_black.svg">
+			<div class="vfd_address regular green">
+			  {{location_data.colony_name}}, {{location_data.city}},
+			  {{location_data.state}}, {{location_data.country}}
+			</div>
+		</div>
+		<div class="vfd_location" style="margin: 13px 23px;" *ngIf="volunteer_data != ''">
+			<img src="assets/images/location_black.svg">
+			<div class="vfd_address regular green">
+			  {{volunteer_data.colony_name}}, {{volunteer_data.city}},
+			  {{volunteer_data.state}}, {{volunteer_data.country}}
+			</div>
+		</div>
+	</div>
+  </ion-content> 
+  
+  <ion-footer> 
+    <ion-toolbar>     
+      <div class="app_button">
+        <span (click)="register()">
+          <button class="app_btn">Register</button>
+        </span>
+      </div>
+    </ion-toolbar>
+  </ion-footer>
+  
+  
+  

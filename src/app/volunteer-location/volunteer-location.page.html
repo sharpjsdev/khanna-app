@@ -1,0 +1,104 @@
+<ion-header class="ion-no-border ion-padding">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button>
+        <img src="assets/images/icon_menu.svg">
+      </ion-menu-button>
+    </ion-buttons>
+    <!--<ion-title>home</ion-title>-->
+    <ion-buttons slot="end">      
+        <img src="assets/images/icon_notification.svg">
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="ion-padding">
+    <div class="btn-group" style="margin-top: -12px;">
+      <button class="grey regular btn4">
+        <div class="donor_icon">
+          <img src="assets/images/icon_donor_bike.svg">
+          <!--<img src="assets/images/icon_donor_bike.svg">-->
+        </div>
+        <div class="grey size_12">
+          8 min.
+        </div>
+      </button>
+
+      <button class="grey regular btn4">
+        <div class="donor_icon">
+          <img src="assets/images/icon_donor_bus.svg">
+          <!--<img src="assets/images/icon_donor_bus_white.svg">-->
+        </div>
+        <div class="grey size_12">
+          10 min.
+        </div>
+      </button>
+
+      <button class="grey regular btn4">
+        <div class="donor_icon">
+          <img src="assets/images/icon_donor_walk.svg">
+          <!--<img src="assets/images/icon_donor_walk_white.svg">-->
+        </div>
+        <div class="grey size_12">
+          26 min
+        </div>
+      </button>      
+      
+    </div>
+  </div>
+ 
+  <div class="map volunteer_location">    
+    <img src="assets/images/map_volunteer.svg">
+  </div>
+  
+  <div class="ion-padding" style="margin-left: 20px;">
+    <div class="map-icon">
+      <img src="assets/images/location_black.svg">
+    </div>
+    <div class="map_desc">      
+      <div class="regular size_12">
+        Rajsamrat Colony, Ayodhya Nagar,<br>
+        Bhopal, Madhya Pradesh <br>
+        462041, India
+      </div>      
+      
+    </div>
+  </div>
+  
+  </ion-content>
+  
+  <ion-footer>
+    <div class="app_button">
+      <ion-router-link href="volunteer-food-drop">
+        <button class="app_btn">Proceed</button>
+      </ion-router-link>
+    </div>
+    <br>
+    <ion-toolbar>    
+        <ion-segment color="tertiary" value="volunteer">
+          <a href="home">
+            <ion-segment-button value="home">
+              <!--<img src="assets/images/red_footer_home.svg">-->
+              <ion-img src="assets/images/grey_footer_home.svg"></ion-img>
+              <ion-label class="size_12 medium">Home</ion-label>    
+            </ion-segment-button>
+          </a>
+          <ion-segment-button value="activity">
+            <!--<ion-img src="assets/images/red_footer_activity.svg"></ion-img>-->
+            <img src="assets/images/grey_footer_activity.svg">
+            <ion-label class="size_12 medium">Activity</ion-label>    
+          </ion-segment-button>        
+          <ion-segment-button value="volunteer">            
+            <ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>
+            <!--<img src="assets/images/grey_footer_volunteer.svg">-->
+            <ion-label class="size_12 medium">Volunteer</ion-label>                
+          </ion-segment-button>        
+        </ion-segment>      
+    </ion-toolbar>
+  </ion-footer> 
+
+
+ 
+  

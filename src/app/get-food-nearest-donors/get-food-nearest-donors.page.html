@@ -1,0 +1,105 @@
+<ion-header class="ion-no-border ion-padding">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button>
+        <img src="assets/images/icon_menu.svg">
+      </ion-menu-button>
+    </ion-buttons>
+    <!--<ion-title>home</ion-title>-->
+    <ion-buttons slot="end">      
+        <img src="assets/images/icon_notification.svg">
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="ion-padding">
+    <div class="btn-group" style="margin-top: -12px;">
+      <button class="grey regular btn4" id="btn_drive">
+        <div class="donor_icon" (click)="calculate_route('DRIVING', 2)">
+          <img src="assets/images/{{model.bike_image}}">
+          <!--<img src="assets/images/icon_donor_bike_white.svg">-->
+        </div>
+        <div class="grey size_12" id="text_bike_time">
+          {{model.drive_time}}
+        </div>
+      </button>
+
+      <button class="grey regular btn4" id="btn_bus">
+        <div class="donor_icon" (click)="calculate_route('TRANSIT', 2)">
+          <img src="assets/images/{{model.bus_image}}">
+          <!-- <img src="assets/images/icon_donor_bus_white.svg"> -->
+        </div>
+        <div class="grey size_12" id="text_bus_time">
+          {{model.public_time}}
+        </div>
+      </button>
+
+      <button class="grey regular btn4" id="btn_walk">
+        <div class="donor_icon" (click)="calculate_route('WALKING', 2)">
+          <img src="assets/images/{{model.walk_image}}">
+          <!--<img src="assets/images/icon_donor_walk_white.svg">-->
+        </div>
+        <div class="grey size_12" id="text_walk_time">
+         {{model.walk_time}}
+        </div>
+      </button>      
+      
+    </div>
+  </div>
+ 
+ <!--  <div class="map volunteer_location">    
+    <img src="assets/images/map_volunteer.svg">
+  </div> -->
+  <div #map id="map"></div>
+  
+  <div class="ion-padding" style="margin-left: 20px;">
+    <div class="map-icon">
+      <img src="assets/images/location_black.svg">
+    </div>
+    <div class="map_desc">      
+      <div class="regular size_12">
+        {{model.donor_address.colony_name}},<br>
+        {{model.donor_address.city}}, {{model.donor_address.state}} <br>
+        {{model.donor_address.postalCode}}, {{model.donor_address.country}}
+      </div>      
+      
+    </div>
+  </div>
+  
+  </ion-content>
+  
+  <ion-footer>
+    <div class="app_button">
+      <ion-router-link href="get-food-nearest-donors-two/{{model.donor_address.food_id}}/{{model.r_lat}}/{{model.r_lon}}/{{model.r_id}}}/{{model.mode}}/{{model.d_food_type}}">
+        <button class="app_btn">{{model.key_text1}}</button>
+      </ion-router-link>
+    </div>
+    <br>
+    <ion-toolbar>    
+        <ion-segment color="tertiary" value="home"> 
+          
+            <ion-segment-button value="home"  [routerLink]="['/home']">
+              <img src="assets/images/red_footer_home.svg">
+              <!--<ion-img src="assets/images/grey_footer_home.svg"></ion-img>-->
+              <ion-label class="size_12 medium">{{model.key_text2}}</ion-label>    
+            </ion-segment-button>
+          
+          <ion-segment-button value="activity" [routerLink]="['/activity-normal']">
+            <!--<ion-img src="assets/images/red_footer_activity.svg"></ion-img>-->
+            <img src="assets/images/grey_footer_activity.svg">
+            <ion-label class="size_12 medium">{{model.key_text3}}</ion-label>    
+          </ion-segment-button>        
+          <ion-segment-button value="volunteer" [routerLink]="['/volunteer']">            
+            <!--<ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>-->
+            <img src="assets/images/grey_footer_volunteer.svg">
+            <ion-label class="size_12 medium">{{model.key_text4}}</ion-label>                
+          </ion-segment-button>        
+        </ion-segment>      
+    </ion-toolbar>
+  </ion-footer> 
+
+
+ 
+  

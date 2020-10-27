@@ -1,0 +1,259 @@
+<ion-header class="ion-no-border ion-padding">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button>
+        <img src="assets/images/icon_menu.svg">
+      </ion-menu-button>
+    </ion-buttons>
+    <!--<ion-title>home</ion-title>-->
+    <ion-buttons slot="end">      
+        <img src="assets/images/icon_notification.svg">
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<div class="grey_title2 regular size_18 white center">
+  Nearest Volunteer Locations
+</div>
+<div class="sorting">
+  <ion-row>
+    <ion-col size="6" (click)="openModalSort()" class="right_border">
+      Sort <img src="assets/images/icon_sort.svg">
+    </ion-col>
+    <ion-col size="6" (click)="openModal()">
+      Filter <img src="assets/images/icon_filter.svg">
+    </ion-col>
+  </ion-row>
+</div>
+
+<div class="donor_list">
+  <ion-grid class="donor_list_single">
+    <ion-row>
+      <ion-col size="5">
+        <div class="donor_name medium">
+          1. Aman Mishra
+        </div>
+      </ion-col>
+      <ion-col size="7">
+        <div class="donor_title_sub size_13 regular">
+          Food available for <span class="green">2 persons</span>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="donor_list_inner">
+      <ion-col size="2">
+        <div class="donor_icon">
+          <img src="assets/images/icon_donor_walk.svg">
+        </div>
+        <div class="grey size_10">
+          15 min. Walk
+        </div>
+      </ion-col>
+      <ion-col size="3">
+        <div class="donor_icon">
+          <img src="assets/images/icon_donor_bike.svg">
+        </div>
+        <div class="grey size_10">
+          8 min. Two-Wheeler
+        </div>
+      </ion-col>
+      <ion-col size="3">
+        <div class="donor_icon">
+          <img src="assets/images/icon_donor_bus.svg">
+        </div>
+        <div class="grey size_10">
+          10 min. Public Transport
+        </div>
+      </ion-col>
+      <ion-col size="4">
+        <a href="volunteer-location">
+          <div class="donor_single_btn">
+            Collect Food
+          </div>
+        </a>
+      </ion-col>
+      <hr class="donor_single_line">
+    </ion-row>   
+
+  </ion-grid>
+
+  <ion-grid class="donor_list_single">
+    <ion-row>
+      <ion-col size="5">
+        <div class="donor_name medium">
+          2. Swapnil Gupta
+        </div>
+      </ion-col>
+      <ion-col size="7">
+        <div class="donor_title_sub size_13 regular">
+          Food available for <span class="green">2 persons</span>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="donor_list_inner">
+      <ion-col size="2">
+        <div class="donor_icon">
+          <img src="assets/images/icon_donor_walk.svg">
+        </div>
+        <div class="grey size_10">
+          15 min. Walk
+        </div>
+      </ion-col>
+      <ion-col size="3">
+        <div class="donor_icon">
+          <img src="assets/images/icon_donor_bike.svg">
+        </div>
+        <div class="grey size_10">
+          8 min. Two-Wheeler
+        </div>
+      </ion-col>
+      <ion-col size="3">
+        <div class="donor_icon">
+          <img src="assets/images/icon_donor_bus.svg">
+        </div>
+        <div class="grey size_10">
+          10 min. Public Transport
+        </div>
+      </ion-col>
+      <ion-col size="4">
+        <a href="volunteer-location">
+          <div class="donor_single_btn">
+            Collect Food
+          </div> 
+        </a>
+      </ion-col>
+      <hr class="donor_single_line">
+    </ion-row>   
+
+  </ion-grid>
+
+  <ion-grid class="donor_list_single">
+    <ion-row>
+      <ion-col size="5">
+        <div class="donor_name medium">
+          3. Chetan Sable
+        </div>
+      </ion-col>
+      <ion-col size="7">
+        <div class="donor_title_sub size_13 regular">
+          Food available for <span class="green">1 persons</span>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="donor_list_inner">
+      <ion-col size="2">
+        <div class="donor_icon">
+          <img src="assets/images/icon_donor_walk.svg">
+        </div>
+        <div class="grey size_10">
+          15 min. Walk
+        </div>
+      </ion-col>
+      <ion-col size="3">
+        <div class="donor_icon">
+          <img src="assets/images/icon_donor_bike.svg">
+        </div>
+        <div class="grey size_10">
+          8 min. Two-Wheeler
+        </div>
+      </ion-col>
+      <ion-col size="3">
+        <div class="donor_icon">
+          <img src="assets/images/icon_donor_bus.svg">
+        </div>
+        <div class="grey size_10">
+          10 min. Public Transport
+        </div>
+      </ion-col>
+      <ion-col size="4">
+        <a href="volunteer-location">
+          <div class="donor_single_btn">
+            Collect Food
+          </div> 
+        </a>
+      </ion-col>
+      <hr class="donor_single_line">
+    </ion-row>   
+
+  </ion-grid>
+
+  <ion-grid class="donor_list_single">
+    <ion-row>
+      <ion-col size="5">
+        <div class="donor_name medium">
+          4. Anshuman Jha
+        </div>
+      </ion-col>
+      <ion-col size="7">
+        <div class="donor_title_sub size_13 regular">
+          Food available for <span class="green">1 persons</span>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="donor_list_inner">
+      <ion-col size="2">
+        <div class="donor_icon">
+          <img src="assets/images/icon_donor_walk.svg">
+        </div>
+        <div class="grey size_10">
+          15 min. Walk
+        </div>
+      </ion-col>
+      <ion-col size="3">
+        <div class="donor_icon">
+          <img src="assets/images/icon_donor_bike.svg">
+        </div>
+        <div class="grey size_10">
+          8 min. Two-Wheeler
+        </div>
+      </ion-col>
+      <ion-col size="3">
+        <div class="donor_icon">
+          <img src="assets/images/icon_donor_bus.svg">
+        </div>
+        <div class="grey size_10">
+          10 min. Public Transport
+        </div>
+      </ion-col>
+      <ion-col size="4">
+        <a href="volunteer-location">
+          <div class="donor_single_btn">
+            Collect Food
+          </div> 
+        </a>
+      </ion-col>
+      <hr class="donor_single_line">
+    </ion-row>   
+
+  </ion-grid>
+</div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>    
+      <ion-segment color="tertiary" value="volunteer">
+        <a href="home">
+          <ion-segment-button value="home">
+            <!--<img src="assets/images/red_footer_home.svg">-->
+            <ion-img src="assets/images/grey_footer_home.svg"></ion-img>
+            <ion-label class="size_12 medium">Home</ion-label>    
+          </ion-segment-button>
+        </a>
+        <ion-segment-button value="activity">
+          <!--<ion-img src="assets/images/red_footer_activity.svg"></ion-img>-->
+          <img src="assets/images/grey_footer_activity.svg">
+          <ion-label class="size_12 medium">Activity</ion-label>    
+        </ion-segment-button>        
+        <ion-segment-button value="volunteer">            
+          <ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>
+          <!--<img src="assets/images/grey_footer_volunteer.svg">-->
+          <ion-label class="size_12 medium">Volunteer</ion-label>                
+        </ion-segment-button>        
+      </ion-segment>      
+  </ion-toolbar>
+</ion-footer>

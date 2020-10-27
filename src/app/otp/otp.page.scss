@@ -1,0 +1,36 @@
+@media only screen and (max-width: 348px) {
+    .input_text_bottom {
+        display: inherit !important;
+    }
+    .otp_left {
+        width: 100% !important;
+        text-align: left;
+        margin-top: 15px;
+    }
+    .otp_right {
+        width: 100% !important;
+        text-align: left !important;
+        margin-left: 5px;
+        margin-top: 10px !important;
+        margin-left: 30px !important;
+    }
+  }
+
+
+
+.otp_left {
+    width: 60%;
+    text-align: left;
+}
+.otp_right {
+    width: 40%;
+    text-align: right;
+    margin-top: 6px;
+    margin-right: 14px;
+}
+.otp_right img {
+    width: 13px;
+    margin-bottom: -3px;
+    margin-right: 4px;
+}
+

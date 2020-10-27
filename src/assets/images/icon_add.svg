@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <g id="icon_add" transform="translate(-168 -340)">
+    <g id="Rectangle_116" data-name="Rectangle 116" transform="translate(168 340)" fill="#fff" stroke="#419b95" stroke-width="1">
+      <rect width="40" height="40" rx="20" stroke="none"/>
+      <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" fill="none"/>
+    </g>
+    <path id="Icon_ionic-ios-add" data-name="Icon ionic-ios-add" d="M21.1,14.63H16.241V9.77a.806.806,0,1,0-1.611,0V14.63H9.77a.806.806,0,0,0,0,1.611H14.63V21.1a.806.806,0,1,0,1.611,0V16.241H21.1a.806.806,0,1,0,0-1.611Z" transform="translate(172.642 344.5)" fill="#419b95"/>
+  </g>
+</svg>

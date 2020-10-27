@@ -1,0 +1,89 @@
+<ion-header class="ion-no-border ion-padding">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button>
+        <img src="assets/images/icon_menu.svg">
+      </ion-menu-button>
+    </ion-buttons>
+    <!--<ion-title>home</ion-title>-->
+    <ion-buttons slot="end">      
+        <img src="assets/images/icon_notification.svg">
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="ion-padding" style="margin-left: 20px; margin-top: -15px; margin-bottom: 5px;">
+    <div class="map-icon">
+      <img src="assets/images/location_black.svg">
+    </div>
+    <div class="map_desc">      
+      <div class="regular size_12">
+        Rajsamrat Colony, Ayodhya Nagar,<br>
+        Bhopal, Madhya Pradesh <br>
+        462041, India
+      </div> 
+    </div>
+  </div>
+  
+  <div class="map volunteer_location">    
+    <img src="assets/images/map_volunteer.svg">
+  </div>
+  <br>
+  <div class="ion-padding theme_width"> 
+    <ul class="size_15 medium">
+      <li>Collecting vegetarian food for 2 persons</li>
+      <br>
+      <li style="padding-right: 100px;">Donor Name - Aman Mishra</li>      
+      <a href="" class="size_15 medium call">CALL</a>
+    </ul>
+    <br>
+    <div class="grey_buttons">  
+      <ion-row>
+        <ion-col size="6">
+          <ion-router-link href="">
+            <button class="grey_btn regular">Cancel Food Drop</button>
+          </ion-router-link>
+        </ion-col>
+        <ion-col size="6">
+          <ion-router-link href="donate-food-successful">
+            <button class="grey_btn regular">Food Dropped</button>
+          </ion-router-link> 
+        </ion-col>
+      </ion-row>
+    </div>
+
+  </div>
+
+ 
+  
+  </ion-content>
+  
+  <ion-footer>    
+    <ion-toolbar>    
+        <ion-segment color="tertiary" value="volunteer">
+          <a href="home">
+            <ion-segment-button value="home">
+              <!--<img src="assets/images/red_footer_home.svg">-->
+              <ion-img src="assets/images/grey_footer_home.svg"></ion-img>
+              <ion-label class="size_12 medium">Home</ion-label>    
+            </ion-segment-button>
+          </a>
+          <ion-segment-button value="activity">
+            <!--<ion-img src="assets/images/red_footer_activity.svg"></ion-img>-->
+            <img src="assets/images/grey_footer_activity.svg">
+            <ion-label class="size_12 medium">Activity</ion-label>    
+          </ion-segment-button>        
+          <ion-segment-button value="volunteer">            
+            <ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>
+            <!--<img src="assets/images/grey_footer_volunteer.svg">-->
+            <ion-label class="size_12 medium">Volunteer</ion-label>                
+          </ion-segment-button>        
+        </ion-segment>      
+    </ion-toolbar>
+  </ion-footer> 
+
+
+ 
+  

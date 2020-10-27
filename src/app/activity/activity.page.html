@@ -1,0 +1,73 @@
+<ion-header class="ion-no-border ion-padding">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button>
+        <img src="assets/images/icon_menu.svg">
+      </ion-menu-button>
+    </ion-buttons>
+    <!--<ion-title>home</ion-title>-->
+    <ion-buttons slot="end">      
+        <img src="assets/images/icon_notification.svg">
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header> 
+
+<ion-content>
+	<div class="ion-padding theme_width" id="      ">
+		<div class="activity_graph">
+			<form class="form" id="volunteer_form">     
+				<div class="switch-field" (change)="state()">
+					<input type="radio" id="radio-one" name="switch-one" value="yes" checked/>
+					<label for="radio-one" class="regular size_12">Weekly</label>
+					<input type="radio" id="radio-two" name="switch-one" value="no" />
+					<label for="radio-two" class="regular size_12">Monthly</label>
+				</div> 
+			</form>   
+			<div id="highcharts_v" style="width:100%;"></div>
+			<div class="total_box">
+				<div class="graph_total">
+					<div class="graph_total_single size_12">
+						Blessings this {{model.blessing_quote}} -&nbsp;&nbsp;&nbsp;<span class="green">{{model.blessing_this_week}}</span>
+					</div>
+					<div class="graph_total_single size_12">
+						Total Blessings -&nbsp;&nbsp;&nbsp;<span class="green">{{model.total_blessings}}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="top_volunteers">
+			<div class="top_volunteers_heading size_18">Top Volunteers from your city</div>
+			<div class="top_volunteer_single" *ngFor="let x of model.top_volunteers; let i = index;">
+				<div class="top_volunteer_name">{{i+1}}. {{x.name}}</div>
+				<div class="donations_count green">{{x.cnt}} donations</div>
+			</div>
+			<!--<div class="top_volunteer_single">
+				<div class="top_volunteer_name">2. Chetan Sable</div>
+				<div class="donations_count green">19 donations</div>
+			</div> -->
+		</div>
+	</div>
+	<center class="current_location_spinner_position" id="volunteer_activity_spinner"><ion-spinner class="current_location_sppiner"></ion-spinner></center>
+</ion-content> 
+
+<ion-footer>
+	<ion-toolbar>     
+		<ion-segment color="tertiary" value="activity">
+			<ion-segment-button value="home" [routerLink]="['/home']">
+				<!--<img src="assets/images/red_footer_home.svg">-->
+				<ion-img src="assets/images/grey_footer_home.svg"></ion-img>
+				<ion-label class="size_12 medium">Home</ion-label>    
+			</ion-segment-button>
+			<ion-segment-button value="activity">
+				<ion-img src="assets/images/red_footer_activity.svg"></ion-img>
+				<!--<img src="assets/images/grey_footer_activity.svg">-->
+				<ion-label class="size_12 medium">Activity</ion-label>    
+			</ion-segment-button>        
+			<ion-segment-button value="volunteer" [routerLink]="['/volunteer']">            
+				<!--<ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>-->
+				<img src="assets/images/grey_footer_volunteer.svg">
+			<ion-label class="size_12 medium">Volunteer</ion-label>                
+			</ion-segment-button>        
+		</ion-segment>      
+	</ion-toolbar>
+</ion-footer>
