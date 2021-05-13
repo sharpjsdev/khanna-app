@@ -6,12 +6,13 @@
 
   <div class="ion-padding custom_padding"> 
     
-    <div>1. {{model.key_text1}}</div>
+    <div>1. {{model.key_text1}}</div> 
     <div class="btn-group">
       <button class="size_15 grey regular btn2" id="food_quality_1" (click)="food_quality(1)">{{model.key_text2}}</button>
       <button class="size_15 grey regular btn2" id="food_quality_2" (click)="food_quality(2)">{{model.key_text3}}</button>
       <button class="size_15 grey regular btn2" id="food_quality_3" (click)="food_quality(3)">{{model.key_text4}}</button>
     </div>
+    <span class="food_quality-error-text">This field is required</span>  
 
     <br>
     <div>2. {{model.key_text5}}</div>
@@ -20,7 +21,7 @@
       <button class="size_15 grey regular btn2" id="packaging_2" (click)="packaging(2)">{{model.key_text3}}</button>
       <button class="size_15 grey regular btn2" id="packaging_3" (click)="packaging(3)">{{model.key_text4}}</button>
     </div>
-
+    <span class="packaging-error-text">This field is required</span>  
     <br>
     <div>3. {{model.key_text6}}</div>
     <div class="btn-group">
@@ -28,7 +29,7 @@
       <button class="size_15 grey regular btn2" id="behaviour_2" (click)="behaviour(2)">{{model.key_text3}}</button>
       <button class="size_15 grey regular btn2" id="behaviour_3" (click)="behaviour(3)">{{model.key_text4}}</button>
     </div>
-
+    <span class="behaviour-error-text">This field is required</span>  
     <br>
     <div>4. {{model.key_text7}}</div>
     <div class="btn-group">

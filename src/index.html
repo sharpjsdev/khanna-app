@@ -14,16 +14,15 @@
 
   <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
+<script type="text/javascript" src="https://media.twiliocdn.com/sdk/js/client/v1.8/twilio.min.js"></script>
 
 <!-- google map api -->
 
-<script src="//maps.google.com/maps/api/js?key=AIzaSyDFf3YK0MWDI1dYyVcJONOwdaaXW_eO3aU&libraries=&v=weekly"></script>
+<script src="//maps.google.com/maps/api/js?key=AIzaSyDFf3YK0MWDI1dYyVcJONOwdaaXW_eO3aU&libraries=places&v=weekly"></script>
 
   <!-- add to homescreen for ios -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  <script type="text/javascript" src="assets/js/TwilioVoicePlugin.js"></script>
 </head>
 
 <body>
@@ -73,7 +72,27 @@
               document.getElementById('number2').value = value;
       }
   
-  }function incrementValueReviewPacket()
+  }
+  function incrementValue3()
+  {
+      var value = parseInt(document.getElementById('non-veg').value, 10);
+      value = isNaN(value) ? 0 : value;
+      
+          value++;
+              document.getElementById('non-veg').value = value;
+      
+  }
+  function decrementValue3()
+  {
+      var value = parseInt(document.getElementById('non-veg').value, 10);
+      value = isNaN(value) ? 0 : value;
+      if(value>1){
+          value--;
+              document.getElementById('non-veg').value = value;
+      }
+  
+  }
+  function incrementValueReviewPacket()
   {
       var value = parseInt(document.getElementById('number3').value, 10);
       value = isNaN(value) ? 0 : value;
@@ -130,6 +149,25 @@
       }
   
   }
+  function getDistanceIncrementValue()
+  {
+      var value = parseInt(document.getElementById('distance').value, 10);
+      value = isNaN(value) ? 0 : value;
+      
+          value++;
+              document.getElementById('distance').value = value;
+      
+  }
+  function getDistanceDecrementValue()
+  {
+      var value = parseInt(document.getElementById('distance').value, 10);
+      value = isNaN(value) ? 0 : value;
+      if(value>1){
+          value--;
+              document.getElementById('distance').value = value;
+      }
+  
+  }
   function filter_incrementValue()
   {
       var value = parseInt(document.getElementById('filter_food_needed').value, 10);
@@ -165,6 +203,25 @@
       if(value>1){
           value--;
               document.getElementById('v_r_number').value = value;
+      }
+  
+  }
+  function donateIncrementValue()
+  {
+      var value = parseInt(document.getElementById('d_r_number').value, 10);
+      value = isNaN(value) ? 0 : value;
+      
+          value++;
+              document.getElementById('d_r_number').value = value;
+      
+  }
+  function donateDecrementValue()
+  {
+      var value = parseInt(document.getElementById('d_r_number').value, 10);
+      value = isNaN(value) ? 0 : value;
+      if(value>1){
+          value--;
+              document.getElementById('d_r_number').value = value;
       }
   
   }

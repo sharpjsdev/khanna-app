@@ -1,0 +1,92 @@
+<center class="current_location_spinner_position" id="add_location_spinner"><ion-spinner class="current_location_sppiner"></ion-spinner></center>
+<ion-content>
+
+  <div class="ion-padding" style="padding: 35px 39px;">
+    <div class="single_page_title medium size_18" style="margin-left: 0px;">{{ model.key_text1 }}</div>
+  </div>
+
+  <div class="ion-padding" style="margin-top: -28px; padding: 35px 39px;">         
+    <div class="regular size_15 box">
+      <input type="checkbox" id="expanded" (click)="showMore()">
+     <p>{{ model.aboutus }}</p>
+     
+    </div>
+    <div class="know_more" *ngIf="model.aboutus != ''">
+      <label class="red regular" for="expanded" id="know_more" role="button">{{ model.key_text4 }}</label>
+      <img src="assets/images/right_arrow.svg">
+    </div>
+<br><br>
+  <div class="single_page_title medium size_18" style="margin-left: 0px;">{{ model.key_text2 }}</div>
+  
+  <div class="thanks_logos">
+    <ion-slides>
+      <ion-slide *ngFor="let x of icons let i =index">
+        <div class="thanks_logo tl_1">
+          <img src="{{model.image_url}}{{x.icon1}}">
+        </div>
+        <div class="thanks_logo tl_2" >
+          <img src="{{model.image_url}}{{x.icon2}}">
+        </div>
+      </ion-slide>
+
+      <!-- <ion-slide>
+        <div class="thanks_logo tl_1">
+          <img src="assets/images/thanks_logo_1.png">
+        </div>
+        <div class="thanks_logo tl_2">
+          <img src="assets/images/thanks_logo_2.png">
+        </div>
+      </ion-slide> -->
+    </ion-slides>
+  </div>
+
+  <div class="single_page_title medium size_18" style="margin-left: 0px;">{{ model.key_text3 }}</div>
+  <div class="about_contact">
+    <div class="app_input_text">   
+      <span style="color:red;display:none;margin-left:1rem" id="full_name_msg">This field is required</span>     
+      <input type="text" placeholder="{{ model.key_text8 }} * " name="full_name" id="full_name">  
+        
+    </div>
+    
+    <div class="app_input_text">     
+      <span style="color:red;display:none;margin-left:1rem" id="email_msg">This field is required</span>
+      <span style="color:red;display:none;margin-left:1rem" id="correct_email_msg">Enter a valid email address</span> 
+      <input type="email" placeholder="{{ model.key_text9 }} *" name="email" id="email">      
+    </div>
+    
+    <div class="app_input_text">
+      <span style="color:red;display:none;margin-left:1rem" id="phone_no_msg">This field is required</span>
+      <span style="color:red;display:none;margin-left:1rem" id="correct_phone_msg">Enter a valid 10 digit phone number</span>       
+      <input type="number" placeholder="{{ model.key_text10 }} *" name="phone_no" id="phone_no">      
+    </div>
+   
+    <div class="app_input_text">      
+      <ion-textarea rows="4" placeholder="{{ model.key_text11 }}" class="custom_textarea" name="message" id="message"></ion-textarea>      
+    </div>
+  </div>
+  <div class="about_contact">
+      <re-captcha
+      (resolved)="captchaResolved($event)"
+      siteKey="6LfqyzIaAAAAAOCq3d6w-ArhGUNkP_TXWPJPJbPQ"
+    ></re-captcha>
+  </div>
+  <span style="color:red;display:none;margin-left:1rem" id="captcha_msg">Captcha required</span>
+  <div class="app_button">
+    <button  class="app_btn about_btn" *ngIf="!model.search" (click)="saveForm()">{{ model.key_text12 }}</button>
+    <button class="app_btn" style="padding:10px" *ngIf="model.search"><ion-spinner class="current_location_sppiner"></ion-spinner></button>
+  </div>
+
+     
+  </div>
+
+</ion-content>
+
+<!-- <ion-footer>
+  <ion-toolbar>    
+    <div class="app_button">
+      <ion-router-link href="">
+        <button class="app_btn">Save Changes</button>
+      </ion-router-link>
+    </div>
+  </ion-toolbar>
+</ion-footer> -->

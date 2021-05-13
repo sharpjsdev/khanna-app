@@ -1,17 +1,26 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FetchService } from '../fetch.service';
+import { StorageService } from '../storage.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Geolocation,GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation/ngx';
+import { AlertController } from '@ionic/angular';
+import { NotificationPage } from '../modal/notification/notification.page';
+import { CancelAllotedfoodPage } from '../modal/cancel-allotedfood/cancel-allotedfood.page';
+import { ModalController } from '@ionic/angular';
+import { BrowserTab } from '@ionic-native/browser-tab/ngx';
+import { CallNumber } from '@ionic-native/call-number/ngx';
+
 declare var google: any;
-declare var Twilio: any;
 declare var Cordova: any;
+declare var cordova: any;
 declare var $ : any;
 
 @Component({
   selector: 'app-get-food-nearest-donors-two',
   templateUrl: './get-food-nearest-donors-two.page.html',
   styleUrls: ['./get-food-nearest-donors-two.page.scss'],
+  providers : [CallNumber],
 })
 export class GetFoodNearestDonorsTwoPage implements OnInit {
 @ViewChild('map') mapElement: ElementRef;
@@ -19,36 +28,53 @@ model:any={};
 map: any;
 start : any;
 end : any;
+notification:any=[];
+dataReturned: any;
 directionsService = new google.maps.DirectionsService;
 directionsDisplay = new google.maps.DirectionsRenderer;
 directions = [];
 polylines = [];
   constructor(
+	public modalController: ModalController,
 	private http: HttpClient,
 	private route: ActivatedRoute,
 	private router: Router,
 	private fetch: FetchService,
+	private storage : StorageService,
 	private geolocation: Geolocation,
+	private alertCtrl: AlertController,
+	private browserTab: BrowserTab,
+	private callNumber: CallNumber
   ) { }
 
   ngOnInit() {
+  }
+
+  ionViewWillEnter(){
+	this.model.is_volunteer = 0;
+	if(localStorage.getItem('volunteer_approve') != null){
+		this.model.is_volunteer = localStorage.getItem('volunteer_approve');
+	}
 	   var infowindow = new google.maps.InfoWindow();
 	var renderer = new google.maps.DirectionsRenderer({
   suppressPolylines: true,
   infoWindow: infowindow,
 });
+this.model.user_id = JSON.parse(localStorage.getItem('user_id'));
 	var food_id = this.route.snapshot.params['id'];
 	var r_lat = this.route.snapshot.params['lat'];
 	var r_lon = this.route.snapshot.params['lon'];
 	this.model.r_id = this.route.snapshot.params['r_id'];
 	this.model.d_food_type = this.route.snapshot.params['food_type'];
+	this.model.getfood_id = this.route.snapshot.params['getfoodid'];
 	if(this.model.d_food_type == 1 || this.model.d_food_type == 3){
 		this.model.food_type = 'vegetarian';
 	}else if(this.model.d_food_type == 2){
 		this.model.food_type = 'Non-vegetarian';
 	}
 	var lang_code = JSON.parse(localStorage.getItem('lang'));
-	this.fetch.getKeyText(lang_code).subscribe(res => {
+	//this.fetch.getKeyText(lang_code).subscribe(res => {
+		let res = this.storage.getScope();
 		let item1 = res.find(i => i.key_text === 'DONOR_NAME');
 			this.model.key_text1 = item1[lang_code];
 		let item2 = res.find(i => i.key_text === 'CANCEL_PICK_UP');
@@ -61,8 +87,14 @@ polylines = [];
 			this.model.key_text5 = item5[lang_code];
 		let item6 = res.find(i => i.key_text === 'VOLUNTEER');
 			this.model.key_text6 = item6[lang_code];
+		let item7 = res.find(i => i.key_text === 'CANCEL_FOOD_REQUEST');
+			this.model.key_text7 = item7[lang_code];
+		let item8 = res.find(i => i.key_text === 'WANT_FOOD');
+			this.model.key_text8 = item8[lang_code]; 			
+		let item9 = res.find(i => i.key_text === 'DONT_WANT_FOOD');
+			this.model.key_text9 = item9[lang_code]; 			
 		
-	});
+	//});
 	var mode = this.route.snapshot.params['mode'];
 	this.fetch.get_donor_food_detail(food_id).subscribe(res => {
 		console.log(res.data);
@@ -71,12 +103,31 @@ polylines = [];
 		this.model.state = res.data.state;
 		this.model.country = res.data.country;
 		this.model.postalCode = res.data.postalCode;
-		this.model.total_food_for = res.data.total_food_for;
+		var no_of_person = localStorage.getItem('temp_total_food');
+		this.model.total_food_for = no_of_person;
 		this.model.username = res.data.username;
 		this.model.latitude = res.data.latitude;
 		this.model.longitude = res.data.longitude;
 		this.model.donate_food_id = res.data.donate_food_id
 		//console.log(this.model.food_data);
+		this.model.donar_id = res.data.app_user_id;
+		
+		let donar = JSON.stringify({'id': res.data.app_user_id});
+      this.fetch.profile(donar).subscribe(res => {
+		
+        this.model.mobile_number = res['mobile_no'];
+        
+	  });
+	  let receiver = JSON.stringify({'id': this.model.user_id});
+	  this.fetch.profile(receiver).subscribe(res => {
+		
+        this.model.loged_in_user = res['username'];
+        
+      });
+	  console.log('receiver lat'+r_lat);
+	  console.log('receiver lat'+r_lon);
+	  console.log('donor lat'+this.model.latitude);
+	  console.log('donor long'+this.model.longitude);
 		this.geolocation.getCurrentPosition().then((resp) => {
 		//console.log(res.data.latitude);
 		//console.log(res.data.longitude);
@@ -131,32 +182,8 @@ polylines = [];
         });
 	});
 	});
-	//var self = this;
-	document.addEventListener("deviceready", function() {
-		/* self.fetch.twilio_token().subscribe(res => {
-			self.model.token = res.data;
-			alert(self.model.token);
-			
-		}); */
-		alert('device ready');
-		Twilio.TwilioVoiceClient.clientinitialized(function() {
-			console.log('Ready to start call');
-             $('#statusMessage').text('Ready to start call');
-        });
-       // Twilio.TwilioVoiceClient.initialize(token);
-		Twilio.TwilioVoiceClient.callinvitereceived(function (call) {
-				alert('twilio call');
-                var confirmed = confirm('Accept incoming call from ' + call.from + '?');
-                if (confirmed) {
-                    Twilio.TwilioVoiceClient.acceptCallInvite();
-                } else {
-                    Twilio.TwilioVoiceClient.rejectCallInvite();
-                }
-            });
-		
-	}, false);  
-	 
   }
+ 
   renderDirectionsPolylines(response, polylineOptions) {
 		console.log(response);
 		var infowindow = new google.maps.InfoWindow();
@@ -187,45 +214,110 @@ polylines = [];
 		}
 	}
   pickup_status(val){
-	console.log(val);
-	if(val == 1){
-		let data = JSON.stringify({'receiver_id' : this.model.r_id, 'donor_id' : this.model.donate_food_id});
+	//console.log(val);
+	if(val == 1){ 
+		
+		
+		let data = JSON.stringify({'receiver_id' : this.model.r_id, 'donor_id' : this.model.donar_id, 'getFood_id' : this.model.getfood_id});
+	
 		this.fetch.pickup_food(data).subscribe(res => {
-			console.log(res);
+			//console.log(res);
 			if(res.success == true){
 				localStorage.removeItem('receiver_food_type'); 
 				localStorage.removeItem('set_confirm_location_route'); 
 				localStorage.removeItem('receiver_location'); 
-				this.router.navigate(['/feedback-form',res.data]);
+				localStorage.removeItem('food_for_no_of_person'); 
+				this.router.navigate(['/feedback-form',res.data,this.model.getfood_id]);
 			}
 		});
 	}else{
-		localStorage.removeItem('receiver_food_type'); 
+		// this.presentConfirm();
+		this.cancelAllotedRequest(this.model.getfood_id);
+		/* localStorage.removeItem('receiver_food_type'); 
 		localStorage.removeItem('set_confirm_location_route'); 
 		localStorage.removeItem('receiver_location'); 
-		this.router.navigate(['/home']);
+		localStorage.removeItem('food_for_no_of_person'); 
+		this.router.navigate(['/home']); */
 	}
   }
-  call(){
-	 var self = this;
-	document.addEventListener("deviceready", function() {
-		self.fetch.twilio_token().subscribe(res => {
-			self.model.token = res.data;
-			alert(self.model.token);
-			Twilio.TwilioVoiceClient.clientinitialized(function() {
-			console.log('Ready to start call');
-				$('#statusMessage').text('Ready to start call');
-			});
-			var params = { "tocall" : '8770782264'};
-			Twilio.TwilioVoiceClient.call(self.model.token, params);
-			/* Twilio.Connection.call = function(token, params) {
-			Cordova.exec(null,null,"TwilioVoicePlugin","call",[token, params]);
-		} */
-			/*Twilio.Device.connect(function(connection) {
-				alert(connection.status());
-			})*/
-		});
-	}, false);
+ call(){
+	
+		let data = JSON.stringify({'caller_id':this.model.user_id,'callee_mobile_no':this.model.mobile_number  });
+			$('#add_location_spinner').show();
+				this.fetch.add_call_detail(data).subscribe(res => {
+					this.callNumber.callNumber("08069010223", true)
+					.then(res => { $('#add_location_spinner').show(); console.log('Launched dialer!', res); })
+					.catch(err => console.log('Error launching dialer', err));
+				});
+ }
+
+ async cancelAllotedRequest(id) {
+	  
+    const modal = await this.modalController.create({
+		component: CancelAllotedfoodPage,
+		cssClass: 'custom_filter_modal',
+		componentProps: {
+			"paramID": 123,
+			"paramTitle": "Test Title",
+			"id" : id
+		}
+    });
+
+    modal.onDidDismiss().then((dataReturned) => {
+		
+		if (dataReturned !== null) {
+			this.dataReturned = dataReturned.data;
+			if(this.dataReturned == 1){
+				// this.ngOnInit();
+				this.model.user_id = JSON.parse(localStorage.getItem('user_id'));
+				var no_of_person = localStorage.getItem('temp_total_food');
+				var food_id = this.route.snapshot.params['id'];
+				let data = JSON.stringify({'food_id':food_id,'logged_in_user':this.model.loged_in_user, 'no_of_person':no_of_person, 'app_user_id' : this.model.user_id, 'food_type' : this.model.d_food_type, 'notification_type' : 3, 'to' : this.model.donar_id, 'from' : this.model.user_id, 'getFoodId' : this.model.getfood_id  });
+			//console.log(data);
+				this.fetch.notify_donar(data).subscribe(res => {
+						this.router.navigate(['/home']);
+				});
+				
+			}
+
+			//alert('Modal Sent Data :'+ dataReturned);
+		}
+    });
+
+    return await modal.present();
   }
+
+ async presentConfirm() {
+  const alert = await this.alertCtrl.create({
+	cssClass: 'my-custom-class',
+    header: this.model.key_text7,
+    buttons: [
+      {
+        text: this.model.key_text9,
+        handler: () => { 
+			this.model.user_id = JSON.parse(localStorage.getItem('user_id'));
+			var no_of_person = localStorage.getItem('temp_total_food');
+			var food_id = this.route.snapshot.params['id'];
+			let data = JSON.stringify({'food_id':food_id,'logged_in_user':this.model.loged_in_user, 'no_of_person':no_of_person, 'app_user_id' : this.model.user_id, 'food_type' : this.model.d_food_type, 'notification_type' : 3, 'to' : this.model.donar_id, 'from' : this.model.user_id, 'getFoodId' : this.model.getfood_id  });
+			//console.log(data);
+			this.fetch.notify_donar(data).subscribe(res => {
+				this.router.navigate(['/home']);
+		});
+        }
+      },
+      {
+        text: this.model.key_text8,
+        handler: () => {
+			//localStorage.removeItem('receiver_food_type'); 
+			//localStorage.removeItem('set_confirm_location_route'); 
+			//localStorage.removeItem('receiver_location'); 
+			//localStorage.removeItem('food_for_no_of_person'); 
+			//this.router.navigate(['/home']);
+        }
+      }
+    ]
+  });
+  await alert.present();
+}
 
 }

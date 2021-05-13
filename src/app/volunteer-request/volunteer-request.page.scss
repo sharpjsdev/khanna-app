@@ -4,3 +4,19 @@
     height: 285px;
     margin-bottom: 14px;
 }
+.show_in_between_tab {
+    display: flex;
+}
+.show_in_between_tab ion-item {
+    width: 50%;
+}
+.show_in_between_tab input {
+    margin-inline-end: 15px;
+}
+.r-tabs{
+    border:1px solid #419b95;
+    border-radius: 30px;
+    margin:5px;
+    padding: 9px;
+    text-align: center;
+}

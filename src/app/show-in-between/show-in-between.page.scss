@@ -1,0 +1,16 @@
+#map {
+    width: 100%;
+    height: 285px;
+}
+.show_in_between_tab {
+    display: flex;
+}
+.show_in_between_tab ion-item {
+    width: 50%;
+}
+.show_in_between_tab input {
+    margin-inline-end: 15px;
+}
+.ion-padding{
+    padding-bottom: 0px !important;
+}

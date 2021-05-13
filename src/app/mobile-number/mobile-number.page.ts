@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FetchService } from '../fetch.service';
+import { StorageService } from '../storage.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-
+declare var FCMPlugin:any;
 declare var $: any;
-
+declare var device:any;
 @Component({
   selector: 'app-mobile-number',
   templateUrl: './mobile-number.page.html',
@@ -20,16 +21,21 @@ page_key2:any;
 mobile_no:any;
 alert_text:any;
 okay:any;
-  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private fetch: FetchService,public alertController: AlertController) { }
+  constructor(private storage:StorageService, private http: HttpClient,private route: ActivatedRoute,private router: Router,private fetch: FetchService,public alertController: AlertController) { }
 
   ngOnInit() {
+	
+  }
+
+  ionViewWillEnter(){
 	this.next_btn = 'Next';
 	this.app_title = 'Khanaa.app';
 	this.page_key1 = 'Enter your Mobile No.';
 	this.page_key2 = 'for verification';
 	this.mobile_no = 'Mobile No.';
 	var lang_code = JSON.parse(localStorage.getItem('lang'));
-	this.fetch.getKeyText(lang_code).subscribe(res => {
+	//this.fetch.getKeyText(lang_code).subscribe(res => {
+		let res = this.storage.getScope();
 	let item1 = res.find(i => i.key_text === 'NEXT');
 		this.next_btn = item1[lang_code];
 	let item2 = res.find(i => i.key_text === 'KHANAA_APP');
@@ -44,7 +50,16 @@ okay:any;
 		this.alert_text = item6[lang_code];
 	let item7 = res.find(i => i.key_text === 'OKAY');
 		this.okay = item7[lang_code];
-	});
+	//});
+
+	document.addEventListener('deviceready', () => {
+		FCMPlugin.getToken((token: any) => {
+			
+			localStorage.setItem('device_token', JSON.stringify(token));
+			
+		  });
+		 
+	  });
   }
   check_no(value){
 	console.log(value);
@@ -58,14 +73,21 @@ okay:any;
 	}
   }
   save(){
+
 	if(this.model.mobile_no != null){
-		let data = JSON.stringify({'mobile_no':this.model.mobile_no});
+		let token = localStorage.getItem('device_token');
+		let platform = '';
+		document.addEventListener('deviceready', () => {
+			platform = device.platform;
+		});
+		let data = JSON.stringify({'mobile_no':this.model.mobile_no,'device_token':token,'platform':platform});
 		console.log(data);
 		this.fetch.createUser(data).subscribe(res => {
 			console.log(res);
 			localStorage.setItem('user_id', JSON.stringify(res['user_id']));
 			localStorage.setItem('user_mobile', JSON.stringify(this.model.mobile_no));
 			localStorage.setItem('otp', JSON.stringify(res['otp']));
+			localStorage.setItem('isotpverified', '0');
 			$('.check_number').val('');
 			this.router.navigate(['/otp']);
 		});

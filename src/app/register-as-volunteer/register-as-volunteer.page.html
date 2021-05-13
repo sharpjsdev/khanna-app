@@ -14,13 +14,13 @@
   <div class="ion-padding">
     <div class="register_volunteer app_input_text center_input">
       <img src="assets/images/icon_user_input.svg">
-      <input type="text" placeholder="{{model.username}}" class="input_username">      
+      <input type="text" value="{{model.username_r}}" placeholder="{{model.username}}" class="input_username">      
     </div>  
     
     <div class="register_volunteer app_input_text center_input">
       <img src="assets/images/icon_calendar_input.svg">
       <input type="text" disabled>  
-      <ion-datetime placeholder="{{model.dob}}" class="regular input_dob" displayFormat="MM / DD / YYYY"></ion-datetime>    
+      <ion-datetime placeholder="{{model.dob}}" class="regular input_dob" value="{{model.dob_r}}" max="{{ model.latest_date }}" displayFormat="MMMM / DD / YYYY"></ion-datetime>    
     </div> 
     <br><br>
     <div class="grey" style="margin-left: 23px;">{{model.food_type}} : </div>
@@ -30,8 +30,15 @@
       <button class="grey regular btn2" id="r_food_2" (click)="food_type(2)">{{model.non_veg}}.</button>
       <button class="grey regular btn2" id="r_food_3" (click)="food_type(3)">{{model.both}}</button>
     </div>
+         
+    <div class="input_text_bottom new_class_for_checkbox"> 
+      <div class="otp_left">
+        <input type="checkbox" id="terms" name="fruit-1" value="terms">
+        <label for="terms" class="light light_grey size_12 left_space_2" (click)="openTermsAndConditions()">{{ model.terms }}</label>
+      </div>      
+    </div>
 
-
+    
   </div>
   
   </ion-content>

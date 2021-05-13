@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { VolunteerRequestPageRoutingModule } from './volunteer-request-routing.module';
 
 import { VolunteerRequestPage } from './volunteer-request.page';
-
+import { CaptchaComponent } from '../captcha/captcha.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +15,6 @@ import { VolunteerRequestPage } from './volunteer-request.page';
     IonicModule,
     VolunteerRequestPageRoutingModule
   ],
-  declarations: [VolunteerRequestPage]
+  declarations: [VolunteerRequestPage,CaptchaComponent]
 })
 export class VolunteerRequestPageModule {}

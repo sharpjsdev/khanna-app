@@ -1,53 +1,142 @@
-<ion-header class="ion-no-border ion-padding">
+<!-- <ion-header class="ion-no-border ion-padding">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button>
         <img src="assets/images/icon_menu.svg">
       </ion-menu-button>
     </ion-buttons>
-    <!--<ion-title>home</ion-title>-->
-    <ion-buttons slot="end">      
+  
+    <ion-buttons slot="end" (click)="openModalNotification()">
+		<span *ngIf="notification.length>0" style="position: absolute;height: 10px;width: 10px;background-color: #000;border-radius: 50%;color: #fff;
+			top: -3px;
+			right: 3px;
+			text-align: center;"></span>       
         <img src="assets/images/icon_notification.svg">
     </ion-buttons>
   </ion-toolbar>
-</ion-header> 
-
+</ion-header>  -->
+<center style="position: absolute;display: none;" class="current_location_spinner_position" id="add_location_spinner"><ion-spinner class="current_location_sppiner"></ion-spinner></center>
+<app-captcha></app-captcha>
 <ion-content>
-<span id="activity_normal_content">
+<!-- <span id="activity_normal_content"> -->
 <div class="ion-padding theme_width">
-  <div class="activity_graph">
-    <div class="search_food_bg" style="min-height: 234px;">
-    <div class="search_single">
-      <div class="size_18 medium big_heading">Your Pending Donations</div>
+  <div class="activity_graph custom_new_graph">
+	<div style="display: flex;">
+		<div (click)="handleTab(1)" class="rec custon_new_tab_active" style="margin-left: 15px;margin-bottom:10px;border-radius: 15px;width: 50%;text-align: center;padding: 8px;background: #f7f6f4;
+		">
+		 {{ model.key_text19 }}
+		</div>
+		<div (click)="handleTab(2)" class="donar custon_new_tab_deactive btn1 active" style="border:1px solid #419B95;margin-right: 15px;margin-bottom:10px;border-radius: 15px;width: 50%;text-align: center;padding: 8px;background: #f7f6f4;">
+		 {{ model.key_text20 }}
+		</div>
+	   </div>
+	<div class="search_food_bg" style="min-height: 234px;" >
+		<div class="search_single receivertab" *ngIf="request_food.length>0 && model.receivertab == 1">
+			<div class="size_15 medium big_heading custom_new_tab_heading">{{ model.key_text17 }}</div>
+	  
+			<ion-row *ngFor="let x of request_food;let i = index;" class="custom_new_single_row">
+			  <ion-col size="1" style="padding: 0;">	
+				{{i+1}}.
+			  </ion-col>
+			  <ion-col size="6" style="padding: 0;">
+				{{x.food_type | foodType}}. {{model.key_text12}} {{x.no_of_person}} {{model.key_text13}}
+			  </ion-col>			  
+			  <ion-col size="3" style="padding: 0;" >
+				<div class="grey_font right">{{x.updated_at | date:'shortTime'}}</div> 
+			  </ion-col>
+			  <ion-col size="2" style="padding: 0;" class="custom_new_close_btn">				  
+				<img src="assets/images/round_cross.svg" (click)="cancelRequestFood(x.id)">				   
+			  </ion-col>
+			</ion-row>  			
+		</div>
+		
+		<div class="search_single receivertab"  *ngIf="alloted_request_food.length>0 && model.receivertab == 1" style="margin-top: 60px;">
+			<div class="size_15 medium big_heading custom_new_tab_heading">{{ model.key_text18 }}</div>
+		
+			<ion-row *ngFor="let x of alloted_request_food;let i = index;" class="custom_new_single_row">
+				<ion-col size="1" style="padding: 0;">	
+					{{i+1}}.
+				</ion-col>
+				<ion-col size="6" style="padding: 0; padding-right: 10px;" routerLink="/get-food-nearest-donors-two/{{x.donate_food_id}}/{{x.latitude}}/{{x.longitude}}/{{x.app_user_id}}/{{model.mode}}/{{x.food_type}}/{{x.id}}">
+					{{ x.username }} {{x.food_type | foodType}}. {{model.key_text12}} {{x.no_of_person}} {{model.key_text13}}
+				</ion-col>			  
+				<ion-col size="2" style="padding: 0;" >
+					<div class="grey_font right">{{x.updated_at | date:'shortTime'}}</div> 
+				</ion-col>				
+				<ion-col size="2" class="custom_new_call_btn" style="text-align: right; margin-top: -4px;">
+									  
+					<a class="size_15 medium" (click)="call(x.mobile_no)"><ion-icon name="call-outline"></ion-icon></a> 				   
+				</ion-col>
+				<ion-col size="1" style="padding: 0;" class="custom_new_close_btn">			
+					<img src="assets/images/round_cross.svg" (click)="cancelAllotedRequest(x.id,x.donate_food_id,x.donor_id,x.no_of_person,x.food_type)">			 
+				</ion-col>
+			</ion-row>  			
+		</div>	
 
-      <ion-row *ngFor="let x of pending_data;let i = index;">
-        <ion-col size="8" style="padding: 0;">
-          {{i+1}}. {{x.food_type | foodType}}. food for {{x.total_food_for}} persons
-        </ion-col>
-        <ion-col size="4" style="padding: 0;">
-          <div class="grey_font right">{{x.updated_at | date:'shortTime'}}</div> 
-        </ion-col>
-      </ion-row>  
-      
+		<div class="search_single donartab" *ngIf="pending_data.length>0 && model.donartab == 1">
+		<div class="size_15 medium big_heading custom_new_tab_heading">{{model.key_text11}}</div>
+		<ion-row *ngFor="let x of pending_data;let i = index;" class="custom_new_single_row">
+			<ion-col size="1" style="padding: 0;">	
+				{{i+1}}.
+			</ion-col>  
+			<ion-col size="5" style="padding: 0;" >
+			{{x.food_type | foodType}}. {{model.key_text12}} {{x.total_food_for}} {{model.key_text13}}
+			</ion-col>		
+			<ion-col size="3" style="padding: 0;" >
+			<div class="grey_font right">{{x.updated_at | date:'shortTime'}}</div> 
+			</ion-col>
+			<ion-col size="2" >
+				<ion-badge *ngIf="x.deactive == 1" (click)="activeDonation(x.id)" style="background-color:#6fb3af;float:right;margin-top:-5px;">Act</ion-badge>
+			</ion-col>
+			<ion-col size="1" style="padding: 0;" class="custom_new_close_btn">			
+				<img src="assets/images/round_cross.svg" (click)="presentAlertPrompt(x.id)">			 
+			</ion-col>
+		</ion-row>        
+		</div> 
+	
+		<div class="search_single donartab" *ngIf="alloted_food.length>0 && model.donartab == 1" style="margin-top: 60px;">
+			<div class="size_15 medium big_heading custom_new_tab_heading">{{model.key_text16}}</div>  
+			<ion-row *ngFor="let x of alloted_food;let i = index;" class="custom_new_single_row">
+			<ion-col size="1" style="padding: 0;">	
+				{{i+1}}.
+			</ion-col>
+			<ion-col size="6" style="padding: 0;" >
+				{{ x.username }} {{x.food_type | foodType}}. {{model.key_text12}} {{x.no_of_person}} {{model.key_text13}}
+			</ion-col>		  
+			<ion-col size="2" style="padding: 0;" >
+				<div class="grey_font right">{{x.updated_at | date:'shortTime'}}</div> 
+			</ion-col>		  
+			<ion-col size="2" class="custom_new_call_btn" style="text-align: right; margin-top: -4px;">			  
+				<a class="size_15 medium" (click)="call(x.mobile_no)"><ion-icon name="call-outline"></ion-icon></a> 			   
+			</ion-col>
+			<ion-col size="1" style="padding: 0;" class="custom_new_close_btn">
+				<span *ngIf="x.resultInMinutes<1">
+					<img src="assets/images/round_cross.svg" (click)="cancelAllotedFood(x.id,x.donate_food_id,x.donor_id,x.app_user_id,x.no_of_person)">					
+				</span>
+			</ion-col>
+			</ion-row>  		
+		</div>
     </div>
-
-  </div> 
+   
     <form class="form" id="myForm">     
       <div class="switch-field" (change)="state()">
         <input type="radio" id="radio-one" name="switch-one" value="yes" checked/>
-        <label for="radio-one" class="regular size_12">Weekly</label>
+        <label for="radio-one" class="regular size_12">{{model.key_text1}}</label>
         <input type="radio" id="radio-two" name="switch-one" value="no" />
-        <label for="radio-two" class="regular size_12">Monthly</label>
+        <label for="radio-two" class="regular size_12">{{model.key_text2}}</label>
       </div> 
     </form> 
     <div id="highcharts" style="width:100%;"></div>
     <div class="total_box">
       <div class="graph_total">
-        <div class="graph_total_single size_12">
-          Blessings this {{model.blessing_quote}} -&nbsp;&nbsp;&nbsp;<span class="green">{{model.blessing_this_week}}</span>
+        <div class="graph_total_single size_12" id="u_week_blessing_div">
+          {{model.key_text3}} -&nbsp;&nbsp;&nbsp;<span class="green">{{model.blessing_this_week}}</span>
+        </div>
+		<div class="graph_total_single size_12" id="u_month_blessing_div">
+          {{model.key_text4}} -&nbsp;&nbsp;&nbsp;<span class="green">{{model.blessing_this_week}}</span>
         </div>
         <div class="graph_total_single size_12">
-          Total Blessings -&nbsp;&nbsp;&nbsp;<span class="green">{{model.total_blessings}}</span>
+          {{model.key_text8}} -&nbsp;&nbsp;&nbsp;<span class="green">{{model.total_blessings}}</span>
         </div>
       </div>
     </div>
@@ -65,7 +154,7 @@
 	<div class="total_box">
 		<div class="graph_total">
 			<div class="graph_total_single size_12">
-				Average Rating -&nbsp;&nbsp;&nbsp;<span class="green">{{model.quality_rating}}</span>
+				{{model.key_text14}} -&nbsp;&nbsp;&nbsp;<span class="green">{{model.quality_rating}}</span>
 			</div>
 		</div>
     </div>
@@ -75,7 +164,7 @@
 	<div class="total_box">
 		<div class="graph_total">
 			<div class="graph_total_single size_12">
-				Average Rating -&nbsp;&nbsp;&nbsp;<span class="green">{{model.packaging_rating}}</span>
+				{{model.key_text14}} -&nbsp;&nbsp;&nbsp;<span class="green">{{model.packaging_rating}}</span>
 			</div>
 		</div>
     </div>
@@ -85,7 +174,7 @@
     <div class="total_box">
 		<div class="graph_total">
 			<div class="graph_total_single size_12">
-				Average Rating -&nbsp;&nbsp;&nbsp;<span class="green">{{model.behaviour_rating}}</span>
+				{{model.key_text14}} -&nbsp;&nbsp;&nbsp;<span class="green">{{model.behaviour_rating}}</span>
 			</div>
 		</div>
     </div>
@@ -95,58 +184,60 @@
 </div>
 
 
-<ion-slides class="swipe_msg">
-	<ion-slide *ngFor="let x of model.feedback_data;let i = index ">
-		<div class="thanks_msg" *ngIf=" i % 2 === 0">
-			<div style="margin-bottom: 5px;">{{x.username}} says</div>
+<ion-slides class="swipe_msg" [options]="slideOpts">
+	<ion-slide *ngFor="let x of model.feedback_data;let i = index">
+		<div class="thanks_msg" *ngIf=" i % 2 === 0 && x.comment != null" >
+			<div style="margin-bottom: 5px;">{{x.username}} {{model.key_text15}}</div>
 			<div class="size_15 regular green">
-				{{x.comment}}
+				{{x.comment}}<ion-icon style="font-size: 18px;" (click)="share(x.comment)" name="share-social-outline"></ion-icon>
 			</div>
-			<img src="assets/images/smile.svg">
-		</div> 
-		<div class="thanks_msg second_slide" *ngIf=" i % 2 !== 0">
-			<img src="assets/images/smile.svg">
-			<div style="margin-bottom: 5px;">{{x.username}} says</div>
+			<img src="assets/images/smile.svg"/>
+		</div>
+		<div class="thanks_msg second_slide" *ngIf=" i % 2 !== 0 && x.comment != null">
+			<img src="assets/images/smile.svg"/>
+			<div style="margin-bottom: 5px;">{{x.username}} {{model.key_text15}}</div>
 			<div class="size_15 regular green">
-				{{x.comment}}
+				{{x.comment}}<ion-icon style="font-size: 18px;" (click)="share(x.comment)" name="share-social-outline"></ion-icon>
 			</div>      
 		</div> 
 	</ion-slide>
 	
 </ion-slides>
 
+
 <div class="ion-padding theme_width">
 	<div class="top_volunteers">
-		<div class="top_volunteers_heading size_18">Top Donors from your city</div>
+		<div class="top_volunteers_heading size_18">{{model.key_text9}}</div>
 		<span *ngFor="let x of model.top_donors; let i = index;">
 			<div class="top_volunteer_single">
 				<div class="top_volunteer_name">{{i+1}}. {{x.username}}</div>
-				<div class="donations_count green">{{x.cnt}} donations</div>
+				<div class="donations_count green">{{x.cnt}} {{model.key_text10}}</div>
 			</div>
 		</span>
 	</div>
 </div>
-</span>
+<!-- </span> -->
+
 <center class="current_location_spinner_position" id="activity_normal_spinner"><ion-spinner class="current_location_sppiner"></ion-spinner></center>
 </ion-content> 
 
 <ion-footer>
 	<ion-toolbar>     
-		<ion-segment color="tertiary" value="activity">
+		<ion-segment color="transparent" value="activity">
 			<ion-segment-button value="home" [routerLink]="['/home']">
 				<!--<img src="assets/images/red_footer_home.svg">-->
 				<ion-img src="assets/images/grey_footer_home.svg"></ion-img>
-				<ion-label class="size_12 medium">Home</ion-label>    
+				<ion-label class="size_12 medium">{{model.key_text5}}</ion-label>    
 			</ion-segment-button>
 			<ion-segment-button value="activity">
 				<ion-img src="assets/images/red_footer_activity.svg"></ion-img>
 				<!--<img src="assets/images/grey_footer_activity.svg">-->
-				<ion-label class="size_12 medium">Activity</ion-label>    
+				<ion-label class="size_12 medium" color="tertiary">{{model.key_text6}}</ion-label>    
 			</ion-segment-button>        
-			<ion-segment-button value="volunteer" [routerLink]="['/volunteer']">            
+			<ion-segment-button value="volunteer" [routerLink]="model.is_volunteer== 1 ? ['/volunteer'] : ['/volunteer-request']">            
 				<!--<ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>-->
 				<img src="assets/images/grey_footer_volunteer.svg">
-				<ion-label class="size_12 medium">Volunteer</ion-label>                
+				<ion-label class="size_12 medium" >{{model.key_text7}}</ion-label>                
 			</ion-segment-button>        
 		</ion-segment>      
 	</ion-toolbar>

@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { ActivityPageRoutingModule } from './activity-routing.module';
 
 import { ActivityPage } from './activity.page';
-
+import { CaptchaComponent } from '../captcha/captcha.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +15,6 @@ import { ActivityPage } from './activity.page';
     IonicModule,
     ActivityPageRoutingModule
   ],
-  declarations: [ActivityPage]
+  declarations: [ActivityPage,CaptchaComponent]
 })
 export class ActivityPageModule {}

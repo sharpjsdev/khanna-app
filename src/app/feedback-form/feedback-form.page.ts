@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { FeedbackContentPage } from '../modal/feedback-content/feedback-content.page';
 import { HttpClient } from '@angular/common/http';
 import { FetchService } from '../fetch.service';
+import { StorageService } from '../storage.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 
@@ -22,16 +23,23 @@ export class FeedbackFormPage implements OnInit {
 	private route: ActivatedRoute,
 	private router: Router,
 	private fetch: FetchService,
+	private storage : StorageService,
 	public alertController: AlertController
   ) { }
 
   ngOnInit() {
+	
+  }
+  
+  ionViewWillEnter(){
 	this.model.r_id = this.route.snapshot.params['r_id'];
+	this.model.getfood_id = this.route.snapshot.params['getfood_id'];
 	this.model.food_quality = '';
 	this.model.packaging = '';
 	this.model.behaviour = '';
 	var lang_code = JSON.parse(localStorage.getItem('lang'));
-	this.fetch.getKeyText(lang_code).subscribe(res => {
+	//this.fetch.getKeyText(lang_code).subscribe(res => {
+		let res = this.storage.getScope();
 		let item1 = res.find(i => i.key_text === 'FOOD_QUALITY');
 			this.model.key_text1 = item1[lang_code];
 		let item2 = res.find(i => i.key_text === 'EXCELLENT');
@@ -53,9 +61,8 @@ export class FeedbackFormPage implements OnInit {
 		let item10 = res.find(i => i.key_text === 'SUBMIT');
 			this.model.key_text10 = item10[lang_code];
 		
-	});
+	//});
   }
-  
   food_quality(val){
 	this.model.food_quality = val;
 	if(val == 1){
@@ -105,17 +112,18 @@ export class FeedbackFormPage implements OnInit {
 	}  
   }
   submit(){
+	 
 	var comment = $('#feedback_comment').val();
+	
+
 	if(this.model.food_quality == ''){
 		this.presentAlert();
 	}else if(this.model.packaging == ''){
 		this.presentAlert();
 	}else if(this.model.behaviour == ''){
 		this.presentAlert();
-	}else if(comment == ''){
-		this.presentAlert();
 	}else{
-		let data = JSON.stringify({'food_quality' : this.model.food_quality, 'packaging' : this.model.packaging, 'behaviour' : this.model.behaviour, 'comment': comment, 'receiver_id' : this.model.r_id });
+		let data = JSON.stringify({'food_quality' : this.model.food_quality, 'packaging' : this.model.packaging, 'behaviour' : this.model.behaviour, 'comment': comment, 'receiver_id' : this.model.r_id, 'getfood_id' : this.model.getfood_id });
 		this.fetch.feedback(data).subscribe(res => {
 			if(res.success == true){
 				this.openModalFeedback();

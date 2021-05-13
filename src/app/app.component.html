@@ -19,56 +19,57 @@
 					<ion-item class="item-icon-left menu_item" menu-close [routerLink]="['/register-volunteer']">
 						<div class="menu_img"><img src="assets/images/menu_1.svg"> </div>
 						<div class="menu_content">
-							<div class="menu_title size_16 medium">Register as Volunteer</div>
-							<div class="menu_sub green regular size_12">Become a hero of your area by registering as volunteer</div>
+							<div class="menu_title size_16 medium">{{model.key_text1}}</div>
+							<div class="menu_sub green regular size_12">{{model.key_text2}}</div>
+							
 						</div>
 					</ion-item>
 					<ion-item class="item-icon-left menu_item" menu-close [routerLink]="['/profile']" >
 						<div class="menu_img"><img src="assets/images/menu_2.svg"> </div>
 						<div class="menu_content">
-							<div class="menu_title size_16 medium">Profile</div>
-							<div class="menu_sub green regular size_12">Your profile containing your personal information</div>
+							<div class="menu_title size_16 medium">{{model.key_text3}}</div>
+							<div class="menu_sub green regular size_12">{{model.key_text4}}</div>
 						</div>
 					</ion-item>
 					<ion-item class="item-icon-left menu_item" menu-close [routerLink]="['/saved-addresses',user_id]">
 						<div class="menu_img"><img src="assets/images/menu_3.svg"> </div>
 						<div class="menu_content">
-							<div class="menu_title size_16 medium">Saved Addresses</div>
-							<div class="menu_sub green regular size_12">Your previously Saved Addresses </div>
+							<div class="menu_title size_16 medium">{{model.key_text5}}</div>
+							<div class="menu_sub green regular size_12">{{model.key_text6}}</div>
 						</div>
 					</ion-item>
 					<ion-item class="item-icon-left menu_item" menu-close [routerLink]="['/choose-language']">
 						<div class="menu_img"><img src="assets/images/menu_4.svg"> </div>
 						<div class="menu_content">
-							<div class="menu_title size_16 medium">Choose Language</div>
-							<div class="menu_sub green regular size_12">Your preferred language to use Khanaa.app</div>
+							<div class="menu_title size_16 medium">{{model.key_text7}}</div>
+							<div class="menu_sub green regular size_12">{{model.key_text8}}</div>
 						</div>
 					</ion-item>
 					<ion-item class="item-icon-left menu_item" menu-close [routerLink]="['/help']">
 						<div class="menu_img"><img src="assets/images/menu_5.svg"> </div>
 						<div class="menu_content">
-							<div class="menu_title size_16 medium">Help</div>
-							<div class="menu_sub green regular size_12">Short tutorial videos on how to use Khanaa.app</div>
+							<div class="menu_title size_16 medium">{{model.key_text9}}</div>
+							<div class="menu_sub green regular size_12">{{model.key_text10}}</div>
 						</div>
 					</ion-item>
-					<ion-item class="item-icon-left menu_item" menu-close ng-click="login()">
+					<ion-item class="item-icon-left menu_item" menu-close [routerLink]="['/about-us']">
 						<div class="menu_img"><img src="assets/images/menu_6.svg"> </div>
 						<div class="menu_content">
-							<div class="menu_title size_16 medium">About Us</div>
-							<div class="menu_sub green regular size_12">Know more about the humble team of Khanaa.app</div>
+							<div class="menu_title size_16 medium">{{model.key_text11}}</div>
+							<div class="menu_sub green regular size_12">{{model.key_text12}}</div>
 						</div>
-					</ion-item>  
+					</ion-item>
+					  
+					<ion-item class="item-icon-left menu_item" menu-close  (click)="logout()">
+						<div class="menu_img"><img src="assets/images/menu_6.svg"> </div>
+						<div class="menu_content">
+							<div class="menu_title size_16 medium">Logout</div>
+							<div class="menu_sub green regular size_12">Logout</div>
+						</div>
+					</ion-item> 
 				</ion-menu-toggle>			
 			</ion-list>
         </div>
-        <!--<ion-list id="labels-list">
-          <ion-list-header>Labels</ion-list-header>
-
-          <ion-item *ngFor="let label of labels" lines="none">
-            <ion-icon slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
-            <ion-label>{{ label }}</ion-label>
-          </ion-item>
-        </ion-list>-->
       </ion-content>
     </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>

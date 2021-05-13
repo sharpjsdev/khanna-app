@@ -1,0 +1,55 @@
+<app-captcha></app-captcha>
+<ion-content class="modal_content">
+  <div  style="padding-left:30px;padding-right:10px">  
+   
+  
+    <div class="modal_inner">
+        <p *ngFor="let x of notifications;" style="padding:10px;border-bottom:1px solid #ccc;color:#e8604c;">
+         
+          <span *ngIf="x.notification_type == 1">
+              {{ model.key_text1 }} {{ model.username }}, {{ model.key_text2 }} <span *ngIf="x.food_type==1">{{ model.key_text3 }}</span><span *ngIf="x.food_type==2">{{ model.key_text4 }}</span> {{ model.key_text5 }}.  
+              {{ x.no_of_person }} {{ model.key_text7 }} {{ x.food_receiver_name }} {{ model.key_text6 }}
+          </span>
+          <span *ngIf="x.notification_type == 2 && this.model.status==1">
+            {{ model.key_text8 }}
+          </span>
+          <span *ngIf="x.notification_type == 2 && this.model.status==2">
+            {{ model.key_text9 }}
+          </span>
+          <span *ngIf="x.notification_type == 3">
+            {{ x.food_receiver_name }} {{ model.key_text10 }}
+          </span>
+          <span *ngIf="x.notification_type == 5">
+            {{ model.key_text12 }}
+          </span> 
+              
+       
+        </p>
+        <p *ngIf="notifications.length == 0" style="text-align: center;">
+            {{ model.key_text11 }}
+        </p>
+    </div>
+  </div>
+  
+</ion-content> 
+<ion-footer>
+	<ion-toolbar>    
+		<ion-segment color="transparent" value="home">
+			<ion-segment-button value="home" [routerLink]="['/home']">
+			  <img src="assets/images/red_footer_home.svg">
+			  <!--<ion-img src="assets/images/grey_footer_home.svg"></ion-img>-->
+			  <ion-label class="size_12 medium" color="tertiary">{{model.key_text13}}</ion-label>    
+			</ion-segment-button>
+			<ion-segment-button value="activity" [routerLink]="['/activity-normal']"> 
+			  <!--<ion-img src="assets/images/red_footer_activity.svg"></ion-img>-->
+			  <img src="assets/images/grey_footer_activity.svg">
+			  <ion-label class="size_12 medium">{{model.key_text14}}</ion-label>    
+			</ion-segment-button>
+			<ion-segment-button value="volunteer" [routerLink]="model.is_volunteer== 1 ? ['/volunteer'] : ['/volunteer-request']">
+			  <!--<ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>-->
+			  <img src="assets/images/grey_footer_volunteer.svg">
+			  <ion-label class="size_12 medium">{{model.key_text15}}</ion-label>    
+			</ion-segment-button>
+		</ion-segment>      
+	</ion-toolbar>
+</ion-footer>

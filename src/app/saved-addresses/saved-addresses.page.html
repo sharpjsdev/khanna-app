@@ -6,15 +6,16 @@
 
   <div class="ion-padding">
     <div  class="t" *ngFor="let x of model.data" id="add_{{x.id}}"> 
-    <div class="medium green size_16">{{ x.adress_type | addressType}}</div>  
+    <div class="medium green size_16">{{ x.adress_type }}</div>  
     <div class="saved address regular">
-      H.No. {{x.house_no}}, {{x.colony_name}}<br>
-      {{x.city}} - {{x.postalCode}}<br>
-      {{x.state}}
+      {{ x.colony_name }}
+      <!-- H.No. {{x.house_no}}, {{x.colony_name}}<br> -->
+      <!-- {{x.city}} - {{x.postalCode}}<br> -->
+      <!-- {{x.state}} -->
     </div>
-
+ 
     <div class="blank_buttons">
-      <a href="saved-addresses-edit/{{x.id}}" class="blank_btn size_12 medium">{{model.key_text1}}</a>
+      <a routerLink="/saved-addresses-edit/{{x.id}}" class="blank_btn size_12 medium">{{model.key_text1}}</a>
       <a class="blank_btn size_12 medium" (click)="remove(x.id)">{{model.key_text2}}</a>
     </div>
     <br><br>
@@ -22,7 +23,7 @@
 	<div class="no_adress">No Saved Address</div>
     <br><br>
     <div class="add_btn">
-      <a href="saved-addresses-add">
+      <a [routerLink]="['/saved-addresses-add']">
         <img src="assets/images/icon_add.svg">
       </a>
     </div>

@@ -1,0 +1,62 @@
+.box {
+  
+    input {
+      opacity: 0;
+      position: absolute;
+      pointer-events: none;
+    }
+    
+    p {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;  
+      overflow: hidden;
+    }
+    
+    input:focus ~ label {
+      outline: -webkit-focus-ring-color auto 5px;
+    }
+    
+    input:checked + p {
+      -webkit-line-clamp: unset;
+    }
+    
+    input:checked ~ label {
+      display: none;
+    }
+    
+  }
+  
+  
+  /* From here on presentation styles */
+  
+  
+  .box {
+   
+    
+    p {
+      margin: 0;
+    }
+    
+    
+    
+  }
+  .swiper-slide img {
+    width: 130px;
+    max-width: 100%;
+    
+    
+    max-height: 100px;
+    object-fit: contain;
+}
+.thanks_logo {
+    width: 50%;
+    margin: 0px 0px;
+}
+.current_location_spinner_position{
+  left: 50%;
+  position: absolute;
+  top: 80%;
+  z-index: 999;
+  
+}

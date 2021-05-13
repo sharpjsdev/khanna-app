@@ -17,12 +17,16 @@ export class ChooseLanguagePage implements OnInit {
 model:any={};
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private fetch: FetchService,public alertController: AlertController,private platform: Platform,private location: Location) { 
 	this.platform.backButton.subscribeWithPriority(10, () => {
-		this.location.back();
+		//this.location.back();
+		this.router.navigate(['/home']);
 	});
   }
 
    ngOnInit() {
 	//localStorage.removeItem('lang'); 
+	
+  }
+  ionViewWillEnter() {
 	this.model.lang_code = JSON.parse(localStorage.getItem('lang'));
 	console.log(this.model.lang_code);
 	$('#choose_lang_'+this.model.lang_code).prop("checked", true);
@@ -42,6 +46,7 @@ model:any={};
   }
   choose_lang(){
 	if(JSON.parse(localStorage.getItem('lang')) != null){
+		this.fetch.isLanguageChanged.next(JSON.parse(localStorage.getItem('lang')));
 		this.router.navigate(['/home']);
 	}else{
 		this.presentAlert();

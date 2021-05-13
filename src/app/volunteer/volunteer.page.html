@@ -1,97 +1,147 @@
-<ion-header class="ion-no-border ion-padding">
+<!-- <ion-header class="ion-no-border ion-padding">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button>
         <img src="assets/images/icon_menu.svg">
       </ion-menu-button>
     </ion-buttons>
-    <!--<ion-title>home</ion-title>-->
-    <ion-buttons slot="end">      
+   
+    <ion-buttons slot="end" (click)="openModalNotification()">
+       <span *ngIf="notification.length>0" style="position:absolute;height: 10px;width: 10px;background-color: #000;border-radius: 50%;color: #fff;
+      top: -3px;
+      right: 3px;
+      text-align: center;"></span>      
         <img src="assets/images/icon_notification.svg">
     </ion-buttons>
-  </ion-toolbar>
-</ion-header> 
-
-<ion-content>
-<div class="ion-padding theme_width">
-  <div class="volunteer_info">
-    <div class="info_single flex">
-      <div style="margin-right: 7px;">1. </div>
-      <div class="info_label">{{model.key_text1}}:</div> 
-      <div class="volunteer_input">      
-        <input type="text" class="custom_app_input" placeholder="{{model.key_text2}}" id="v_r_name">       
-      </div>
-    </div>    
-    <div class="info_single">
-      2. {{model.key_text3}} :
-      <div class="search_food_buttons">
-        <div class="btn-group">
-          <button class="grey regular btn1" id="v_food_1" (click)="food_type(1)">{{model.key_text4}}.</button>
-          <button class="grey regular btn1" id="v_food_2" (click)="food_type(2)">{{model.key_text5}}.</button>
-          <button class="grey regular btn1" id="v_food_3" (click)="food_type(3)">{{model.key_text6}}</button>
+  </ion-toolbar> 
+ 
+</ion-header>  -->
+<app-captcha></app-captcha>
+<ion-content class="custom_new_volunteer">
+  <div style="display: flex;" *ngIf="model.status==1" class="custom_new_volunteer_btns">
+    <div routerLink="/volunteer-request">
+      {{ model.key_text13 }}
+    </div>
+    <div routerLink="/volunteer" class="btn1 active">
+      {{ model.key_text14 }}
+    </div> 
+  </div>
+  <div class="ion-padding theme_width">
+    <div class="volunteer_info" style="margin:15px 0px;padding: 20px 25px 21px 25px">
+      <div class="info_label">Availability</div>
+      <div class="avail_status flex">			
+        <div class="avail_left">Off</div>
+        <div class="avail_center">
+          <ion-toggle (ionChange)="updateVolunteer()" [(ngModel)]="model.app_status" style="float:left;"></ion-toggle>
         </div>
-      </div> 
+        <div class="avail_right">On</div>			
+      </div>
     </div>
-    <div class="info_single">
-      <ion-row>
-        <ion-col size="6" class="custom_left">
-          3. {{model.key_text7}}
-        </ion-col>
-        <ion-col size="1" class="center">
-          :
-        </ion-col>
-        <ion-col size="5" class="custom_right">
-          <div class="how_food">
-            <input type="button" class="minus" onclick="volunteerDecrementValue()" value="-" />
-            <input type="text" class="food_value" name="quantity" value="1" maxlength="2" max="10" size="1" id="v_r_number" />
-            <input type="button" class="plus" onclick="volunteerIncrementValue()" value="+" />
+    <div class="volunteer_info">
+      <div class="info_single flex">
+        <div style="margin-right: 7px;">1. </div>
+        <div class="info_label">{{model.key_text1}}:</div> 
+        <div class="volunteer_input">      
+          <input type="text" class="custom_app_input" placeholder="{{model.key_text2}}" id="v_r_name">       
+        </div>
+      </div>    
+      <div class="info_single">
+        2. {{model.key_text3}} :
+        <div class="search_food_buttons">
+          <div class="btn-group">
+            <button class="grey regular btn1" id="v_food_1" (click)="food_type(1)">{{model.key_text4}}.</button>
+            <button class="grey regular btn1" id="v_food_2" (click)="food_type(2)">{{model.key_text5}}.</button>
+            <button class="grey regular btn1" id="v_food_3" (click)="food_type(3)">{{model.key_text6}}</button>
           </div>
-        </ion-col>
-      </ion-row>
-    </div>
-    <button class="desgin_btn white" (click)="upload_req()">{{model.key_text8}}</button>
-  </div>
-
-  <div class="food_request">
-    <div class="food_request_heading size_18">{{model.key_text9}}</div>
-    <div class="food_request_entry" *ngFor="let x of food_request;let i = index; " id="req_list_{{x.id}}">
-      <div class="entry_number green" style="width: 7%;">{{i+1}}.</div>
-      <div class="entry_name" style="width: 65%;">
-        <span class="green">{{x.name}}</span> 
-        <br>
-        {{x.food_type | foodType}} food for {{x.no_of_person}} person
-      </div>      
-      <div class="entry_delete" style="width: 14%;">
-        <img src="assets/images/round_cross.svg" (click)="presentAlertPrompt(x.id)">
+        </div> 
       </div>
-      <div class="entry_tick" style="width: 14%; text-align: right;">
-        <img src="assets/images/round_right.svg" (click)="receive_requested_food(x.id)">
+      <div class="info_single">
+        <ion-row>
+          <ion-col size="6" class="custom_left">
+            3. {{model.key_text7}}
+          </ion-col>
+          <ion-col size="1" class="center">
+            :
+          </ion-col>
+          <ion-col size="5" class="custom_right">
+            <div class="how_food">
+              <input type="button" class="minus" onclick="volunteerDecrementValue()" value="-" />
+              <input type="text" class="food_value" name="quantity" value="1" maxlength="2" max="10" size="1" id="v_r_number" />
+              <input type="button" class="plus" onclick="volunteerIncrementValue()" value="+" />
+            </div>
+          </ion-col>
+        </ion-row>
       </div>
+      <button class="desgin_btn white" (click)="upload_req()">{{model.key_text8}}</button>
     </div>
-	
-  </div>
 
-</div>
+    <div class="food_request">
+      <div class="food_request_heading size_18">{{model.key_text9}}</div>
+      <div class="food_request_entry" *ngFor="let x of food_request;let i = index; " id="req_list_{{x.id}}" style="position:relative;">
+        <div class="entry_number green" style="width: 7%;">{{i+1}}.</div>
+        <div class="entry_name" style="width: 70%;">
+          <span class="green">{{x.name}}</span> 
+          <br>
+          {{x.food_type | foodType}} food for {{x.no_of_person}} person
+          
+        </div> 
+       
+        <!-- <div *ngIf="x.donor_id!=0" class="entry_tick" style="width: 12%; text-align: right;">
+          <img src="assets/images/round_right.svg" (click)="receive_requested_food(x.id)" style="width: 25px;">
+        </div>     -->
+        <div class="custom_new_close_btn entry_delete" style="width: 11%;">
+          <img src="assets/images/round_cross.svg" style="margin-top:0px;" (click)="presentAlertPrompt(x.id)">
+        </div>      
+      </div>
+    
+    </div>
+
+    <div class="food_request">
+      <div class="food_request_heading size_18">{{model.key_text15}}</div>
+      <div class="food_request_entry" *ngFor="let x of food_request_fulfill;let i = index; " id="req_fullfil_list_{{x.id}}" style="position:relative;">
+        <div class="entry_number green" style="width: 7%;">{{i+1}}.</div>
+        <div class="entry_name" style="width: 65%;">
+          <span class="green">{{x.name}}</span> 
+          <br>
+          {{x.food_type | foodType}} food for {{x.no_of_person}} person donated by {{ x.username }}
+        </div>
+        <div class="size_15 medium" style="width: 27px;
+          background: #419B95;
+          color: white;
+          padding: 4px 0px 0px 6px;
+          border-radius: 30px;height:26px;" (click)="call(x.mobile_no)"><ion-icon name="call-outline"></ion-icon></div>  
+        <div class="entry_tick" style="width: 12%; text-align: right;">
+          <img src="assets/images/round_right.svg" (click)="receive_requested_food(x.id)" style="width: 25px;">
+        </div>    
+        <div class="custom_new_close_btn entry_delete" style="width: 11%;">
+          <img src="assets/images/round_cross.svg" style="margin-top:0px;" (click)="cancelReceivedFood(x.id)">
+        </div>      
+      </div>
+    
+    </div>
+
+  </div>
 </ion-content>  
 
 <ion-footer>
   <ion-toolbar>    
-      <ion-segment color="tertiary" value="volunteer">
-          <ion-segment-button value="home" [routerLink]="['/home']">
+      <ion-segment color="transparent" value="volunteer">
+        <ion-segment-button value="home" [routerLink]="['/home']">
             <!--<img src="assets/images/red_footer_home.svg">-->
             <ion-img src="assets/images/grey_footer_home.svg"></ion-img>
-            <ion-label class="size_12 medium">Home</ion-label>    
-          </ion-segment-button>
-        <ion-segment-button value="activity" [routerLink]="['/activity']">
+            <ion-label class="size_12 medium" >{{model.key_text10}}</ion-label>    
+        </ion-segment-button>
+        <ion-segment-button value="activity" [routerLink]="['/activity-normal']">
           <!--<ion-img src="assets/images/red_footer_activity.svg"></ion-img>-->
           <img src="assets/images/grey_footer_activity.svg">
-          <ion-label class="size_12 medium">Activity</ion-label>    
+          <ion-label class="size_12 medium">{{model.key_text11}}</ion-label>    
         </ion-segment-button>        
-        <ion-segment-button value="volunteer">            
+        <ion-segment-button value="volunteer" [routerLink]="model.is_volunteer== 1 ? ['/volunteer'] : ['/volunteer-request']">            
           <ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>
           <!--<img src="assets/images/grey_footer_volunteer.svg">-->
-          <ion-label class="size_12 medium">Volunteer</ion-label>                
+          <ion-label class="size_12 medium" color="tertiary">{{model.key_text12}}</ion-label>                
         </ion-segment-button>        
       </ion-segment>      
   </ion-toolbar>
 </ion-footer>
+

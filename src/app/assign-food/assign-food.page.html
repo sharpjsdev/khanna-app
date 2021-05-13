@@ -1,0 +1,22 @@
+<ion-content class="modal_content">
+  <div class="ion-padding">
+      <img (click)="closeModal()" src="assets/images/close_btn.svg" class="close_btn">
+      <div class="modal_inner"> 
+        <br>    
+        <ion-label>Select food</ion-label>
+        <ion-select class="" [(ngModel)]="model.donate_food_id" interface="popover" placeholder="Select one">
+          <ion-select-option *ngFor="let x of model.available_food" value="{{x.id}}"><span *ngIf="x.food_type == 1">Veg {{ x.no_of_people_foodleft }} people</span><span *ngIf="x.food_type == 2">Non-veg {{ x.no_of_people_foodleft }} people</span></ion-select-option>
+        </ion-select>
+        <span style="color: red;" *ngIf="model.error">Please select food</span>  
+        <!--<button class="app_btn" (click)="AssignFood()">Assign Food</button>-->      
+    </div>
+  </div> 
+</ion-content> 
+
+<ion-footer>
+  <ion-toolbar>    
+    <div class="app_button">      
+        <button type="btn" (click)="AssignFood()" class="app_btn">Assign Food</button>      
+    </div>
+  </ion-toolbar>
+</ion-footer>

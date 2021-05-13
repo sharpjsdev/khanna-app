@@ -3,7 +3,7 @@ import { Geolocation,GeolocationOptions ,Geoposition ,PositionError } from '@ion
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { FetchService } from '../../fetch.service';
-
+import { StorageService } from '../../storage.service';
 declare var google: any;
 declare var $: any;
 import { 
@@ -27,7 +27,8 @@ map: any;
 	private geolocation: Geolocation,
 	private nativeGeocoder: NativeGeocoder,
 	private router: Router,
-	private fetch: FetchService
+	private fetch: FetchService,
+	private storage : StorageService
   ) { 
   var self = this;
 		self.options = {
@@ -59,10 +60,11 @@ map: any;
 
   async ngOnInit() {
 	var lang_code = JSON.parse(localStorage.getItem('lang'));
-	this.fetch.getKeyText(lang_code).subscribe(res => {
+	//this.fetch.getKeyText(lang_code).subscribe(res => {
+		let res = this.storage.getScope();
 		let item1 = res.find(i => i.key_text === 'CONFIRM_LOCATION');
 			this.model.key_text1 = item1[lang_code]; 
-	});
+	//});
 	this.model.confirm_route = JSON.parse(localStorage.getItem('set_confirm_location_route'));
 	if(this.model.confirm_route == null){
 		this.model.confirm_route = 'donate-food';
@@ -101,33 +103,63 @@ lastLatLng(marker){
     }
 
 showAddress(lat, lon){
-	let options: NativeGeocoderOptions = {
-    useLocale: true,
-    maxResults: 5
-};
 
-this.nativeGeocoder.reverseGeocode(lat, lon, options)
-  .then((result: NativeGeocoderResult[]) => {
-  this.model.colony_name = result[0].subLocality;
-  this.model.city = result[0].locality;
-  this.model.state = result[0].administrativeArea;
-  this.model.country = result[0].countryName;
-  this.model.postalCode = result[0].postalCode;
-  if(this.model.confirm_route == "donate-food"){
-  this.model.data = JSON.stringify({'app_user_id': JSON.parse(localStorage.getItem('user_id')),'house_no': null, 'landmark' : null, 'adress_type' : null, 'latitude' : this.model.lat, 'longitude' : this.model.lon,'colony_name' : this.model.colony_name, 'city' : this.model.city, 'state' : this.model.state, 'country' : this.model.country, 'postalCode' : this.model.postalCode });
-		localStorage.setItem('donor_location', this.model.data);
-		//alert(JSON.stringify(this.model.data));
-  }
-  if(this.model.confirm_route == "get-food-search"){
-	this.model.data = JSON.stringify({'latitude' : this.model.lat, 'longitude' : this.model.lon,'colony_name' : this.model.colony_name, 'city' : this.model.city, 'state' : this.model.state, 'country' : this.model.country, 'postalCode' : this.model.postalCode });
-		localStorage.setItem('receiver_location', this.model.data);  
-  }
-  if(this.model.confirm_route == "register-volunteer"){
-	this.model.data = JSON.stringify({'latitude' : this.model.lat, 'longitude' : this.model.lon,'colony_name' : this.model.colony_name, 'city' : this.model.city, 'state' : this.model.state, 'country' : this.model.country, 'postalCode' : this.model.postalCode });  
-	//alert(JSON.stringify(this.model.data));
-  }
-  })
-  .catch((error: any) => console.log(error));
+  var self = this;
+	let latLng = new google.maps.LatLng(lat, lon);
+	let geocoder = new google.maps.Geocoder();
+	geocoder.geocode({ 'latLng': latLng }, (results, status) => {
+		
+		this.model.colony_name = results[0].formatted_address;
+		results[0].address_components.forEach(function(val,i){
+      
+			if (val.types[0] == "locality"){
+				
+				self.model.city = val.long_name;
+			}
+			if (val.types[0] == "administrative_area_level_1"){
+				
+				self.model.state = val.long_name;
+			} 
+			if (val.types[0] == "country"){
+				
+				self.model.country = val.long_name;
+			}
+			if (val.types[0] == "postal_code"){
+				
+				self.model.postalCode = val.long_name;
+			}   
+	
+      });
+      
+      if(this.model.confirm_route == "donate-food"){
+        this.model.data = JSON.stringify({'app_user_id': JSON.parse(localStorage.getItem('user_id')),'house_no': null, 'landmark' : null, 'adress_type' : null, 'latitude' : this.model.lat, 'longitude' : this.model.lon,'colony_name' : this.model.colony_name, 'city' : this.model.city, 'state' : this.model.state, 'country' : this.model.country, 'postalCode' : this.model.postalCode });
+          localStorage.setItem('donor_location', this.model.data);
+          //alert(JSON.stringify(this.model.data));
+        }
+        if(this.model.confirm_route == "get-food-search"){
+        this.model.data = JSON.stringify({'latitude' : this.model.lat, 'longitude' : this.model.lon,'colony_name' : this.model.colony_name, 'city' : this.model.city, 'state' : this.model.state, 'country' : this.model.country, 'postalCode' : this.model.postalCode });
+          localStorage.setItem('receiver_location', this.model.data);  
+        }
+        if(this.model.confirm_route == "register-volunteer"){
+        this.model.data = JSON.stringify({'latitude' : this.model.lat, 'longitude' : this.model.lon,'colony_name' : this.model.colony_name, 'city' : this.model.city, 'state' : this.model.state, 'country' : this.model.country, 'postalCode' : this.model.postalCode });  
+        //alert(JSON.stringify(this.model.data));
+        }
+	});
+// 	let options: NativeGeocoderOptions = {
+//     useLocale: true,
+//     maxResults: 5
+// };
+
+// this.nativeGeocoder.reverseGeocode(lat, lon, options)
+//   .then((result: NativeGeocoderResult[]) => {
+//   this.model.colony_name = result[0].subLocality;
+//   this.model.city = result[0].locality;
+//   this.model.state = result[0].administrativeArea;
+//   this.model.country = result[0].countryName;
+//   this.model.postalCode = result[0].postalCode;
+  
+//   })
+//   .catch((error: any) => console.log(error));
 }
 confirm_location(){
 	/* if(this.model.confirm_route == "donate-food" || this.model.confirm_route == null){

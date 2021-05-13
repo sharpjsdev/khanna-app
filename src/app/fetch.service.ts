@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FetchService {
-
+ public isLanguageChanged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   constructor(private http: HttpClient) { }
   
 	getLanguage(): Observable<any> { 
@@ -17,6 +18,9 @@ export class FetchService {
 	}
 	getKeyText(id): Observable<any> { 
 		return this.http.get(environment.base_url + 'key_text/'+id);
+	}
+	getAboutUsPageCOntent(id): Observable<any>{
+		return this.http.get(environment.base_url + 'get-about-us-content-by-lang/'+id)
 	}
 	createUser(data): Observable<any> { 
 		return this.http.post(environment.base_url + 'create_user',data);
@@ -30,8 +34,8 @@ export class FetchService {
 	profile(data): Observable<any> { 
 		return this.http.post(environment.base_url + 'user_profile',data);
 	}
-	help_video(): Observable<any> { 
-		return this.http.get(environment.base_url + 'help_video');
+	help_video(lang_code): Observable<any> { 
+		return this.http.get(environment.base_url + 'help_video/'+lang_code);
 	}
 	add_location(data): Observable<any> { 
 		return this.http.post(environment.base_url + 'add_location',data);
@@ -66,8 +70,41 @@ export class FetchService {
 	pending_donation(id): Observable<any> { 
 		return this.http.get(environment.base_url + 'pending_donation/'+id);
 	}
+	my_alloted_donation(id): Observable<any> { 
+		return this.http.get(environment.base_url + 'my_alloted_donation/'+id);
+	}
+	my_food_request(id): Observable<any> { 
+		return this.http.get(environment.base_url + 'my_food_request/'+id);
+	}
+	my_alloted_request(id): Observable<any> { 
+		return this.http.get(environment.base_url + 'my_alloted_request/'+id);
+	}
 	receiver_food_details(data): Observable<any> { 
 		return this.http.post(environment.base_url + 'receiver_food_details',data);
+	}
+	accept_food(data): Observable<any> { 
+		return this.http.post(environment.base_url + 'accept_food',data);
+	}
+	accept_food_request(data): Observable<any> {
+		return this.http.post(environment.base_url + 'accept_food_request',data);
+	}
+	cancel_accept_food(data): Observable<any> {
+		return this.http.post(environment.base_url + 'cancel_accept_food',data)
+	}
+	cancel_requested_food(data):Observable<any> {
+		return this.http.post(environment.base_url + 'cancel_requested_food',data)
+	}
+	cancel_alloted_request(data):Observable<any> {
+		return this.http.post(environment.base_url + 'cancel_alloted_request',data)
+	}
+	get_reasons(lang_code):Observable<any> {
+		return this.http.get(environment.base_url + 'get_reasons/'+lang_code);
+	}
+	get_terms_conditions(lang_code):Observable<any> {
+		return this.http.get(environment.base_url + 'get_terms_conditions/'+lang_code);
+	}
+	volunteer_get_terms_conditions(lang_code):Observable<any>{
+		return this.http.get(environment.base_url + 'volunteer_get_terms_conditions/'+lang_code);
 	}
 	receiver_details(id): Observable<any> { 
 		return this.http.get(environment.base_url + 'receiver_data/'+id);
@@ -110,6 +147,9 @@ export class FetchService {
 	volunteer_receive_requested_food(data): Observable<any> { 
 		return this.http.post(environment.base_url + 'receive-food',data);
 	}
+	volunteer_received_cancel_food(data): Observable<any> { 
+		return this.http.post(environment.base_url + 'cancel-alloted-food',data);
+	}
 	volunteer_cancel_requested_food(data): Observable<any> { 
 		return this.http.post(environment.base_url + 'cancel-receive-food',data);
 	}
@@ -118,6 +158,9 @@ export class FetchService {
 	}
 	v_edit(id): Observable<any> { 
 		return this.http.get(environment.base_url + 'volunteer_edit/'+id);
+	}
+	cancel_all_request(id):Observable<any> {
+		return this.http.get(environment.base_url + 'cancel_all_request/'+id);
 	}
 	v_check(id): Observable<any> { 
 		return this.http.get(environment.base_url + 'volunteer_check/'+id);
@@ -131,8 +174,8 @@ export class FetchService {
 	get_top_donors(city): Observable<any> { 
 		return this.http.get(environment.base_url + 'top_donors/'+city);
 	}
-	show_feedback(): Observable<any> { 
-		return this.http.get(environment.base_url + 'show_feedback');
+	show_feedback(id): Observable<any> { 
+		return this.http.get(environment.base_url + 'show_feedback/'+id);
 	}
 	weekly_donation_graph(id): Observable<any> { 
 		return this.http.get(environment.base_url + 'donation_graph_weekly/'+id);
@@ -190,5 +233,56 @@ export class FetchService {
 	}
 	twilio_token(): Observable<any> { 
 		return this.http.get(environment.base_url + 'twilio_token_generate');
+	}
+	get_registered_user_data(id): Observable<any> { 
+		return this.http.get(environment.base_url + 'get_user_detail/'+id);
+	}
+	collect_food_noti_to_donor(data): Observable<any> { 
+		return this.http.post(environment.base_url + 'collect_food_notification',data);
+	}
+	get_notification(id): Observable<any> { 
+		return this.http.get(environment.base_url + 'get_notification/'+id);
+	}
+	read_notification(id): Observable<any> { 
+		return this.http.get(environment.base_url + 'read_notification/'+id);
+	}
+	get_available_food(id): Observable<any> {
+		return this.http.get(environment.base_url + 'get_available_food/'+id);
+	}
+	cancel_donation_food(data): Observable<any> { 
+		return this.http.post(environment.base_url + 'cancel_donation_food',data);
+	}
+	cancel_alloted_food(data): Observable<any> {
+		return this.http.post(environment.base_url + 'cancel_alloted_food',data);
+	}
+	change_app_status(data): Observable<any> { 
+		return this.http.post(environment.base_url + 'change_app_status',data);
+	}
+	notify_donar(data): Observable<any> { 
+		return this.http.post(environment.base_url + 'notify_donar',data);
+	}
+	get_waypoints(data): Observable<any> {
+		return this.http.post(environment.base_url + 'get_waypoints',data);
+	}
+	get_volunteer_waypoints(data): Observable<any> {
+		return this.http.post(environment.base_url + 'get_volunteer_waypoints',data);
+	}
+	save_contact_us(data): Observable<any> {
+		return this.http.post(environment.base_url + 'save-contact-us',data);
+	}
+	recomended_distance(data): Observable<any> {
+		return this.http.post(environment.base_url + 'recomended_distance',data);
+	}
+	donate_food_to_volunteer(data): Observable<any> {
+		return this.http.post(environment.base_url+'donate_food_to_volunteer',data);
+	}
+	active_donation(data): Observable<any>{
+		return this.http.post(environment.base_url+'active_donation',data);
+	}
+	add_call_detail(data): Observable<any>{
+		return this.http.post(environment.base_url+'add_call_detail',data);
+	}
+	get_received_food(id):Observable<any>{
+		return this.http.get(environment.base_url + 'get_received_food/'+id);
 	}
 }

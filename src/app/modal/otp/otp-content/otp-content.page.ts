@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FetchService } from '../../../fetch.service';
+import { StorageService } from '../../../storage.service';
 import { 
   ModalController, 
   NavParams 
@@ -15,7 +16,8 @@ model:any={};
   constructor(
     private modalController: ModalController,
     private navParams: NavParams,
-	private fetch: FetchService
+	private fetch: FetchService,
+  private Storage: StorageService
   ) { }
 
   ngOnInit() {
@@ -23,12 +25,13 @@ model:any={};
 	 this.model.key_text1 = 'New OTP has been';
 	 this.model.key_text2 = 'sent to your mobile no.';
 	 var lang_code = JSON.parse(localStorage.getItem('lang'));
-	 this.fetch.getKeyText(lang_code).subscribe(res => {
+	 //this.fetch.getKeyText(lang_code).subscribe(res => {
+     let res = this.Storage.getScope();
 		 let item1 = res.find(i => i.key_text === 'NEW_OTP_HAS_BEEN');
 			this.model.key_text1 = item1[lang_code];
 		let item2 = res.find(i => i.key_text === 'HAS_BEEN_SENT_TO_YOUR_MOBILE_NO.');
 			this.model.key_text2 = item2[lang_code];
-	 });
+	// });
   }
 
   async closeModal() {

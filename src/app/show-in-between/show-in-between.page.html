@@ -1,0 +1,71 @@
+<!-- <center class="current_location_spinner_position" id="add_location_spinner"><ion-spinner class="current_location_sppiner"></ion-spinner></center> -->
+
+<ion-header>
+    
+  <app-captcha></app-captcha>
+  <div class="dark_grey_title regular size_18 white center">
+    {{model.key_text1}}
+  </div>
+    <ion-searchbar [(ngModel)]="autocomplete.start" placeholder="Source" [showCancelButton]="true"   (ionInput)="updateSources()" (ionCancel)="dismissSource()"></ion-searchbar>
+    <ion-list style="position: absolute;z-index: 999;">
+      <ion-item *ngFor="let item of sources" tappable   (click)="chooseSource(item)">
+        {{ item }}
+      </ion-item>
+    </ion-list>
+    <ion-searchbar [(ngModel)]="autocomplete.end" placeholder="Destination" [showCancelButton]="true"   (ionInput)="updateDestinations()" (ionCancel)="dismissDestination()"></ion-searchbar>
+    <ion-list style="position: absolute;z-index: 999;">
+      <ion-item *ngFor="let item of destination" tappable   (click)="chooseDestination(item)">
+        {{ item }}
+      </ion-item>
+    </ion-list>
+   
+
+
+    <div style="display: flex;margin-top: 6px;" class="custom_new_volunteer_btns">
+      <div routerLink="/volunteer-request">
+       {{ model.key_text15 }}
+      </div>
+      <div class="btn1 active">
+        {{ model.key_text16 }}
+      </div>
+    </div>
+
+
+
+</ion-header>
+<ion-content class="current_location_page_show">
+  
+  
+  <div #map id="map"></div>
+  <div class="vfd_box">
+    <div  *ngFor = "let x of req_data; let i = index;">
+      
+      <div class="vfd_single_entry" *ngIf="x.veg > 0 || x.non_veg > 0 || x.any > 0">
+        <div class="vfd_name green">
+          {{i+1}}. {{x.username}} {{ x.app_user_id }} :-  <span *ngIf="x.veg > 0">{{ model.key_text6 }}  {{ x.veg }} {{ model.key_text2 }} {{ model.key_text13 }} {{ model.key_text3 }} {{ model.key_text5 }}</span><span *ngIf="x.non_veg > 0">, {{ model.key_text6 }} {{ x.non_veg }} {{ model.key_text2 }} {{ model.key_text13 }} {{ model.key_text4 }} {{ model.key_text5 }}</span><span *ngIf="x.any > 0"> {{ x.any }} {{ model.key_text2 }} {{ model.key_text3 }}/{{ model.key_text4 }} {{ model.key_text5 }}</span>
+          <div style="float:right">
+            <ion-badge class="size_15 medium" style="margin-right: 6px;
+            background: #419B95;
+            color: white;
+            padding: 5px 5px 3px 5px;
+            border-radius: 30px" (click)="call(x.mobile_no)"><ion-icon name="call-outline"></ion-icon></ion-badge>
+            <ion-badge routerLink="/donate-to-volunteer/{{ x.id }}"  style="background-color:#6fb3af;padding:6px;">{{ model.key_text14 }}</ion-badge>
+          </div>
+        </div>
+        <div class="vfd_location">
+          <img src="assets/images/location_black.svg">
+          <div class="vfd_address regular">
+            <!-- {{x.colony_name}}, {{x.city}},
+            {{x.state}}, {{x.country}} -->
+            {{x.colony_name}}
+          </div>
+        </div>
+        </div>
+     
+    </div>
+  </div>
+  
+  </ion-content>
+  
+  
+  

@@ -1,0 +1,79 @@
+<app-captcha></app-captcha>
+<ion-content class="custom_new_volunteer">
+  
+  <div class="ion-padding theme_width">
+    
+    <div class="volunteer_info">
+         
+      <!-- <div class="info_single">
+        1. {{model.key_text3}} :
+        <div class="search_food_buttons">
+          <div class="btn-group">
+            <button class="grey regular btn1" id="d_food_1" (click)="food_type(1)">{{model.key_text4}}.</button>
+            <button class="grey regular btn1" id="d_food_2" (click)="food_type(2)">{{model.key_text5}}.</button>
+            
+          </div>
+        </div> 
+        <span id="error_food_type" style="display:none;color: red;">This field is required</span>
+      </div>
+      <div class="info_single">
+        <ion-row>
+          <ion-col size="6" class="custom_left">
+            2. {{model.key_text7}}
+          </ion-col>
+          <ion-col size="1" class="center">
+            :
+          </ion-col>
+          <ion-col size="5" class="custom_right">
+            <div class="how_food">
+              <input type="button" class="minus" onclick="donateDecrementValue()" value="-" />
+              <input type="text" class="food_value" name="quantity" value="1" maxlength="2" max="10" size="1" id="d_r_number" />
+              <input type="button" class="plus" onclick="donateIncrementValue()" value="+" />
+            </div>
+          </ion-col>
+        </ion-row>
+        <span id="error_no_of_people" style="display:none;color: red;">This field is required</span>
+      </div> -->
+      <div class="food_request_entry" *ngFor="let x of food_request;let i = index; " id="req_list_{{x.id}}" style="position:relative;margin-bottom: 20px;">
+        <!-- <div class="entry_number green" style="width: 7%;">{{i+1}}.</div> -->
+        <div class="checkbox"  style="width: 92%;
+        ">
+          <input type="checkbox" id="ch{{x.id}}" class="request"  name="request" value="{{x.id}}">
+          <label for="ch{{x.id}}" class="green"><span>{{x.name}}
+            <em *ngIf="x.food_type==1">{{ model.key_text4 }}</em>
+            <em *ngIf="x.food_type==2">{{ model.key_text5 }}</em>
+             {{ model.key_text16 }} {{x.no_of_person}} {{ model.key_text17 }}
+          </span></label>
+       </div>
+             
+      </div>
+      <div id="error_no_of_people" style="display:none;color: red;">Please check the food request which you want to donate.</div>
+      <button class="desgin_btn white" (click)="upload_food()">{{model.key_text15}}</button>
+    </div>
+
+    
+
+  </div>
+</ion-content>  
+
+<ion-footer>
+  <ion-toolbar>    
+      <ion-segment color="transparent" value="volunteer">
+        <ion-segment-button value="home" [routerLink]="['/home']">
+            <!--<img src="assets/images/red_footer_home.svg">-->
+            <ion-img src="assets/images/grey_footer_home.svg"></ion-img>
+            <ion-label class="size_12 medium" >{{model.key_text10}}</ion-label>    
+        </ion-segment-button>
+        <ion-segment-button value="activity" [routerLink]="['/activity-normal']">
+          <!--<ion-img src="assets/images/red_footer_activity.svg"></ion-img>-->
+          <img src="assets/images/grey_footer_activity.svg">
+          <ion-label class="size_12 medium">{{model.key_text11}}</ion-label>    
+        </ion-segment-button>        
+        <ion-segment-button value="volunteer" [routerLink]="model.is_volunteer== 1 ? ['/volunteer'] : ['/volunteer-request']">            
+          <ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>
+          <!--<img src="assets/images/grey_footer_volunteer.svg">-->
+          <ion-label class="size_12 medium" color="tertiary">{{model.key_text12}}</ion-label>                
+        </ion-segment-button>        
+      </ion-segment>      
+  </ion-toolbar>
+</ion-footer>

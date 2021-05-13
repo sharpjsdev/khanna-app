@@ -1,7 +1,7 @@
 <center class="current_location_spinner_position" id="edit_location_spinner"><ion-spinner class="current_location_sppiner"></ion-spinner></center>
 <ion-content class="current_location_page_show">
 <div class="map edit">
-  <a href="saved-addresses">
+  <a (click)="close_btn()">
     <img src="assets/images/close_btn.svg" class="close_btn">
   </a>
  <!--  <img src="assets/images/map.svg"> -->
@@ -16,8 +16,8 @@
       {{location_data.colony_name}}
     </div>
     <div class="regular size_12">
-      {{location_data.colony_name}},<br>
-      {{location_data.city}}, {{location_data.state}} {{location_data.postalCode}}, {{location_data.country}}
+      <!-- {{location_data.colony_name}},<br> -->
+      <!-- {{location_data.city}}, {{location_data.state}} {{location_data.postalCode}}, {{location_data.country}} -->
     </div>
     <br>
     <div class="map_input">
@@ -32,12 +32,17 @@
         <ion-input class="size_12 regular" value="{{location_data.landmark}}" id="edit_landmark"></ion-input>
         <hr class="input_line">
       </ion-item>
+      <ion-item lines="none"> 
+        <ion-label position="stacked" class="size_10 regular" style="color: #DADADA;">{{ model.key_text11 }}</ion-label>
+        <ion-input class="size_12 regular" value="{{ model.address_type }}" id="save_as"></ion-input>
+        <hr class="input_line">
+      </ion-item>
     </div>
-    <div class="btn-group buttons2">
+    <!-- <div class="btn-group buttons2">
       <button class="grey regular btn3 size_12 medium" id="edit_address_type_1" (click)="address_type(1)">{{model.key_text5}}</button>
       <button class="grey regular btn3 size_12 medium" id="edit_address_type_2" (click)="address_type(2)">{{model.key_text6}}</button>
       <button class="grey regular btn3 size_12 medium" id="edit_address_type_3" (click)="address_type(3)">{{model.key_text7}}</button>
-    </div>
+    </div> -->
   </div>
 </div>
 
@@ -49,7 +54,8 @@
       <!-- <ion-router-link href="saved-addresses">
         <button class="app_btn">Save Changes</button>
       </ion-router-link> -->
-	  <button class="app_btn" (click)="update()">{{model.key_text8}}</button>
+	  <button class="app_btn" (click)="update()" *ngIf="!model.search">{{model.key_text8}}</button>
+    <button class="app_btn"  *ngIf="model.search"><ion-spinner class="current_location_sppiner"></ion-spinner></button>
     </div>
   </ion-toolbar>
 </ion-footer>

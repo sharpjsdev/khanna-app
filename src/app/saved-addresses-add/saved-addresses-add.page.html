@@ -1,7 +1,7 @@
 <center class="current_location_spinner_position" id="add_location_spinner"><ion-spinner class="current_location_sppiner"></ion-spinner></center>
 <ion-content class="current_location_page_show">
   <div class="map edit">
-    <a href="saved-addresses/{{model.user_id}}">
+    <a (click)="close_btn()">
       <img src="assets/images/close_btn.svg" class="close_btn">
     </a>
     
@@ -16,8 +16,8 @@
         {{model.colony_name}}
       </div>
       <div class="regular size_12">
-        {{model.colony_name}}<br>
-        {{model.city}}, {{model.state}} {{model.postalCode}}, {{model.country}}
+        <!-- {{model.colony_name}}<br> -->
+        <!-- {{model.city}}, {{model.state}} {{model.postalCode}}, {{model.country}} -->
       </div>
       <br>
       <div class="map_input">
@@ -32,13 +32,18 @@
           <ion-input class="size_12 regular" id="add_location_landmark"></ion-input>
           <hr class="input_line">
         </ion-item>
+        <ion-item lines="none"> 
+          <ion-label position="stacked" class="size_10 regular" style="color: #DADADA;">{{ model.key_text11 }}</ion-label>
+          <ion-input class="size_12 regular" id="save_as"></ion-input>
+          <hr class="input_line">
+        </ion-item>
       </div>
-      <div class="btn-group buttons2">
+      <!-- <div class="btn-group buttons2">
         <button class="grey regular btn3 size_12 medium" id="add_t_1" (click)="address_type(1)">{{model.key_text5}}</button>
         <button class="grey regular btn3 size_12 medium" id="add_t_2" (click)="address_type(2)">{{model.key_text6}}</button>
-        <button class="grey regular btn3 size_12 medium" id="add_t_3" (click)="address_type(3)">{{model.key_text7}}</button>
-		
-      </div>
+        <button class="grey regular btn3 size_12 medium" id="add_t_3" (click)="address_type(3)">{{model.key_text7}}</button> 
+        
+      </div> -->
     </div>
   </div>
   
@@ -50,7 +55,8 @@
         <!-- <ion-router-link href="saved-addresses">
           <button class="app_btn">Save Changes</button>
         </ion-router-link> -->
-		<button class="app_btn" (click)="save()">{{model.key_text8}}</button>
+		<button class="app_btn" (click)="save()" *ngIf="!model.search">{{model.key_text8}}</button>
+    <button class="app_btn"  *ngIf="model.search"><ion-spinner class="current_location_sppiner"></ion-spinner></button>
       </div>
     </ion-toolbar>
   </ion-footer>

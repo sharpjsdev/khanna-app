@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SortContentPage } from '../../sort-content/sort-content.page';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { FetchService } from '../../../fetch.service';
+import { StorageService } from '../../../storage.service';
 import { 
   ModalController, 
   NavParams 
@@ -21,13 +22,15 @@ export class FilterContentPage implements OnInit {
     private navParams: NavParams,
 	private route: ActivatedRoute,
 	private router: Router,
-	private fetch: FetchService
+	private fetch: FetchService,
+  private storage: StorageService,
   ) { }
 
   ngOnInit() {  
   //console.log(this.receiver_id);
   var lang_code = JSON.parse(localStorage.getItem('lang'));
-	this.fetch.getKeyText(lang_code).subscribe(res => {
+	//this.fetch.getKeyText(lang_code).subscribe(res => {
+    let res = this.storage.getScope();
 		let item1 = res.find(i => i.key_text === 'SORT');
 			this.model.key_text1 = item1[lang_code];
 		let item2 = res.find(i => i.key_text === 'FILTER');
@@ -44,9 +47,13 @@ export class FilterContentPage implements OnInit {
 			this.model.key_text7 = item7[lang_code]; 
 		let item8 = res.find(i => i.key_text === 'SAVE_CHANGES');
 			this.model.key_text8 = item8[lang_code]; 
-	});
+	//});
   
   var filter_food_type = JSON.parse(localStorage.getItem('filter_food_type'));
+  console.log(JSON.parse(localStorage.getItem('food_for_no_of_person')));
+  if(JSON.parse(localStorage.getItem('food_for_no_of_person')) != null){
+	$('#filter_food_needed').val(JSON.parse(localStorage.getItem('food_for_no_of_person')));
+  }
 	if(filter_food_type != null){
 		this.model.food_type = filter_food_type;
 		$('#filter_food_'+filter_food_type).addClass('active'); 
@@ -69,15 +76,18 @@ export class FilterContentPage implements OnInit {
 		$('#filter_food_1').removeClass('active');     
 	}
 	localStorage.setItem('filter_food_type', val);
+	
+	
   
   }
   filter(){
+	localStorage.setItem('food_for_no_of_person', $('#filter_food_needed').val());
 	let data = {filter_food_type : this.model.food_type, filter_no_of_person : $('#filter_food_needed').val()};
 	this.modalController.dismiss(data);
   }
 
   async closeModal() {
-    const onClosedData: string = "Wrapped Up!";
+    const onClosedData: string = "close";
     await this.modalController.dismiss(onClosedData);
   }
   async openModalSort() {

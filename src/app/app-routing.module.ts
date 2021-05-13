@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'language',
-    pathMatch: 'full'
-  },
+  // {
+  //   path: '',
+  //   redirectTo: 'language',
+  //   pathMatch: 'full'
+  // },
   {
     path: 'folder/:id',
     loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
@@ -110,7 +110,7 @@ const routes: Routes = [
     loadChildren: () => import('./donate-food-members/donate-food-members.module').then( m => m.DonateFoodMembersPageModule)
   },
   {
-    path: 'donate-food-review/:id',
+    path: 'donate-food-review/:id/:id2',
     loadChildren: () => import('./donate-food-review/donate-food-review.module').then( m => m.DonateFoodReviewPageModule)
   },
   {
@@ -122,7 +122,7 @@ const routes: Routes = [
     loadChildren: () => import('./modal/donate-food-content/donate-food-content.module').then( m => m.DonateFoodContentPageModule)
   },
   {
-    path: 'feedback-form/:r_id',
+    path: 'feedback-form/:r_id/:getfood_id',
     loadChildren: () => import('./feedback-form/feedback-form.module').then( m => m.FeedbackFormPageModule)
   },
   {
@@ -130,11 +130,11 @@ const routes: Routes = [
     loadChildren: () => import('./modal/feedback-content/feedback-content.module').then( m => m.FeedbackContentPageModule)
   },
   {
-    path: 'get-food-nearest-donors/:data/:r_lat/:r_lon/:r_id',
+    path: 'get-food-nearest-donors/:data/:r_lat/:r_lon/:r_id/:id',
     loadChildren: () => import('./get-food-nearest-donors/get-food-nearest-donors.module').then( m => m.GetFoodNearestDonorsPageModule)
   },
   {
-    path: 'get-food-nearest-donors-two/:id/:lat/:lon/:r_id/:mode/:food_type',
+    path: 'get-food-nearest-donors-two/:id/:lat/:lon/:r_id/:mode/:food_type/:getfoodid',
     loadChildren: () => import('./get-food-nearest-donors-two/get-food-nearest-donors-two.module').then( m => m.GetFoodNearestDonorsTwoPageModule)
   },
   {
@@ -162,6 +162,10 @@ const routes: Routes = [
     loadChildren: () => import('./volunteer/volunteer.module').then( m => m.VolunteerPageModule)
   },
   {
+    path: 'volunteer/volunteer',
+    loadChildren: () => import('./volunteer/volunteer.module').then( m => m.VolunteerPageModule)
+  },
+  {
     path: 'activity-normal',
     loadChildren: () => import('./activity-normal/activity-normal.module').then( m => m.ActivityNormalPageModule)
   },
@@ -169,6 +173,47 @@ const routes: Routes = [
     path: 'volunteer-request',
     loadChildren: () => import('./volunteer-request/volunteer-request.module').then( m => m.VolunteerRequestPageModule)
   },
+  {
+    path: 'about-us',
+    loadChildren: () => import('./about-us/about-us.module').then( m => m.AboutUsPageModule)
+  },
+  {
+    path: 'receiver-confirm',
+    loadChildren: () => import('./modal/receiver-confirm/receiver-confirm.module').then( m => m.ReceiverConfirmPageModule)
+  },
+  {
+    path: 'notification',
+    loadChildren: () => import('./modal/notification/notification.module').then( m => m.NotificationPageModule)
+  },
+  {
+    path: 'receive-food-call/:num',
+    loadChildren: () => import('./receive-food-call/receive-food-call.module').then( m => m.ReceiveFoodCallPageModule)
+  },
+  {
+    path: 'cancel-allotedfood',
+    loadChildren: () => import('./modal/cancel-allotedfood/cancel-allotedfood.module').then( m => m.CancelAllotedfoodPageModule)
+  },
+  {
+    path: 'terms-conditions',
+    loadChildren: () => import('./modal/terms-conditions/terms-conditions.module').then( m => m.TermsConditionsPageModule)
+  },
+  {
+    path: 'show-in-between',
+    loadChildren: () => import('./show-in-between/show-in-between.module').then( m => m.ShowInBetweenPageModule)
+  },
+  {
+    path: 'donate-to-volunteer/:id',
+    loadChildren: () => import('./donate-to-volunteer/donate-to-volunteer.module').then( m => m.DonateToVolunteerPageModule)
+  },
+  {
+    path: 'assign-food',
+    loadChildren: () => import('./assign-food/assign-food.module').then( m => m.AssignFoodPageModule)
+  },
+  {
+    path: 'on-the-way',
+    loadChildren: () => import('./modal/on-the-way/on-the-way.module').then( m => m.OnTheWayPageModule)
+  }
+  
 
  
 ];

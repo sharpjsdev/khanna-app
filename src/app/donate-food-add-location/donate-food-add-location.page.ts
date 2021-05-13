@@ -4,6 +4,7 @@ import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@io
 import { AlertController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { FetchService } from '../fetch.service';
+import { StorageService } from '../storage.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 declare var google: any;
@@ -26,14 +27,19 @@ map: any;
 	private http: HttpClient,
 	private route: ActivatedRoute,
 	private router: Router,
-	private fetch: FetchService
+	private fetch: FetchService,
+	private storage:StorageService,
 	) { }
 
   ngOnInit() {
+	 
+  }
+  ionViewWillEnter(){
 	this.model.alert_text = 'Please fill all the details';
 	this.model.okay = 'okay';
 	var lang_code = JSON.parse(localStorage.getItem('lang'));
-	this.fetch.getKeyText(lang_code).subscribe(res => {
+	//this.fetch.getKeyText(lang_code).subscribe(res => {
+		let res = this.storage.getScope();
 		let item1 = res.find(i => i.key_text === 'HOUSE');
 			this.model.key_text1 = item1[lang_code]; 
 		let item2 = res.find(i => i.key_text === 'FLAT');
@@ -55,7 +61,7 @@ map: any;
 		let item10 = res.find(i => i.key_text === 'OKAY');
 			this.model.okay = item10[lang_code]; 
 				
-	});  
+	//});  
 	
 	this.options = {
 		enableHighAccuracy: false,
@@ -80,7 +86,7 @@ map: any;
 		
 		this.addMarker();
 		
-		}); 
+		});
   }
   addMarker(){
 

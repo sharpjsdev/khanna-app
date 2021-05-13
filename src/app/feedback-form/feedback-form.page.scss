@@ -1,0 +1,36 @@
+.behaviour-error-text{
+    color:red;
+    display: none;
+}
+.food_quality-error-text{
+    color:red;
+    display: none;
+}
+.packaging-error-text{
+    color:red;
+    display: none;
+}
+.number-error-text{
+    color:red;
+    display: none;
+}
+.error-line{
+    border:1px solid red;
+}
+.error-minus{
+    border-left: 1px solid red;
+    border-top: 1px solid red;
+    border-bottom: 1px solid red;
+}
+.error-minus{
+    border-right: 1px solid red;
+    border-top: 1px solid red;
+    border-bottom: 1px solid red;
+}
+.error-value{
+    border-top: 1px solid red;
+    border-bottom: 1px solid red;
+}
+.star{
+    color:red;
+}   

@@ -9,7 +9,7 @@ import { ActivityNormalPageRoutingModule } from './activity-normal-routing.modul
 import { ActivityNormalPage } from './activity-normal.page';
 
 import { PipesModule } from '../pipes/pipes.module';
-
+import { CaptchaComponent } from '../captcha/captcha.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -18,6 +18,6 @@ import { PipesModule } from '../pipes/pipes.module';
 	PipesModule,
     ActivityNormalPageRoutingModule
   ],
-  declarations: [ActivityNormalPage]
+  declarations: [ActivityNormalPage,CaptchaComponent]
 })
 export class ActivityNormalPageModule {}

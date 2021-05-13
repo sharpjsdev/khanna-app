@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FetchService } from '../fetch.service';
 import * as HighCharts from 'highcharts';
 
+
 declare var $ : any;
 
 @Component({
@@ -12,11 +13,17 @@ declare var $ : any;
 export class ActivityPage implements OnInit {
 model:any={};
 volunteer_graph_data:any=[];
+
+dataReturned: any;
   constructor(
 	private fetch: FetchService
+	
   ) { }
 
   ngOnInit() {
+	
+	$('#v_month_blessing_div').css('display', 'none');
+	$('#v_week_blessing_div').css('display', 'block');
 	this.model.volunteer_id = JSON.parse(localStorage.getItem('volunteer_id'));
 	this.fetch.volunteer_city(this.model.volunteer_id).subscribe(res => {
 		console.log(res.data['city']);
@@ -27,6 +34,33 @@ volunteer_graph_data:any=[];
 	});
 	this.weekly_volunteer_graph();
   }
+  ionViewDidEnter(){
+	 var lang_code = JSON.parse(localStorage.getItem('lang'));
+		this.fetch.getKeyText(lang_code).subscribe(res => {
+			let item1 = res.find(i => i.key_text === 'WEEKLY');
+				this.model.key_text1 = item1[lang_code];
+			let item2 = res.find(i => i.key_text === 'MONTHLY');
+				this.model.key_text2 = item2[lang_code];
+			let item3 = res.find(i => i.key_text === 'BLESSINGS_THIS_WEEK');
+				this.model.key_text3 = item3[lang_code];
+			let item4 = res.find(i => i.key_text === 'BLESSINGS_THIS_MONTH');
+				this.model.key_text4 = item4[lang_code];
+			let item5 = res.find(i => i.key_text === 'HOME');
+				this.model.key_text5 = item5[lang_code];
+			let item6 = res.find(i => i.key_text === 'ACTIVITY');
+				this.model.key_text6 = item6[lang_code];
+			let item7 = res.find(i => i.key_text === 'VOLUNTEER');
+				this.model.key_text7 = item7[lang_code];
+			let item8 = res.find(i => i.key_text === 'TOTAL_BLESSINGS');
+				this.model.key_text8 = item8[lang_code];
+			let item9 = res.find(i => i.key_text === 'TOP_VOLUNTEERS_FROM_YOUR_CITY');
+				this.model.key_text9 = item9[lang_code];
+			let item10 = res.find(i => i.key_text === 'DONATIONS');
+				this.model.key_text10 = item10[lang_code];
+			
+		});
+		
+  }
   plotSimpleBarChart(data, cat, min, max, tickInterval) {
 	console.log(data);
 	let myChart = HighCharts.chart('highcharts_v', {
@@ -34,11 +68,6 @@ volunteer_graph_data:any=[];
 			height: 200,
 			type: 'spline',
 			backgroundColor: '#F7F6F4',
-			events: {
-				redraw: function(e) {
-					myChart.reflow();
-				}
-			}
 		},
 		credits: {
 			enabled: false
@@ -79,7 +108,7 @@ volunteer_graph_data:any=[];
 	setTimeout(function(){ 
 		$('#volunteer_activity_spinner').css('display', 'none');
 		$('#volunteer_activity_content').css('display', 'block');
-	}, 5000);
+	}, 100);
 	this.volunteer_graph_data = [];
 	console.log(this.model.volunteer_id);
 	this.fetch.weekly_volunteer_req(this.model.volunteer_id).subscribe(res => {
@@ -114,7 +143,7 @@ volunteer_graph_data:any=[];
 	setTimeout(function(){ 
 		$('#volunteer_activity_spinner').css('display', 'none');
 		$('#volunteer_activity_content').css('display', 'block');
-	}, 5000);
+	}, 100);
 	this.volunteer_graph_data = [];
 	this.fetch.monthly_volunteer_req(this.model.volunteer_id).subscribe(res => {
 		console.log(res.data);
@@ -147,7 +176,11 @@ volunteer_graph_data:any=[];
 	console.log($('input[name=switch-one]:checked', '#volunteer_form').val());
 	if($('input[name=switch-one]:checked', '#volunteer_form').val() == "no"){
 		this.monthly_donation_graph();
+		$('#v_week_blessing_div').css('display', 'none');
+		$('#v_month_blessing_div').css('display', 'block');
 	}else if($('input[name=switch-one]:checked', '#volunteer_form').val() == "yes"){
+		$('#v_month_blessing_div').css('display', 'none');
+		$('#v_week_blessing_div').css('display', 'block');
 		this.weekly_volunteer_graph();
 	}
   }

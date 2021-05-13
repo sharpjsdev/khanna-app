@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { FetchService } from '../fetch.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { IonInfiniteScroll } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 
 declare var $:any;
 
@@ -24,10 +25,19 @@ model:any={};
 	private route: ActivatedRoute,
 	private router: Router,
 	private fetch: FetchService,
+	public alertController: AlertController
   ) { } 
 
   ngOnInit() { 
+	
+  }
+  ionViewWillEnter(){
+	this.model.is_volunteer = 0;
+	if(localStorage.getItem('volunteer_approve') != null){
+		this.model.is_volunteer = localStorage.getItem('volunteer_approve');
+	}  
 	var lang_code = JSON.parse(localStorage.getItem('lang'));
+	console.log(lang_code);
 	this.fetch.getKeyText(lang_code).subscribe(res => {
 		let item1 = res.find(i => i.key_text === 'NEAREST_FOOD_DONORS');
 			this.model.key_text1 = item1[lang_code];
@@ -43,8 +53,17 @@ model:any={};
 			this.model.key_text7 = item7[lang_code];
 		let item8 = res.find(i => i.key_text === 'PUBLIC_TRANSPORT');
 			this.model.key_text8 = item8[lang_code];
-			
-	});
+		let item9 = res.find(i => i.key_text === 'HOME');
+			this.model.key_text9 = item9[lang_code];
+		let item10 = res.find(i => i.key_text === 'ACTIVITY');
+			this.model.key_text10 = item10[lang_code];
+		let item11 = res.find(i => i.key_text === 'VOLUNTEER');
+			this.model.key_text11 = item11[lang_code];
+		let item12 = res.find(i => i.key_text === 'NO_DONOR');
+			this.model.key_text12 = item12[lang_code];
+		let item13 = res.find(i => i.key_text === 'OKAY');
+		this.model.key_text13 = item13[lang_code];
+	}); 
 	var id = this.route.snapshot.params['id'];
 	this.model.receiver_id = this.route.snapshot.params['id'];
 	this.fetch.receiver_details(id).subscribe(res => {
@@ -61,11 +80,13 @@ model:any={};
 			$('#nearest_donors_spinner').css('display', 'none');
 			$('#nearest_donors_list').css('display', 'block');
 			console.log(response['data']);
+			if(response['data'].length == 0){
+				this.presentAlert();
+			}
 			this.model.donor_data = response['data'];
 		});
 	}); 
   }
-  
   async openModal() {
     const modal = await this.modalController.create({
       component: FilterContentPage,
@@ -78,20 +99,27 @@ model:any={};
 
     modal.onDidDismiss().then((dataReturned) => {
        if (dataReturned !== null) {
+		
         this.dataReturned = dataReturned.data;
         console.log('Modal Sent Data :'+ JSON.stringify(this.dataReturned));
-		this.model.food_type = this.dataReturned.filter_food_type;
-		this.model.no_of_person = this.dataReturned.filter_no_of_person;
-		this.model.receiver_data = JSON.stringify({'latitude': this.model.receiver_lat, 'longitude' : this.model.receiver_lon, 'city' : this.model.city, 'food_type' : this.model.food_type, 'needed_person' : this.model.no_of_person, 'skip' : 0});
-		this.fetch.nearest_donors(this.model.receiver_data).subscribe(response => {
-			/* var self = this;
-			 response['data'].forEach(function (i, val) {
-				var x = self.distace(self.model.receiver_lat, self.model.receiver_lon, i.latitude ,i.longitude);
-				response['data'][val]['times'] = x;
-			}); */
-			console.log(response['data']);
-			this.model.donor_data = response['data'];
-		});
+		if(this.dataReturned != "close"){
+			$('#nearest_donors_spinner').css('display', 'block');
+			$('#nearest_donors_list').css('display', 'none');
+			this.model.food_type = this.dataReturned.filter_food_type;
+			this.model.no_of_person = this.dataReturned.filter_no_of_person;
+			this.model.receiver_data = JSON.stringify({'latitude': this.model.receiver_lat, 'longitude' : this.model.receiver_lon, 'city' : this.model.city, 'food_type' : this.model.food_type, 'needed_person' : this.model.no_of_person, 'skip' : 0});
+			this.fetch.nearest_donors(this.model.receiver_data).subscribe(response => {
+				/* var self = this;
+				 response['data'].forEach(function (i, val) {
+					var x = self.distace(self.model.receiver_lat, self.model.receiver_lon, i.latitude ,i.longitude);
+					response['data'][val]['times'] = x;
+				}); */
+				$('#nearest_donors_spinner').css('display', 'none');
+				$('#nearest_donors_list').css('display', 'block');
+				console.log(response['data']);
+				this.model.donor_data = response['data'];
+			});
+		}
       } 
     });
     return await modal.present();
@@ -106,33 +134,42 @@ model:any={};
 		cssClass: 'custom_filter_modal',
 		componentProps: {
 			"paramID": 123,
-			"paramTitle": "Test Title"
+			"paramTitle": "Test Title" 
 		}
     });
 
     modal.onDidDismiss().then((dataReturned) => {
       if (dataReturned !== null) {
+
         this.dataReturned = dataReturned.data;
 		console.log('Modal Sent Data :'+ JSON.stringify(this.dataReturned));
-        if(this.dataReturned.distance != null){
-			//console.log(this.dataReturned.distance);
-			//this.model.donor_data.sort();
-			this.model.donor_data.sort((a: any, b: any) => {
-				const d1 = a.time_distance_transit.rows[0].elements[0].distance.text[0] as any;
-				const d2 = b.time_distance_transit.rows[0].elements[0].distance.text[0] as any;
-				console.log(d1 - d2);
-				return(d1 - d2);
-			});
-			console.log(this.model.donor_data);
-		}
-		if(this.dataReturned.time != null){
-			this.model.donor_data.sort((a: any, b: any) => {
-				const d1 = a.time_distance_transit.rows[0].elements[0].duration.text[0] as any;
-				const d2 = b.time_distance_transit.rows[0].elements[0].duration.text[0] as any;
-				console.log(d1 - d2);
-				return(d1 - d2);
-			});
-			console.log(this.model.donor_data);
+		if(this.dataReturned != "close"){
+			$('#nearest_donors_spinner').css('display', 'block');
+			$('#nearest_donors_list').css('display', 'none');
+			if(this.dataReturned.distance != null){
+				//console.log(this.dataReturned.distance);
+				//this.model.donor_data.sort();
+				$('#nearest_donors_spinner').css('display', 'none');
+				$('#nearest_donors_list').css('display', 'block');
+				this.model.donor_data.sort((a: any, b: any) => {
+					const d1 = a.time_distance_transit.rows[0].elements[0].distance.text[0] as any;
+					const d2 = b.time_distance_transit.rows[0].elements[0].distance.text[0] as any;
+					console.log(d1 - d2);
+					return(d1 - d2);
+				});
+				console.log(this.model.donor_data);
+			}
+			if(this.dataReturned.time != null){
+				$('#nearest_donors_spinner').css('display', 'none');
+				$('#nearest_donors_list').css('display', 'block');
+				this.model.donor_data.sort((a: any, b: any) => {
+					const d1 = a.time_distance_transit.rows[0].elements[0].duration.text[0] as any;
+					const d2 = b.time_distance_transit.rows[0].elements[0].duration.text[0] as any;
+					console.log(d1 - d2);
+					return(d1 - d2);
+				});
+				console.log(this.model.donor_data);
+			}
 		}
       }
     });
@@ -141,6 +178,7 @@ model:any={};
   }
   collect_food(x){
 	console.log(x);
+	
 	this.router.navigate(['/get-food-nearest-donors',JSON.stringify(x),this.model.receiver_lat,this.model.receiver_lon,this.model.receiver_id]);
   }
   loadData(event) {
@@ -169,5 +207,16 @@ model:any={};
   toggleInfiniteScroll() {
     this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
   }
+  async presentAlert() {
+	  console.log(this.model.key_text12);
+		const alert = await this.alertController.create({
+		  cssClass: 'my-custom-class',
+		  header: this.model.key_text12,
+		  buttons: [this.model.key_text13]
+		});
+
+		await alert.present();
+	  }
+
 
 }

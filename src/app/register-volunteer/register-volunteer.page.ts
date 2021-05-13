@@ -7,12 +7,13 @@ import { Platform } from '@ionic/angular';
 import { Location } from "@angular/common";
 import { HttpClient } from '@angular/common/http';
 import { FetchService } from '../fetch.service';
+import { StorageService } from '../storage.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-
+import { TermsConditionsPage } from '../modal/terms-conditions/terms-conditions.page';
 declare var $:any;
 
-@Component({
+@Component({ 
   selector: 'app-register-volunteer',
   templateUrl: './register-volunteer.page.html',
   styleUrls: ['./register-volunteer.page.scss'],
@@ -20,6 +21,7 @@ declare var $:any;
 export class RegisterVolunteerPage implements OnInit {
   dataReturned: any;
   model:any={};
+  user_:any={};
 	location_data:any=[];
 	volunteer_data:any=[];
   constructor(
@@ -30,6 +32,7 @@ export class RegisterVolunteerPage implements OnInit {
 	private route: ActivatedRoute,
 	private router: Router,
 	private fetch: FetchService,
+	private storage: StorageService,
 	public alertController: AlertController,
   ) {
 	this.platform.backButton.subscribeWithPriority(10, () => {
@@ -38,8 +41,18 @@ export class RegisterVolunteerPage implements OnInit {
 	  }
 
   ngOnInit() {
+	   this.model.search = false;
+  }
+
+  ionViewWillEnter(){
+	this.model.is_address = false;
+	this.user_.colony_name = '';
+	this.user_.city = '';
+	this.user_.state = '';
+	this.user_.country = '';
 	var lang_code = JSON.parse(localStorage.getItem('lang'));
-	this.fetch.getKeyText(lang_code).subscribe(res => {
+	//this.fetch.getKeyText(lang_code).subscribe(res => {
+		let res = this.storage.getScope();
 		let item1 = res.find(i => i.key_text === 'KHANAA_APP');
 			this.model.key_text1 = item1[lang_code];
 		let item2 = res.find(i => i.key_text === 'VOLUNTEER_TAG');
@@ -52,30 +65,90 @@ export class RegisterVolunteerPage implements OnInit {
 			this.model.key_text5 = item5[lang_code];
 		let item6 = res.find(i => i.key_text === 'REGISTER');
 			this.model.key_text6 = item6[lang_code];
-			
-	});
-	console.log(this.location_data);
+		let item7 = res.find(i => i.key_text === 'SAVE_CHANGES');
+			this.model.key_text7 = item7[lang_code];
+		let item8 = res.find(i => i.key_text === 'DEAR');
+			this.model.key_text8 = item8[lang_code];
+		let item9 = res.find(i => i.key_text === 'SHOP_NAME');
+			this.model.key_text9 = item9[lang_code];
+		let item10 = res.find(i => i.key_text === 'SHOP_LOCATION');
+			this.model.key_text10 = item10[lang_code];
+		let item11 = res.find(i => i.key_text === 'WORKING_HOURS');
+			this.model.key_text11 = item11[lang_code];
+		let item13 = res.find(i => i.key_text === 'TERMS_CONDITIONS');
+			this.model.terms = item13[lang_code];		
+	//});
+	//console.log(this.location_data);
+	$("#v_update").css("display","none");
 	this.model.volunteer_id = '';
 	var user_id = JSON.parse(localStorage.getItem('user_registerd'));
 	this.fetch.v_check(user_id).subscribe(res => {
 		//alert(res.data);
-		console.log(res.data);
+		console.log(res);
 		if(res.success == true){
+			$("#v_register").css("display","none");
+			$("#v_update").css("display","block");
 			this.model.volunteer_id = res.data;
 			this.fetch.v_edit(this.model.volunteer_id).subscribe(res => {
 				console.log(res.data);
 				this.volunteer_data = res.data;
+				this.model.is_address = true;
+				this.model.volunteer_id = res.data.id;
+				this.model.app_status = res.data.app_status == 1 ? true : false;
 			});
 		}else{
 			this.model.volunteer_id = JSON.parse(localStorage.getItem('volunteer_id'));
+			console.log(this.model.volunteer_id);
 			if(this.model.volunteer_id != null){
+				$("#v_register").css("display","none");
+				$("#v_update").css("display","block");
 				this.fetch.v_edit(this.model.volunteer_id).subscribe(res => {
-					console.log(res.data);
-					this.volunteer_data = res.data;
+					console.log(res);
+					if(res.success == true){
+						console.log(res.data);
+						this.model.app_status = res.data.app_status == 1 ? true : false;
+						this.volunteer_data = res.data;
+						this.model.is_address = true;
+					}
+				});
+			}else{
+				$("#v_register").css("display","block");
+				$("#v_update").css("display","none");
+				let data = JSON.stringify({'id': user_id});
+				this.fetch.profile(data).subscribe(res => {
+					console.log(res);
+					this.volunteer_data.username = res['username'];
+					this.volunteer_data.dob = res['dob'];
+				});
+				this.fetch.getUserLocationForDonation(user_id).subscribe(res => {
+					console.log(res);
+					if(res.success == true){
+						console.log(res);
+						this.user_.colony_name = res.data.colony_name;
+						this.user_.city = res.data.city;
+						this.user_.state = res.data.state;
+						this.user_.country = res.data.country;
+						this.user_.latitude = res.data.latitude;
+						this.user_.longitude = res.data.longitude;
+						this.user_.postalCode = res.data.postalCode;
+					}
 				});
 			}
 		}
 	});
+	
+	var lang_code = JSON.parse(localStorage.getItem('lang'));
+	this.fetch.volunteer_get_terms_conditions(lang_code).subscribe(res=>{
+        if(res.success){
+           this.model.content = res.data.content;
+        }else{
+          this.model.content = '';
+        }
+        
+    });
+  }
+  checkstatus(){
+	  console.log(this.model.app_status);
   }
   async openModalCurrentLocation() {
 	localStorage.setItem('set_confirm_location_route', JSON.stringify('register-volunteer'));	  
@@ -92,6 +165,7 @@ export class RegisterVolunteerPage implements OnInit {
       if (dataReturned !== null) {
         this.dataReturned = dataReturned.data;
 		this.location_data = JSON.parse(this.dataReturned);
+		this.model.is_address = true;
 		this.volunteer_data.latitude = this.location_data.latitude;
 		 this.volunteer_data.longitude = this.location_data.longitude;
 		 this.volunteer_data.colony_name = this.location_data.colony_name;
@@ -123,7 +197,26 @@ export class RegisterVolunteerPage implements OnInit {
 
     return await modal.present();
   }
-  
+  async openTermsAndConditions() {
+	
+    const modal = await this.modalController.create({
+      component: TermsConditionsPage,
+      cssClass: 'home_content_modal',
+      componentProps: {
+        "paramID": 123,
+        "paramTitle": "Test Title",
+		"content" : this.model.content
+      }
+    }); 
+
+    modal.onDidDismiss().then((dataReturned) => {
+		///$('#terms').attr('checked',true);
+      if (dataReturned !== null) {
+      }
+    });
+
+    return await modal.present();
+  }
   async openModalError() { 
     const modal = await this.modalController.create({
       component: LocationErrorContentPage,
@@ -151,36 +244,91 @@ export class RegisterVolunteerPage implements OnInit {
   }
   
   register(){
-	var username = $("#v_username").val();
-	var dob = $("#v_dob").val();
-	console.log(username);
-	console.log(dob);
-	if(username == ''){
-		this.presentAlert();
-	}else if(dob == ''){
-		this.presentAlert();
-	}else if(this.volunteer_data.latitude == '' || this.volunteer_data.longitude == '' || this.volunteer_data.colony_name == '' || this.volunteer_data.city == '' || this.volunteer_data.state == '' || this.volunteer_data.country == '' || this.volunteer_data.postalCode == ''){
-		this.presentAlert();
+	var shop_name = $("#shop_name").val();
+	var working_hours = $("#working_hours").val();
+	var shop_location = $("#shop_location").val();
+	var terms = $('#terms:checked').val();
+	this.model.search = true;
+	// console.log(username);
+	// console.log(dob);
+	if(shop_name == '' && working_hours == ''){
+		this.model.search = false;
+		$('#shop_name').addClass('error_border');
+		$('#working_hours').addClass('error_border');
+		$('.error_msg_working_hours').css('display','block');
+		$('.error_msg_shop_name').css('display','block');
+		$('.error_terms').hide();
+	}
+	else if(shop_name == ''){
+		this.model.search = false;
+		$('#shop_name').addClass('error_border');
+		$('#working_hours').removeClass('error_border');
+		$('.error_msg_working_hours').css('display','none');
+		$('.error_msg_shop_name').css('display','block');
+		$('.error_terms').hide();
+	}else if(working_hours == ''){
+		this.model.search = false;
+		$('#shop_name').removeClass('error_border');
+		$('#working_hours').addClass('error_border');
+		$('.error_msg_working_hours').css('display','block');
+		$('.error_msg_shop_name').css('display','none');
+		$('.error_terms').hide();
+	}else if(!(this.volunteer_data.latitude || this.volunteer_data.longitude || this.volunteer_data.colony_name || this.volunteer_data.city || this.volunteer_data.state || this.volunteer_data.country || this.volunteer_data.postalCode)){
+		// this.presentAlert();
+		this.model.search = false;
+		$('#shop_name').removeClass('error_border');
+		$('#working_hours').removeClass('error_border');
+		$('.error_msg_working_hours').css('display','none');
+		$('.error_msg_shop_name').css('display','none');
+		$('#shop_location').addClass('error_border');
+		$('.error_msg_shop_location').css('display','block');
+		$('.error_terms').hide();
+	}else if(terms == undefined){
+		this.model.search = false;
+		$('.error_msg_working_hours').css('display','none');
+		$('.error_msg_shop_name').css('display','none');
+		$('.error_msg_shop_location').css('display','none');
+		$('.error_terms').show();
 	}else{
+		$('#shop_name').removeClass('error_border');
+		$('#working_hours').removeClass('error_border');
+		$('.error_msg_working_hours').css('display','none');
+		$('.error_msg_shop_name').css('display','none');
+		$('#shop_location').removeClass('error_border');
+		$('.error_msg_shop_location').css('display','none');
+		$('.error_terms').hide();
 		if(this.model.volunteer_id == '' || this.model.volunteer_id == null){
-			let data = JSON.stringify({'app_user_id' : JSON.parse(localStorage.getItem('user_id')),'username' : username, 'dob' : dob, 'latitude' : this.volunteer_data.latitude, 'longitude' : this.volunteer_data.longitude,'colony_name' : this.volunteer_data.colony_name, 'city' : this.volunteer_data.city, 'state' : this.volunteer_data.state, 'country' : this.volunteer_data.country, 'postalCode' : this.volunteer_data.postalCode});
+			if(this.volunteer_data.latitude === undefined && this.volunteer_data.longitude === undefined && this.volunteer_data.colony_name === undefined && this.volunteer_data.city === undefined && this.volunteer_data.state === undefined && this.volunteer_data.country === undefined && this.volunteer_data.postalCode === undefined){
+				this.volunteer_data.colony_name = this.user_.colony_name;
+				this.volunteer_data.city = this.user_.city;
+				this.volunteer_data.state = this.user_.state;
+				this.volunteer_data.country = this.user_.country;
+				this.volunteer_data.latitude = this.user_.latitude;
+				this.volunteer_data.longitude =	this.user_.longitude;
+				this.volunteer_data.postalCode = this.user_.postalCode;
+			}
+			var app_status = 0;
+			let data = JSON.stringify({'app_user_id' : JSON.parse(localStorage.getItem('user_id')),'username' : this.volunteer_data.username, 'dob' : this.volunteer_data.dob, 'latitude' : this.volunteer_data.latitude, 'longitude' : this.volunteer_data.longitude,'colony_name' : this.volunteer_data.colony_name, 'city' : this.volunteer_data.city, 'state' : this.volunteer_data.state, 'country' : this.volunteer_data.country, 'postalCode' : this.volunteer_data.postalCode,'status' : 0, 'shop_stall_name' : shop_name, 'working_hour' : working_hours,'app_status':app_status, 'countof_closeapp' : this.volunteer_data.countof_closeapp});
 			this.fetch.register_volunteer(data).subscribe(res => {
 				//alert(JSON.stringify(res));
-				if(res.success == true){
+				//if(res.success == true){
+					this.model.search = false;
 					localStorage.setItem('volunteer_id', res.volunteer_id);  
 					this.successFullRegistration();
 					//this.router.navigate(['/home']);
-				}
+				//}
 			});
 		}else{
-			let data = JSON.stringify({'id' : this.model.volunteer_id,'app_user_id' : JSON.parse(localStorage.getItem('user_id')),'username' : username, 'dob' : dob, 'latitude' : this.volunteer_data.latitude, 'longitude' : this.volunteer_data.longitude,'colony_name' : this.volunteer_data.colony_name, 'city' : this.volunteer_data.city, 'state' : this.volunteer_data.state, 'country' : this.volunteer_data.country, 'postalCode' : this.volunteer_data.postalCode});
+			var app_status = 0;
+			let data = JSON.stringify({'id' : this.model.volunteer_id,'app_user_id' : JSON.parse(localStorage.getItem('user_id')),'username' : this.volunteer_data.username, 'dob' : this.volunteer_data.dob, 'latitude' : this.volunteer_data.latitude, 'longitude' : this.volunteer_data.longitude,'colony_name' : this.volunteer_data.colony_name, 'city' : this.volunteer_data.city, 'state' : this.volunteer_data.state, 'country' : this.volunteer_data.country, 'postalCode' : this.volunteer_data.postalCode,'status' : 0, 'shop_stall_name' : shop_name, 'working_hour' : working_hours,'app_status':app_status,'countof_closeapp' : this.volunteer_data.countof_closeapp});
 			console.log(data);
 			this.fetch.update_volunteer(data).subscribe(res => {
 				//alert(JSON.stringify(res));
-				if(res.success == true){
+				//if(res.success == true){
+					this.model.search = false;
 					localStorage.setItem('volunteer_id', res.volunteer_id);  
 					this.router.navigate(['/home']);
-				}
+				//}
 			});
 		}
 	}

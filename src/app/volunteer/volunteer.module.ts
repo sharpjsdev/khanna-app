@@ -9,7 +9,7 @@ import { VolunteerPageRoutingModule } from './volunteer-routing.module';
 import { VolunteerPage } from './volunteer.page';
 
 import { PipesModule } from '../pipes/pipes.module';
-
+import { CaptchaComponent } from '../captcha/captcha.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -18,6 +18,6 @@ import { PipesModule } from '../pipes/pipes.module';
 	PipesModule,
     VolunteerPageRoutingModule
   ],
-  declarations: [VolunteerPage]
+  declarations: [VolunteerPage,CaptchaComponent]
 })
 export class VolunteerPageModule {}

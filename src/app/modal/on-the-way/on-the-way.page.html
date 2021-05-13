@@ -1,0 +1,35 @@
+<ion-content class="current_location_page_show">
+  <div class="map current_location">
+		<img src="assets/images/close_btn.svg" style="float:right;margin-right:20px;" (click)="closeModal()">
+	</div>
+  <ion-searchbar [(ngModel)]="autocomplete.start" placeholder="Source" [showCancelButton]="true"   (ionInput)="updateSources()" (ionCancel)="dismissSource()"></ion-searchbar>
+    <ion-list style="position: absolute;z-index: 999;">
+      <ion-item *ngFor="let item of sources" tappable   (click)="chooseSource(item)">
+        {{ item }}
+      </ion-item>
+    </ion-list>
+    <ion-searchbar style="margin-bottom:20px;" [(ngModel)]="autocomplete.end" placeholder="Destination" [showCancelButton]="true"   (ionInput)="updateDestinations()" (ionCancel)="dismissDestination()"></ion-searchbar>
+    <ion-list style="position: absolute;z-index: 999;">
+      <ion-item *ngFor="let item of destination" tappable   (click)="chooseDestination(item)">
+        {{ item }}
+      </ion-item>
+    </ion-list>
+	<!-- <div class="map current_location">
+		<img src="assets/images/close_btn.svg" class="close_btn" (click)="closeModal()">
+	</div> -->
+	<div #map id="map"></div> 
+	
+  
+</ion-content>
+  
+<ion-footer class="current_location_page_show">
+    <ion-toolbar>    
+		<div class="app_button">
+			<span (click)="current_location()">
+				<button class="app_btn">{{model.key_text1}}</button>
+			</span>
+			<!--  <button class="app_btn" (click)="confirm_location()">Confirm Location</button> -->
+		</div>
+    </ion-toolbar>
+</ion-footer>
+  

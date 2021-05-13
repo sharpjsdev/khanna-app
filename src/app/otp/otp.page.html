@@ -14,14 +14,14 @@
   <div class="ion-padding">
     <div class="app_input_text center_input vertical_center">
       
-      <input type="number" placeholder="Please Enter 1234" id="check_otp" [(ngModel)]='value' (input)='check_otp($event.target.value)'>
+      <input type="number" placeholder="OTP" id="check_otp" [(ngModel)]='value' (input)='check_otp($event.target.value)'>
       
       <img src="assets/images/done.svg" class="green_check" id="right" style="display:none;">
       <img src="assets/images/wrong_sign.svg" class="green_check" id="wrong" style="display:none;">
       
       <div class="input_text_bottom">
         <div class="otp_left">
-          <input type="checkbox" id="fruit1" name="fruit-1" value="Apple">
+          <input type="checkbox" id="fruit1" name="fruit-1" value="Apple" (click)="fill_automatically()">
           <label for="fruit1" class="light light_grey size_12 left_space_2">{{model.key_text4}}</label>
         </div>
         <div class="otp_right">

@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { GetFoodNearestDonorsPageRoutingModule } from './get-food-nearest-donors-routing.module';
 
 import { GetFoodNearestDonorsPage } from './get-food-nearest-donors.page';
-
+import { CaptchaComponent } from '../captcha/captcha.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +15,6 @@ import { GetFoodNearestDonorsPage } from './get-food-nearest-donors.page';
     IonicModule,
     GetFoodNearestDonorsPageRoutingModule
   ],
-  declarations: [GetFoodNearestDonorsPage]
+  declarations: [GetFoodNearestDonorsPage,CaptchaComponent]
 })
 export class GetFoodNearestDonorsPageModule {}

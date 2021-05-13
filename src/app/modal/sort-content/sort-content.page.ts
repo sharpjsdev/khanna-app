@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FilterContentPage } from '../otp/filter-content/filter-content.page';
 import { FetchService } from '../../fetch.service';
+import { StorageService } from '../../storage.service';
 import { 
   ModalController, 
   NavParams 
@@ -17,12 +18,14 @@ export class SortContentPage implements OnInit {
   constructor(
     private modalController: ModalController,
     private navParams: NavParams,
-	private fetch: FetchService
+	  private fetch: FetchService,
+    private storage: StorageService
   ) { }
 
   ngOnInit() {
 	var lang_code = JSON.parse(localStorage.getItem('lang'));
-	this.fetch.getKeyText(lang_code).subscribe(res => {
+	//this.fetch.getKeyText(lang_code).subscribe(res => {
+    let res = this.storage.getScope();
 		let item1 = res.find(i => i.key_text === 'SORT');
 			this.model.key_text1 = item1[lang_code];
 		let item2 = res.find(i => i.key_text === 'FILTER');
@@ -32,13 +35,13 @@ export class SortContentPage implements OnInit {
 		let item4 = res.find(i => i.key_text === 'BY_TIME');
 			this.model.key_text4 = item4[lang_code];
 		let item5 = res.find(i => i.key_text === 'SAVE_CHANGES');
-			this.model.key_text5 = item4[lang_code];
+			this.model.key_text5 = item5[lang_code];
 		
-	});
+	//});
   }
 
   async closeModal() {
-    const onClosedData: string = "Wrapped Up!";
+    const onClosedData: string = "close";
     await this.modalController.dismiss(onClosedData);
   }
   

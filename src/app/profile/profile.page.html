@@ -8,11 +8,13 @@
 
     <div class="profile app_input_text">      
       <input type="text" id="profile_username" value="{{model.username}}" placeholder="{{model.key_username}}">      
-    </div>  
+    </div>
+    <span class="error" id="username">This field is required</span>  
     <div class="profile app_input_text center_input">    
       <input type="text" disabled>  
-      <ion-datetime placeholder="{{model.key_dob}}" class="regular" id="profile_dob" value="{{model.dob}}" displayFormat="MM / DD / YYYY"></ion-datetime>         
+      <ion-datetime placeholder="{{model.key_dob}}" class="regular" id="profile_dob" value="{{model.dob}}" max="{{ model.latest_date }}" displayFormat="MMMM DD, YYYY"></ion-datetime>         
     </div> 
+    <span class="error" id="dob">This field is required</span>  
     <br><br>
     <div class="grey" style="margin-left: 23px;">{{model.key_food_type}} : </div>
 
@@ -20,8 +22,8 @@
       <button class="grey regular btn2" id="profile_food_1" (click)="food_type(1)">{{model.key_veg}}.</button>
       <button class="grey regular btn2" id="profile_food_2" (click)="food_type(2)">{{model.key_non_veg}}.</button>
       <button class="grey regular btn2" id="profile_food_3" (click)="food_type(3)">{{model.key_both}}</button>
-    </div>
-	
+    </div> 
+    <span class="error" id="foodtype">This field is required</span>  
   </div>
 
 </ion-content>
@@ -32,7 +34,8 @@
       <!-- <ion-router-link href="">
         <button class="app_btn">Save Changes</button>
       </ion-router-link> -->
-	   <button class="app_btn" (click)="update_profile()">{{model.key_save_changes}}</button>
+	   <button class="app_btn" (click)="update_profile()" *ngIf="!model.search">{{model.key_save_changes}}</button>
+     <button class="app_btn" *ngIf="model.search"><ion-spinner class="current_location_sppiner"></ion-spinner></button>
     </div>
   </ion-toolbar>
 </ion-footer>

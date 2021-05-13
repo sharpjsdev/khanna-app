@@ -1,0 +1,40 @@
+<!-- <center class="current_location_spinner_position" id="add_location_spinner"><ion-spinner class="current_location_sppiner"></ion-spinner></center> -->
+<ion-header>
+  
+   
+    <ion-searchbar [(ngModel)]="autocomplete.start" placeholder="Source" [showCancelButton]="true"   (ionInput)="updateSources()" (ionCancel)="dismissSource()"></ion-searchbar>
+    <ion-list style="position: absolute;z-index: 999;">
+      <ion-item *ngFor="let item of sources" tappable   (click)="chooseSource(item)">
+        {{ item }}
+      </ion-item>
+    </ion-list>
+    <ion-searchbar [(ngModel)]="autocomplete.end" placeholder="Destination" [showCancelButton]="true"   (ionInput)="updateDestinations()" (ionCancel)="dismissDestination()"></ion-searchbar>
+    <ion-list style="position: absolute;z-index: 999;">
+      <ion-item *ngFor="let item of destination" tappable   (click)="chooseDestination(item)">
+        {{ item }}
+      </ion-item>
+    </ion-list>
+    <ion-row>
+      <ion-col>
+        <input type="radio"/>As a receiver
+      </ion-col>
+      <ion-col>
+        <input type="radio"/>As a donar
+      </ion-col>
+    </ion-row>
+</ion-header>
+<ion-content class="current_location_page_show">
+  
+  <div class="map edit">
+    <a (click)="close_btn()">
+      <img src="assets/images/close_btn.svg" class="close_btn">
+    </a>
+    
+  </div>
+  <div #map id="map"></div>
+  
+  
+  </ion-content>
+  
+  
+  

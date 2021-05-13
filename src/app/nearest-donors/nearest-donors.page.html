@@ -22,7 +22,7 @@
       {{model.key_text2}} <img src="assets/images/icon_sort.svg">
     </ion-col>
     <ion-col size="6" (click)="openModal()">
-      Filter <img src="assets/images/icon_filter.svg">
+      {{model.key_text3}} <img src="assets/images/icon_filter.svg">
     </ion-col>
   </ion-row>
 </div>
@@ -84,3 +84,24 @@
 </div>
 <center class="current_location_spinner_position" id="nearest_donors_spinner"><ion-spinner class="current_location_sppiner"></ion-spinner></center>
 </ion-content>
+<ion-footer>
+  <ion-toolbar>    
+    <ion-segment value="home" color="transparent">
+      <ion-segment-button value="home" [routerLink]="['/home']">
+        <img src="assets/images/red_footer_home.svg">
+        <!--<ion-img src="assets/images/grey_footer_home.svg"></ion-img>-->
+        <ion-label class="size_12 medium" color="tertiary">{{model.key_text9}}</ion-label>    
+      </ion-segment-button>
+      <ion-segment-button value="activity" [routerLink]="['/activity-normal']">
+        <!--<ion-img src="assets/images/red_footer_activity.svg"></ion-img>-->
+        <img src="assets/images/grey_footer_activity.svg">
+        <ion-label class="size_12 medium">{{model.key_text10}}</ion-label>    
+      </ion-segment-button>
+      <ion-segment-button value="volunteer" [routerLink]="model.is_volunteer== 1 ? ['/volunteer'] : ['/volunteer-request']">
+        <!--<ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>-->
+        <img src="assets/images/grey_footer_volunteer.svg">
+        <ion-label class="size_12 medium">{{model.key_text11}}</ion-label>    
+      </ion-segment-button>
+    </ion-segment>  
+  </ion-toolbar>
+</ion-footer>

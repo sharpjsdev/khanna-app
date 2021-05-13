@@ -1,45 +1,52 @@
-<ion-header class="ion-no-border ion-padding">
+<!-- <ion-header class="ion-no-border ion-padding">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button>
         <img src="assets/images/icon_menu.svg">
       </ion-menu-button>
     </ion-buttons>
-    <!--<ion-title>home</ion-title>-->
-    <ion-buttons slot="end">      
+   
+    <ion-buttons slot="end" (click)="openModalNotification()">
+		<span *ngIf="notification.length>0" style="position: absolute;height: 10px;width: 10px;background-color: #000;border-radius: 50%;color: #fff;
+			top: -3px;
+			right: 3px;
+			text-align: center;"></span>       
         <img src="assets/images/icon_notification.svg">
     </ion-buttons>
   </ion-toolbar>
-</ion-header> 
-
+</ion-header>  -->
+<app-captcha></app-captcha>
 <ion-content>
-	<div class="ion-padding theme_width" id="      ">
+	<div class="ion-padding theme_width" id="volunteer_activity_content">
 		<div class="activity_graph">
 			<form class="form" id="volunteer_form">     
 				<div class="switch-field" (change)="state()">
 					<input type="radio" id="radio-one" name="switch-one" value="yes" checked/>
-					<label for="radio-one" class="regular size_12">Weekly</label>
+					<label for="radio-one" class="regular size_12">{{model.key_text1}}</label>
 					<input type="radio" id="radio-two" name="switch-one" value="no" />
-					<label for="radio-two" class="regular size_12">Monthly</label>
+					<label for="radio-two" class="regular size_12">{{model.key_text2}}</label>
 				</div> 
 			</form>   
 			<div id="highcharts_v" style="width:100%;"></div>
 			<div class="total_box">
 				<div class="graph_total">
-					<div class="graph_total_single size_12">
-						Blessings this {{model.blessing_quote}} -&nbsp;&nbsp;&nbsp;<span class="green">{{model.blessing_this_week}}</span>
+					<div class="graph_total_single size_12" id="v_week_blessing_div">
+						{{model.key_text3}} -&nbsp;&nbsp;&nbsp;<span class="green">{{model.blessing_this_week}}</span>
+					</div>
+					<div class="graph_total_single size_12" id="v_month_blessing_div">
+						{{model.key_text4}} -&nbsp;&nbsp;&nbsp;<span class="green">{{model.blessing_this_week}}</span>
 					</div>
 					<div class="graph_total_single size_12">
-						Total Blessings -&nbsp;&nbsp;&nbsp;<span class="green">{{model.total_blessings}}</span>
+						{{model.key_text8}} -&nbsp;&nbsp;&nbsp;<span class="green">{{model.total_blessings}}</span>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="top_volunteers">
-			<div class="top_volunteers_heading size_18">Top Volunteers from your city</div>
+			<div class="top_volunteers_heading size_18">{{model.key_text9}}</div>
 			<div class="top_volunteer_single" *ngFor="let x of model.top_volunteers; let i = index;">
 				<div class="top_volunteer_name">{{i+1}}. {{x.name}}</div>
-				<div class="donations_count green">{{x.cnt}} donations</div>
+				<div class="donations_count green">{{x.cnt}} {{model.key_text10}}</div>
 			</div>
 			<!--<div class="top_volunteer_single">
 				<div class="top_volunteer_name">2. Chetan Sable</div>
@@ -52,21 +59,21 @@
 
 <ion-footer>
 	<ion-toolbar>     
-		<ion-segment color="tertiary" value="activity">
+		<ion-segment color="transparent" value="activity">
 			<ion-segment-button value="home" [routerLink]="['/home']">
 				<!--<img src="assets/images/red_footer_home.svg">-->
 				<ion-img src="assets/images/grey_footer_home.svg"></ion-img>
-				<ion-label class="size_12 medium">Home</ion-label>    
+				<ion-label class="size_12 medium">{{model.key_text5}}</ion-label>    
 			</ion-segment-button>
 			<ion-segment-button value="activity">
 				<ion-img src="assets/images/red_footer_activity.svg"></ion-img>
 				<!--<img src="assets/images/grey_footer_activity.svg">-->
-				<ion-label class="size_12 medium">Activity</ion-label>    
+				<ion-label class="size_12 medium" color="tertiary">{{model.key_text6}}</ion-label>    
 			</ion-segment-button>        
 			<ion-segment-button value="volunteer" [routerLink]="['/volunteer']">            
 				<!--<ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>-->
 				<img src="assets/images/grey_footer_volunteer.svg">
-			<ion-label class="size_12 medium">Volunteer</ion-label>                
+			<ion-label class="size_12 medium">{{model.key_text7}}</ion-label>                
 			</ion-segment-button>        
 		</ion-segment>      
 	</ion-toolbar>

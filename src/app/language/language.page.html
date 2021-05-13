@@ -8,7 +8,7 @@
     <ion-radio-group (ionChange)="select_lang($event)">
       <ion-item *ngFor="let x of model.lang_data">
         <ion-label>{{x.translate}} <br> <span>{{x.language}}</span></ion-label>
-        <ion-radio slot="start" id="language_{{x.id}}" value="{{x.language_code}}" (ionChange)="radioGroupChange($event)"></ion-radio>
+        <ion-radio slot="start" id="language_{{x.id}}" (ngModel)="model.language" value="{{x.language_code}}" (ionChange)="radioGroupChange($event)"></ion-radio>
       </ion-item>
     </ion-radio-group>   
   </ion-list>  

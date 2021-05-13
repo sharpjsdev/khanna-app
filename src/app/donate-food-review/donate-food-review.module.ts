@@ -9,7 +9,7 @@ import { DonateFoodReviewPageRoutingModule } from './donate-food-review-routing.
 import { DonateFoodReviewPage } from './donate-food-review.page';
 
 import { PipesModule } from '../pipes/pipes.module';
-
+import { CaptchaComponent } from '../captcha/captcha.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -18,6 +18,6 @@ import { PipesModule } from '../pipes/pipes.module';
 	PipesModule,
     DonateFoodReviewPageRoutingModule
   ],
-  declarations: [DonateFoodReviewPage]
+  declarations: [DonateFoodReviewPage,CaptchaComponent]
 })
 export class DonateFoodReviewPageModule {}

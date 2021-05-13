@@ -1,0 +1,49 @@
+<ion-content class="modal_content">
+  <div class="ion-padding">
+      <img (click)="closeModal('Wrapped Up!')" src="assets/images/close_btn.svg" class="close_btn">    
+    
+      <div class="modal_inner">      
+      <br>
+      <div class="medium size_18 green center">
+        <div *ngIf="this.data.data != null">
+          <span *ngIf="no_of_person <= data.data.total_food_for && data.data.food_type == 1">{{ model.key_text1 }} {{ model.receiver_username }} {{ model.key_text2 }} {{ model.key_text4 }} {{ model.key_text6 }} {{ no_of_person }} {{ model.key_text3 }} {{ model.key_text7 }} {{ model.donar_username }} </span>
+          <span *ngIf="no_of_person > data.data.total_food_for && data.data.food_type == 1">{{ model.key_text1 }} {{ model.receiver_username }} {{ model.key_text4 }} {{ model.key_text6 }} {{ data.data.total_food_for }} {{ model.key_text3 }} {{ model.key_text8 }} {{ model.donar_username }}, {{ model.key_text9 }} {{ no_of_person-data.data.total_food_for }} {{ model.key_text10 }}</span>
+          <span *ngIf="no_of_person <= data.data.total_food_for && data.data.food_type == 2">{{ model.key_text1 }} {{ model.receiver_username }} {{ model.key_text2 }} {{ model.key_text5 }} {{ model.key_text6 }} {{ no_of_person }} {{ model.key_text3 }} {{ model.key_text7 }} {{ model.donar_username }} </span>
+          <span *ngIf="no_of_person > data.data.total_food_for && data.data.food_type == 2">{{ model.key_text1 }} {{ model.receiver_username }} {{ model.key_text5 }} {{ model.key_text6 }} {{ data.data.total_food_for }} {{ model.key_text3 }} {{ model.key_text8 }} {{ model.donar_username }}, {{ model.key_text9 }} {{ no_of_person-data.data.total_food_for }} {{ model.key_text10 }}</span>
+          <span *ngIf="no_of_person <= data.data.total_food_for && data.data.food_type == 3">{{ model.key_text1 }} {{ model.receiver_username }} {{ model.key_text13 }} <span *ngIf="data.data.food_type == 1">{{ model.key_text4 }}</span> <span *ngIf="data.data.food_type == 2">{{ model.key_text5 }}</span> {{ model.key_text6 }} {{ no_of_person }} {{ model.key_text3 }} {{ model.key_text7 }} {{ model.donar_username }} </span>
+          <span *ngIf="no_of_person > data.data.total_food_for && data.data.food_type == 3">{{ model.key_text1 }} {{ model.receiver_username }} {{ model.key_text13 }} <span *ngIf="data.data.food_type == 1">{{ model.key_text4 }}</span> <span *ngIf="data.data.food_type == 2">{{ model.key_text5 }}</span> {{ model.key_text6 }} {{ data.data.total_food_for }} {{ model.key_text3 }} {{ model.key_text8 }} {{ model.donar_username }}, {{ model.key_text9 }} {{ no_of_person-data.data.total_food_for }} {{ model.key_text10 }}</span>
+        </div>
+      
+      <span *ngIf="this.data.data == null && model.notify == 0 && this.location_data != null" class="custom_new_food_btn">
+          {{ model.key_text14 }} {{ distance }} {{ model.key_text15 }}<br><br>
+          <button class="app_btn" (click)="accept_food_request()" *ngIf="!model.search">{{ model.key_text16 }}</button>
+          <button class="app_btn" (click)="search_again()" *ngIf="!model.search">{{ model.key_text17 }}</button>
+      </span>
+      <span *ngIf="this.data.data == null && model.notify == 0 && this.ontheway_data.length>0" class="custom_new_food_btn">
+        {{ model.key_text19 }}<br><br>
+        
+    </span>
+      <span *ngIf="model.notify == 1">
+        {{ model.key_text18 }}
+      </span>
+      </div>
+      <div class="app_button" *ngIf="this.data.data != null" style="margin-top: 85px;">
+        <ion-router-link (click)="accept_food()" *ngIf="!model.search">
+          <button class="app_btn">{{ model.key_text12 }}</button>
+        </ion-router-link>
+      </div>
+      <div class="app_button" >
+        <button class="app_btn"  *ngIf="model.search"><ion-spinner class="current_location_sppiner"></ion-spinner></button>
+      </div>
+      <!-- <br><br> -->
+      <!-- <div class="medium size_16 center" style="max-width: 240px; width: 100%; margin: 0 auto;">
+        {{model.key_text2}}
+      </div> -->
+	  <!-- <br> -->
+      <!-- <div class="medium size_16 center" style="max-width: 240px; width: 100%; margin: 0 auto;">
+        {{model.key_text3}}
+      </div> -->
+    </div>
+
+  </div> 
+</ion-content> 

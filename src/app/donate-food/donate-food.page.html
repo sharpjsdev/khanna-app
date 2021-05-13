@@ -1,46 +1,79 @@
-<ion-header class="ion-no-border ion-padding">
+<!-- <ion-header class="ion-no-border ion-padding">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button>
         <img src="assets/images/icon_menu.svg">
       </ion-menu-button>
     </ion-buttons>
-    <!--<ion-title>home</ion-title>-->
-    <ion-buttons slot="end">      
+   
+    <ion-buttons slot="end" (click)="openModalNotification()">
+      <span *ngIf="notification.length>0" style="position: absolute;height: 10px;width: 10px;background-color: #000;border-radius: 50%;color: #fff;
+        top: -3px;
+        right: 3px;
+        text-align: center;"></span>       
         <img src="assets/images/icon_notification.svg">
     </ion-buttons>
   </ion-toolbar>
-</ion-header>
-
+</ion-header> -->
+ <app-captcha></app-captcha>
 <ion-content>
 <div class="ion-padding theme_width"> 
   <div class="search_food_bg">
     <div class="search_single">
       <div class="left_space">{{model.key_text1}} :</div>
       <div class="search_food_buttons">
-        <div class="btn-group">
+        <p id="error_msg" style="color:red;display:none;">Please choose donation address.</p>
+        <!-- <div class="btn-group">
           <button class="grey regular btn1" id="donate_address_type_1" (click)="address_type(1)">{{model.key_text2}}</button>
           <button class="grey regular btn1" id="donate_address_type_2" (click)="address_type(2)">{{model.key_text3}}</button>
-        </div>
-      </div>  
-      <div class="size_13 green medium left_space" *ngIf="location_data != null">
-        <span *ngIf="location_data.house_no != null">{{location_data.house_no}}, {{location_data.landmark}},</span> {{location_data.colony_name}},<br>
-        {{location_data.city}}, {{location_data.state}}<br>
-        {{location_data.postalCode}}, {{location_data.country}}
-      </div>
-      <br>
-      <a href="donate-food-add-location">
+          <button class="grey regular btn1" id="donate_address_type_3" (click)="address_type(3)">{{ model.key_text12 }}</button>
+        </div> -->
+      </div> 
+        
+      <div class="row size_13 green medium left_space">
+          <ion-radio-group value="" class="donate_food_select_address">
+            <ion-item *ngFor="let x of saved_address; let i=index" (click)="selected_address(x)">
+              <ion-label>                
+                <div style="width: 93%; margin-top:15px;">
+                  <div class="medium green size_16">{{ x.adress_type }}</div>
+                  <div class="saved address regular">
+                    <!-- H.No. {{x.house_no}}, {{x.landmark}},  -->
+                    {{x.colony_name}}<br>
+                    <!-- {{x.city}} - {{x.postalCode}}<br>
+                    {{x.state}}  -->
+                  </div>
+                </div>
+              </ion-label>
+              <ion-radio slot="start" name="selected_address" value="{{x.adress_type}}"></ion-radio>
+            </ion-item>
+          </ion-radio-group>         
+      
+      <br/>
+     
+      <!-- <a href="donate-food-add-location">
         <div class="grey_font size_12 regular left_space">
           + {{model.key_text4}}
         </div>
-      </a>
-      <br><br>
+      </a> -->
+      <br/><br/>
       
-        <div class="location_input">
-          <img src="assets/images/food_location_icon.svg" style="left: 12px;">
-          <input type="text" placeholder="Current Location" (click)="openModalCurrentLocation()">
+        <div>
+          <div class="location_input">
+            <!-- <button class="btn1" type="button" (click)="openModalCurrentLocation()">
+              <img src="assets/images/food_location_icon.svg" style="left: 12px;">{{model.key_text8}}
+            </button> -->
+            <img src="assets/images/food_location_icon.svg" style="left: 12px;">
+           <input class="btn1" id="donate_address_type_3" type="text" placeholder="{{model.key_text8}}" (click)="openModalCurrentLocation()">
+          </div>
         </div>
-      
+        <br/>
+        <div class="size_13 green medium left_space addr-4" *ngIf="location_data && location_data != null">
+          <!-- H.No. {{location_data.house_no}},  -->
+          {{location_data.colony_name}}<br>
+          <!-- {{location_data.city}} - {{location_data.postalCode}}<br>
+          {{location_data.state}}  -->
+        </div>
+        </div>
     </div>
 
 
@@ -55,24 +88,25 @@
       <!-- <ion-router-link href="donate-food-members">
         <button class="app_btn">Proceed</button>
       </ion-router-link> -->
-	  <button class="app_btn" (click)="proceed()">Proceed</button>
+	  <button class="app_btn" (click)="proceed()" *ngIf="!model.search">{{model.key_text7}}</button>
+    <button class="app_btn" *ngIf="model.search"><ion-spinner class="current_location_sppiner"></ion-spinner></button>
     </div>
     <br>
-    <ion-segment value="home">
+    <ion-segment value="home" color="transparent">
       <ion-segment-button value="home" [routerLink]="['/home']">
         <img src="assets/images/red_footer_home.svg">
         <!--<ion-img src="assets/images/grey_footer_home.svg"></ion-img>-->
-        <ion-label class="size_12 medium">Home</ion-label>    
+        <ion-label class="size_12 medium" color="tertiary">{{model.key_text11}}</ion-label>    
       </ion-segment-button>
       <ion-segment-button value="activity" [routerLink]="['/activity-normal']">
         <!--<ion-img src="assets/images/red_footer_activity.svg"></ion-img>-->
         <img src="assets/images/grey_footer_activity.svg">
-        <ion-label class="size_12 medium">Activity</ion-label>    
+        <ion-label class="size_12 medium">{{model.key_text9}}</ion-label>    
       </ion-segment-button>
-      <ion-segment-button value="volunteer" [routerLink]="['/volunteer']">
+      <ion-segment-button value="volunteer" [routerLink]="model.is_volunteer== 1 ? ['/volunteer'] : ['/volunteer-request']">
         <!--<ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>-->
         <img src="assets/images/grey_footer_volunteer.svg">
-        <ion-label class="size_12 medium">Volunteer</ion-label>    
+        <ion-label class="size_12 medium">{{model.key_text10}}</ion-label>    
       </ion-segment-button>
     </ion-segment>      
   </ion-toolbar>

@@ -1,3 +1,4 @@
+
 <ion-content>
 	<div class="big_header">
 		<div class="ion-padding">
@@ -5,55 +6,94 @@
 				{{model.key_text1}}
 			</div>
 			<div class="big_header_bottom regular size_18">
-				{{model.key_text2}} 
+				{{ model.key_text8 }} {{ volunteer_data.username }}, {{model.key_text2}} 
 			</div>
 		</div>
 	</div>
   
 	<div class="ion-padding">
 		<div class="register_volunteer app_input_text center_input">
-		  <img src="assets/images/icon_user_input.svg">
-		  <input type="text" placeholder="{{model.key_text4}}" id="v_username" value="{{volunteer_data.username}}">      
+		  	<img src="assets/images/icon_user_input.svg">
+		  <input type="text" placeholder="{{model.key_text9}}" id="shop_name" value="{{volunteer_data.shop_stall_name}}">
+		  <span class="error_msg_shop_name">This Field is required</span>        
 		</div>  
-		
 		<div class="register_volunteer app_input_text center_input">
+			<img src="assets/images/icon_user_input.svg">
+			<input type="number" min="1" max="2" placeholder="{{model.key_text11}}" id="working_hours" value="{{volunteer_data.working_hour}}">
+			<span class="error_msg_working_hours">This Field is required</span>        
+		</div>
+		  <!-- <div class="register_volunteer app_input_text center_input">
+			<img src="assets/images/icon_user_input.svg">
+			<input type="number" placeholder="{{model.key_text10}}" id="v_username" value="{{volunteer_data.username}}">      
+		  </div> -->
+		<!-- <div class="register_volunteer app_input_text center_input">
 		  <img src="assets/images/icon_calendar_input.svg">
 		  <input type="text" disabled>  
-		  <ion-datetime placeholder="{{model.key_text3}}" class="regular" id="v_dob" displayFormat="MM / DD / YYYY" value="{{volunteer_data.dob}}"></ion-datetime>    
-		</div> 
+		  <ion-datetime placeholder="{{model.key_text}}" class="regular" id="v_dob" displayFormat="MM / DD / YYYY" value="{{volunteer_data.dob}}"></ion-datetime>    
+		</div>  -->
 
 		<div class="register_volunteer app_input_text center_input">
 		  <img src="assets/images/food_location_icon.svg">
-		  <input type="text" placeholder="{{model.key_text5}}" (click)="openModalCurrentLocation()">      
+		  <input type="text" id="shop_location" placeholder="{{model.key_text10}}" (click)="openModalCurrentLocation()">   
+		  <span class="error_msg_shop_location">Please select a location</span> 
 		</div> 
+
 		<!-- <div class="size_13 green medium left_space" *ngIf="location_data != null">
 			{{location_data.colony_name}},<br>
 			{{location_data.city}}, {{location_data.state}}<br>
 			{{location_data.postalCode}}, {{location_data.country}}
 		</div>	 -->
-		<div class="vfd_location" style="margin: 13px 23px;" *ngIf="location_data != '' && volunteer_data == ''">
+		<!-- <div class="vfd_location" style="margin: 13px 23px;" *ngIf="location_data != '' && volunteer_data == ''">
 			<img src="assets/images/location_black.svg">
 			<div class="vfd_address regular green">
 			  {{location_data.colony_name}}, {{location_data.city}},
 			  {{location_data.state}}, {{location_data.country}}
 			</div>
-		</div>
-		<div class="vfd_location" style="margin: 13px 23px;" *ngIf="volunteer_data != ''">
+		</div> -->
+
+		<div class="vfd_location" style="margin: 13px 23px;" *ngIf="volunteer_data || volunteer_data != null">
+			<img src="assets/images/location_black.svg" *ngIf="model.is_address">
+			<div class="vfd_address regular green">
+			  {{volunteer_data.colony_name}}
+			</div>
+		</div> 
+		
+		<!-- <div class="availability">Availability</div>
+		<div class="avail_status flex">			
+			<div class="avail_left">Off</div>
+			<div class="avail_center">
+				<ion-toggle [(ngModel)]="model.app_status" style="float:left;"></ion-toggle>
+			</div>
+			<div class="avail_right">On</div>			
+		</div>		 -->
+		<div class="input_text_bottom new_class_for_checkbox"> 
+			<div class="otp_left">
+			  <input type="checkbox" id="terms" name="fruit-1" value="terms">
+			  <label for="terms" class="light light_grey size_12" (click)="openTermsAndConditions()">{{ model.terms }}</label>
+			</div>
+			      
+		  </div>
+		  <span class="error_terms">Please check terms & conditions</span> 
+		<!--<div class="vfd_location" style="margin: 13px 23px;" *ngIf="user_.colony_name != ''">
 			<img src="assets/images/location_black.svg">
 			<div class="vfd_address regular green">
-			  {{volunteer_data.colony_name}}, {{volunteer_data.city}},
-			  {{volunteer_data.state}}, {{volunteer_data.country}}
+			  {{user_.colony_name}}, {{user_.city}},
+			  {{user_.state}}, {{user_.country}}
 			</div>
-		</div>
+		</div> -->
 	</div>
   </ion-content> 
   
   <ion-footer> 
     <ion-toolbar>     
       <div class="app_button">
-        <span (click)="register()">
-          <button class="app_btn">Register</button>
-        </span>
+        <span (click)="register()" *ngIf="!model.search" id="v_register">
+          <button class="app_btn">{{model.key_text6}}</button>
+        </span> 
+		<span (click)="register()" *ngIf="!model.search" id="v_update">
+          <button class="app_btn">{{model.key_text7}}</button>
+        </span><button class="app_btn" style="padding:10px" *ngIf="model.search"><ion-spinner class="current_location_sppiner"></ion-spinner></button>
+		
       </div>
     </ion-toolbar>
   </ion-footer>

@@ -1,8 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FetchService } from '../fetch.service';
+import { StorageService } from '../storage.service'; 
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Geolocation,GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation/ngx';
+import { NotificationPage } from '../modal/notification/notification.page';
+import { ModalController } from '@ionic/angular';
 declare var google: any;
 declare var $: any;
 
@@ -18,21 +21,32 @@ map: any;
 start : any;
 end : any;
 
+  dataReturned: any;
 directionsService = new google.maps.DirectionsService;
 directionsDisplay = new google.maps.DirectionsRenderer;
 directions = [];
 polylines = [];
   constructor(
+	public modalController: ModalController,
 	private http: HttpClient,
 	private route: ActivatedRoute,
 	private router: Router,
 	private fetch: FetchService,
+	private storage: StorageService,
 	private geolocation: Geolocation,
   ) { }
 
   ngOnInit() {
+	}
+
+	ionViewWillEnter(){
+	this.model.is_volunteer = 0;
+	if(localStorage.getItem('volunteer_approve') != null){
+		this.model.is_volunteer = localStorage.getItem('volunteer_approve');
+	}  
 	var lang_code = JSON.parse(localStorage.getItem('lang'));
-	this.fetch.getKeyText(lang_code).subscribe(res => {
+	//this.fetch.getKeyText(lang_code).subscribe(res => {
+		let res = this.storage.getScope();
 		let item1 = res.find(i => i.key_text === 'PROCEED');
 			this.model.key_text1 = item1[lang_code];
 		let item2 = res.find(i => i.key_text === 'HOME');
@@ -41,27 +55,40 @@ polylines = [];
 			this.model.key_text3 = item3[lang_code];
 		let item4 = res.find(i => i.key_text === 'VOLUNTEER');
 			this.model.key_text4 = item4[lang_code];
-	});
+	//});
 	var data = this.route.snapshot.params['data'];
 	var r_lat = this.route.snapshot.params['r_lat'];
 	var r_lon = this.route.snapshot.params['r_lon'];
 	this.model.r_id = this.route.snapshot.params['r_id'];
+	this.model.getFood_id = this.route.snapshot.params['id']; 
 	this.model.r_lat = r_lat;
 	this.model.r_lon = r_lon;
 	var x = JSON.parse(data);
-	this.model.donor_address = x;
-	console.log(x);
-	this.model.d_lat = x.latitude;
-	this.model.d_lon = x.longitude;
-	this.model.d_food_type = x.food_type;
-	this.model.walk_time = x.time_distance_walking.rows[0].elements[0].duration.text;
-	this.model.drive_time = x.time_distance_driving.rows[0].elements[0].duration.text;
-	this.model.public_time = x.time_distance_transit.rows[0].elements[0].duration.text;
+	this.model.colony_name = x.data.colony_name;
+	this.model.add_id = x.data.id;
+	
+	this.model.d_lat = x.data.latitude;
+	this.model.d_lon = x.data.longitude;
+	this.model.d_food_type = x.data.food_type;
+	if(x.data.time_distance_walking.rows[0].elements[0].status == 'OK'){
+		this.model.walk_time = x.data.time_distance_walking.rows[0].elements[0].duration.text;
+	}else{
+		this.model.walk_time = 0;	
+	}
+	if(x.data.time_distance_driving.rows[0].elements[0].status == 'OK'){
+		this.model.drive_time = x.data.time_distance_driving.rows[0].elements[0].duration.text;
+	}else{
+		this.model.drive_time = 0;
+	}
+	if(x.data.time_distance_transit.rows[0].elements[0].status=='OK'){
+		this.model.public_time = x.data.time_distance_transit.rows[0].elements[0].duration.text;
+	}else{
+		this.model.public_time = 0;	
+	}
 	
 	this.geolocation.getCurrentPosition().then((resp) => {
-		console.log(x.latitude);
-		console.log(x.longitude);
-		let latLng = new google.maps.LatLng(x.latitude, x.longitude);
+		
+		let latLng = new google.maps.LatLng(x.data.latitude, x.data.longitude);
 
 		let mapOptions = {
 			center: latLng,
@@ -83,8 +110,8 @@ polylines = [];
 		this.model.walk_image = 'icon_donor_walk_white.svg';
 		this.model.mode = 'WALKING';
 	}); 
-		
   }
+ 
   calculate_route(mode){
 	  
 	  var infowindow = new google.maps.InfoWindow();

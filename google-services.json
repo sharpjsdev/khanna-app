@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "687743681878",
+    "firebase_url": "https://khanaapp-ed066.firebaseio.com",
+    "project_id": "khanaapp-ed066",
+    "storage_bucket": "khanaapp-ed066.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:687743681878:android:89f964e1cd0cdda12842f7",
+        "android_client_info": {
+          "package_name": "com.food.forAll"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "687743681878-njepgbpp75b0b6ll3cjdvc99d0tn472f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6UcTvdIgcprSrXLnCCjP6I_3sH4JLgUA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "687743681878-njepgbpp75b0b6ll3cjdvc99d0tn472f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

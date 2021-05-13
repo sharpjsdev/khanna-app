@@ -1,0 +1,22 @@
+.error_border{
+    border:1px solid red;
+}
+.error_msg_shop_name{
+    color:red;
+    display: none;
+}
+.error_msg_working_hours{
+    color:red;
+    display: none;
+}
+.error_msg_shop_location{
+    color:red;
+    display: none;
+}
+.error_terms{
+    color:red;
+    display: none;
+}
+ion-toggle {
+    --background-checked: #ffc9c1;
+}

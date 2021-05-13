@@ -73,23 +73,23 @@
       </ion-router-link>
     </div>
     <br>
-    <ion-segment value="home">
-      <ion-segment-button value="home">
+    <ion-segment value="home" color="transparent">
+      <ion-segment-button value="home" [routerLink]="['/home']">
         <img src="assets/images/red_footer_home.svg">
         <!--<ion-img src="assets/images/grey_footer_home.svg"></ion-img>-->
-        <ion-label class="size_12 medium">Home</ion-label>    
+        <ion-label class="size_12 medium" color="tertiary">Home</ion-label>    
       </ion-segment-button>
-      <ion-segment-button value="activity">
+      <ion-segment-button value="activity" [routerLink]="['/activity-normal']">
         <!--<ion-img src="assets/images/red_footer_activity.svg"></ion-img>-->
         <img src="assets/images/grey_footer_activity.svg">
         <ion-label class="size_12 medium">Activity</ion-label>    
       </ion-segment-button>
-      <ion-segment-button value="volunteer">
+      <ion-segment-button value="volunteer" [routerLink]="['/volunteer']">
         <!--<ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>-->
         <img src="assets/images/grey_footer_volunteer.svg">
         <ion-label class="size_12 medium">Volunteer</ion-label>    
       </ion-segment-button>
-    </ion-segment>      
+    </ion-segment>   
   </ion-toolbar>
 </ion-footer>
 

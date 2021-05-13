@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { DonateFoodMembersPageRoutingModule } from './donate-food-members-routing.module';
 
 import { DonateFoodMembersPage } from './donate-food-members.page';
-
+import { CaptchaComponent } from '../captcha/captcha.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +15,6 @@ import { DonateFoodMembersPage } from './donate-food-members.page';
     IonicModule,
     DonateFoodMembersPageRoutingModule
   ],
-  declarations: [DonateFoodMembersPage]
+  declarations: [DonateFoodMembersPage,CaptchaComponent]
 })
 export class DonateFoodMembersPageModule {}
