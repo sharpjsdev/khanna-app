@@ -2,9 +2,8 @@
   <div class="ion-padding">  
     <img (click)="closeModal()" src="assets/images/close_btn.svg" class="close_btn">
   
-    <div class="modal_inner green size_16 center regular">
-      New OTP has been<br>
-      sent to your mobile no.<br>
+    <div class="modal_inner green size_16 center regular" style="max-width: 250px;margin: auto;">
+      {{model.key_text2}}<br>
       +91 {{model.mobile_no}} 
     </div>
 

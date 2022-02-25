@@ -30,17 +30,10 @@ next_btn:any={};
   }
 
   ngOnInit() {
-	/*if(JSON.parse(localStorage.getItem('user_registerd')) != null){
-		this.router.navigate(['/home']);
-	}else if(JSON.parse(localStorage.getItem('user_id')) != null){
-		this.router.navigate(['/register-as-volunteer']);
-	}*/
-	  //localStorage.removeItem('lang'); 
-	
   }
 
   ionViewWillEnter(){
-	  
+	this.model.search = false;
 	  if(this.model.language){
 		localStorage.setItem('lang', JSON.stringify(this.model.language));
 	  }
@@ -60,9 +53,14 @@ next_btn:any={};
 	});
   }
   next(){
+	this.model.search = true;
 	if(JSON.parse(localStorage.getItem('lang')) != null){
 		this.fetch.isLanguageChanged.next(JSON.parse(localStorage.getItem('lang')));
-		this.router.navigate(['/mobile-number']);
+		var self = this;
+		setTimeout(function(){ 
+			self.router.navigate(['/mobile-number']);
+		}, 3000);
+		
 	}else{
 		this.presentAlert();
 	}
@@ -70,7 +68,7 @@ next_btn:any={};
   async presentAlert() {
 	const alert = await this.alertController.create({
 		cssClass: 'my-custom-class',
-		header: 'Please choose a language',
+		message: 'Please choose a language',
 		buttons: ['OK']
 	});
 	await alert.present();

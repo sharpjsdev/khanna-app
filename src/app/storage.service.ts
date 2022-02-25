@@ -8,10 +8,18 @@ export class StorageService {
   constructor() { }
 
   public getScope(): Array<any>  {
-    return this.scope;
+    //console.log('yes',JSON.parse(localStorage.getItem('scope')));
+    if(localStorage.getItem('scope')){
+      return JSON.parse(localStorage.getItem('scope'));
+    }else{
+      return this.scope;
+    }
+    
+    
   }
 
   public setScope(scope: any): void {
       this.scope = scope;
+      localStorage.setItem('scope',JSON.stringify(scope));
   }
 }

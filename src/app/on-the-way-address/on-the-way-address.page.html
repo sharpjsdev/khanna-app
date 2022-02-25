@@ -1,0 +1,27 @@
+<ion-header>
+
+    <!-- <ion-searchbar [(ngModel)]="autocomplete.start" *ngIf="type == 1" placeholder="choose starting point" [showCancelButton]="true"   (ionInput)="updateSources()" (ionCancel)="dismissSource()"></ion-searchbar>
+    <ion-list style="position: absolute;z-index: 999;">
+      <ion-item *ngFor="let item of sources" tappable   (click)="chooseSource(item)">
+        {{ item }}
+      </ion-item>
+    </ion-list>
+    <ion-searchbar [(ngModel)]="autocomplete.end" *ngIf="type == 2" placeholder="choose destination" [showCancelButton]="true"   (ionInput)="updateDestinations()" (ionCancel)="dismissDestination()"></ion-searchbar>
+    <ion-list style="position: absolute;z-index: 999;">
+      <ion-item *ngFor="let item of destination" tappable   (click)="chooseDestination(item)">
+        {{ item }}
+      </ion-item>
+    </ion-list> -->
+    <div id="my_custom_on">
+      <input type="text" id="my_test" *ngIf="type == 1" (keyup)="updateSources()" placeholder="{{model.key_text2}}"> <ion-icon *ngIf="autocomplete.start" (click)="blank('start')" class="cross_on_the" name="close-outline"></ion-icon>
+      <input type="text" id="my_test2"  *ngIf="type == 2" (keyup)="updateDestinations()" placeholder="{{model.key_text3}}"> <ion-icon *ngIf="autocomplete.end" (click)="blank('end')" class="cross_cross_2" name="close-outline"></ion-icon>
+    </div>
+<div style="display: flex;margin-top: 6px;" class="custom_new_volunteer_btns ion-padding" (click)="getYourLocation()">
+  <ion-icon name="navigate-outline" class="navigation_icon_css"></ion-icon> {{model.key_text1}}
+</div>
+</ion-header>
+<ion-content>
+  <div class="address_btn_div">
+    <ion-button shape="round" class="custome_address_btn" *ngFor="let add of saved_address;" (click)="saveAdd(add.colony_name)">{{add.adress_type}}</ion-button>
+  </div>
+</ion-content>

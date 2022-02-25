@@ -1,30 +1,35 @@
 <ion-content class="current_location_page_show">
-  <div class="map current_location">
+  <!-- <div class="map current_location">
 		<img src="assets/images/close_btn.svg" style="float:right;margin-right:20px;" (click)="closeModal()">
-	</div>
-  <ion-searchbar [(ngModel)]="autocomplete.start" placeholder="Source" [showCancelButton]="true"   (ionInput)="updateSources()" (ionCancel)="dismissSource()"></ion-searchbar>
+	</div> -->
+  <div id="my_custom_on">
+    <input type="text" id="my_test" (keyup)="updateSources()" placeholder="{{model.key_text2}}"> <ion-icon *ngIf="autocomplete.start" (click)="blank('start')" class="cross_on_the" name="close-outline"></ion-icon>
+    <input type="text" id="my_test2" (keyup)="updateDestinations()" placeholder="{{model.key_text3}} "> <ion-icon *ngIf="autocomplete.end" (click)="blank('end')" class="cross_cross_2" name="close-outline"></ion-icon>
+  </div>
+  
+  <!-- <ion-searchbar [(ngModel)]="autocomplete.start" placeholder="choose starting point" [showCancelButton]="true"   (ionInput)="updateSources()" (ionCancel)="dismissSource()"></ion-searchbar>
     <ion-list style="position: absolute;z-index: 999;">
       <ion-item *ngFor="let item of sources" tappable   (click)="chooseSource(item)">
         {{ item }}
       </ion-item>
     </ion-list>
-    <ion-searchbar style="margin-bottom:20px;" [(ngModel)]="autocomplete.end" placeholder="Destination" [showCancelButton]="true"   (ionInput)="updateDestinations()" (ionCancel)="dismissDestination()"></ion-searchbar>
+    <ion-searchbar style="margin-bottom:20px;" [(ngModel)]="autocomplete.end" placeholder="choose destination " [showCancelButton]="true"   (ionInput)="updateDestinations()" (ionCancel)="dismissDestination()"></ion-searchbar>
     <ion-list style="position: absolute;z-index: 999;">
       <ion-item *ngFor="let item of destination" tappable   (click)="chooseDestination(item)">
         {{ item }}
       </ion-item>
-    </ion-list>
+    </ion-list> -->
 	<!-- <div class="map current_location">
 		<img src="assets/images/close_btn.svg" class="close_btn" (click)="closeModal()">
 	</div> -->
 	<div #map id="map"></div> 
-	
-  
+  <div class="" style="margin-left:10px;" *ngIf="time_c">
+    <p class="regular medium size_14 green">{{time_c}} <span class="grey size_14">({{distance_c}})</span></p>
+  </div>
 </ion-content>
-  
-<ion-footer class="current_location_page_show">
+<ion-footer class="current_location_page_show" > 
     <ion-toolbar>    
-		<div class="app_button">
+		<div class="app_button" *ngIf="model.startLat && model.startLng && model.endLat && model.endLng">
 			<span (click)="current_location()">
 				<button class="app_btn">{{model.key_text1}}</button>
 			</span>

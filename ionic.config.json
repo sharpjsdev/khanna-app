@@ -1,7 +1,9 @@
 {
   "name": "khanaa",
   "integrations": {
-    "capacitor": {},
+    "capacitor": {
+      "enabled": false
+    },
     "cordova": {}
   },
   "type": "angular"

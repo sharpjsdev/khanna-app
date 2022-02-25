@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { FetchService } from '../fetch.service';
 import { StorageService } from '../storage.service'; 
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { AlertController } from '@ionic/angular';
 import { DatePipe } from '@angular/common';
 import { ModalController } from '@ionic/angular';
 import { TermsConditionsPage } from '../modal/terms-conditions/terms-conditions.page';
+import { ErrorMsgService } from '../error-msg.service';
 declare var $: any;
 
 @Component({
@@ -21,14 +19,10 @@ page_key1:any;
 page_key2:any;
 
 
-  constructor(private storage:StorageService,private http: HttpClient,private route: ActivatedRoute,private router: Router,private fetch: FetchService,public alertController: AlertController,public datepipe: DatePipe,public modalController: ModalController) { }
+  constructor(private errorMsg:ErrorMsgService,private storage:StorageService,private fetch: FetchService,public datepipe: DatePipe,public modalController: ModalController) { }
 
   ngOnInit() {
-	
-	
-	/*if(JSON.parse(localStorage.getItem('user_registerd')) != null){
-		this.router.navigate(['/home']);
-	}*/
+	this.model.accept = false;
 	
   }
 
@@ -46,6 +40,10 @@ page_key2:any;
 	this.model.alert_text = 'Please fill all the details';
 	this.model.okay = 'okay';
 	this.model.get_start = "Get Started";
+	this.model.next_btn = 'Next';
+	this.model.username_req = 'Username is required';
+	this.model.dob_req = 'DOB is required';
+	this.model.food_type_req = 'Food type is required';
 	let maxDate=  new Date((new Date().getFullYear() - 18),new Date().getMonth(), new Date().getDate());
 	let latest_date =this.datepipe.transform(maxDate, 'yyyy-MM-dd');
 	this.model.latest_date = latest_date;
@@ -79,6 +77,14 @@ page_key2:any;
 		this.model.get_start = item12[lang_code];
 	let item13 = res.find(i => i.key_text === 'TERMS_CONDITIONS');
 		this.model.terms = item13[lang_code];	
+	let item14 = res.find(i => i.key_text === 'NEXT');
+		this.model.next = item14[lang_code];
+	let item15 = res.find(i => i.key_text === 'USERNAME_IS_REQUIRED');
+		this.model.username_req = item15[lang_code];
+	let item16 = res.find(i => i.key_text === 'DOB_IS_REQUIRED');
+		this.model.dob_req = item16[lang_code];
+	let item17 = res.find(i => i.key_text === 'FOOD_TYPE_IS_REQUIRED');
+		this.model.food_type_req = item17[lang_code];
 	//});
 	this.model.user_id = JSON.parse(localStorage.getItem('user_id')); 
 	if(this.model.user_id != null){
@@ -120,31 +126,27 @@ page_key2:any;
 	}
   }
   save(){
+	
 	var username = $('.input_username').val();
 	var dob = $('.input_dob').val();
 	var food_type = this.model.food_val;
-	var terms = $('#terms:checked').val();
 
 	if(username == ""){
-		this.presentAlert("Username is required");
+		this.errorMsg.showModal(this.model.username_req);
 	}else if(dob == ""){
-		this.presentAlert("DOB is required");
+		this.errorMsg.showModal(this.model.dob_req);
 	}else if(food_type == ""){
-		this.presentAlert("Food type is required");
-	}else if(terms == undefined){
-		this.presentAlert("Please check terms & conditions");
+		this.errorMsg.showModal(this.model.food_type_req);
 	}
 	else{
 		var user_id = JSON.parse(localStorage.getItem('user_id'));
 		let data = JSON.stringify({'id' : user_id, 'username' : username, 'dob' : dob, 'food_type' : food_type});
-		console.log(data);
 		this.fetch.registerUser(data).subscribe(res => {
-			console.log(res);
 			if(res.success == true){
+				this.openTermsAndConditions();
 				localStorage.setItem('user_registerd', JSON.stringify(res['user_id']));
-				//$('.input_username').val('');
-				//$('.input_dob').val('');
-				this.router.navigate(['/home']);
+			}else{
+				this.errorMsg.showModal("Enter unique username.");
 			}
 		});
 	}
@@ -153,29 +155,20 @@ page_key2:any;
 	
     const modal = await this.modalController.create({
       component: TermsConditionsPage,
-      cssClass: 'home_content_modal',
+      cssClass: 'home_content_modal_new',
       componentProps: {
         "paramID": 123,
-        "paramTitle": "Test Title",
+        "paramTitle": 1,
 		"content" : this.model.content
       }
     }); 
 
     modal.onDidDismiss().then((dataReturned) => {
-		
-      if (dataReturned !== null) {
-      }
+
     });
 
     return await modal.present();
   }
-  async presentAlert(msg) {
-	const alert = await this.alertController.create({
-		cssClass: 'my-custom-class',
-		header: msg,
-		buttons: [this.model.okay]
-	});
-	await alert.present();
-  }
+
 
 }

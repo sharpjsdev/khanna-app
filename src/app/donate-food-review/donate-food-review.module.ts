@@ -15,7 +15,7 @@ import { CaptchaComponent } from '../captcha/captcha.component';
     CommonModule,
     FormsModule,
     IonicModule,
-	PipesModule,
+	PipesModule, 
     DonateFoodReviewPageRoutingModule
   ],
   declarations: [DonateFoodReviewPage,CaptchaComponent]

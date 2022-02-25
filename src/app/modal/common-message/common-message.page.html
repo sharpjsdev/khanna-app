@@ -1,0 +1,20 @@
+<ion-content class="modal_content">
+  <div class="ion-padding"> 
+    <div class="modal_inner">
+      <br>
+      <div class="medium size_14 green center" style="width: 100%; margin: 0 auto;">
+        {{model.key_text1}}.
+      </div>
+      <div class="medium size_14 green center" style="width: 100%; margin: 0 auto;">
+        {{model.key_text2}}.
+      </div>
+    </div>
+  </div> 
+</ion-content> 
+<ion-footer>
+  <ion-toolbar>    
+    <div class="app_button">      
+        <button type="btn" (click)="redirectToNext()" class="app_btn">{{model.key_text3}}</button>    
+    </div>
+  </ion-toolbar>
+</ion-footer>

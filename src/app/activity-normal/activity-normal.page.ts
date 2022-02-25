@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { FetchService } from '../fetch.service';
 import { StorageService } from '../storage.service';
 import { CancelAllotedfoodPage } from '../modal/cancel-allotedfood/cancel-allotedfood.page';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import * as HighCharts from 'highcharts';
 import { ModalController,AlertController } from '@ionic/angular';
 import { BrowserTab } from '@ionic-native/browser-tab/ngx';
-import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { CallNumber } from '@ionic-native/call-number/ngx';
+import { environment } from '../../environments/environment';
+import { Geolocation,GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation/ngx';
 declare var $:any;
 declare let window: any;
 @Component({
@@ -19,24 +18,23 @@ declare let window: any;
 })
 export class ActivityNormalPage implements OnInit {
 model:any={};
+options : GeolocationOptions;
 donation_graph_data:any=[];
 blessing_this_week:any=[];
 pending_data:any=[];
 alloted_food : any=[];
 request_food : any = [];
 alloted_request_food : any = [];
+
 reasons : any = [];
   dataReturned: any;
   constructor(
-	private http: HttpClient,
-	private route: ActivatedRoute,
-	private router: Router,
+	private geolocation: Geolocation,
 	private fetch: FetchService,
 	private storage:StorageService,
 	public modalController: ModalController,
 	public alertController: AlertController,
 	public browserTab: BrowserTab,
-	private socialSharing: SocialSharing,
 	private callNumber: CallNumber
   ) { }
 slideOpts = {
@@ -44,6 +42,7 @@ slideOpts = {
 	autoplay:true
   };
   ngOnInit(){
+	$('#add_location_spinner').show();
 	this.model.receivertab = 0;
 	this.model.donartab = 1;
 	this.model.is_volunteer = 0;
@@ -71,65 +70,51 @@ slideOpts = {
 	}, 100);
 	this.model.user_id = JSON.parse(localStorage.getItem('user_registerd'));
 	this.fetch.get_user_city(this.model.user_id).subscribe(res => {
-		this.fetch.get_top_donors(res.data['city']).subscribe(res2 => {
+		if(res['success'] == true){
+			this.fetch.get_top_donors(res.data['city']).subscribe(res2 => {
 			this.model.top_donors = res2.data;
 		});
+		}
+		
 	});
 	this.fetch.show_feedback(this.model.user_id).subscribe(res => {
-		//console.log(res);
 		this.model.feedback_data = res.data;
 	});
 	let user = JSON.stringify({'id': this.model.user_id});
 	this.fetch.profile(user).subscribe(res => {
-				
+
 					this.model.login_username = res['username'];
 					
 					
 				});
-				
+		
 	this.fetch.pending_donation(this.model.user_id).subscribe(res => {
 		this.pending_data = res['data'];
-		//console.log(this.pending_data.length);
-		// this.pending_data.forEach((val,i)=>{
-		// 	if(val.alloted_user_id != null){
-		// 	let alloted_user = JSON.stringify({'id': val.alloted_user_id});
-		// 		this.fetch.profile(alloted_user).subscribe(res => {
-				
-		// 			val.alloted_user_name = res['username'];
-		// 			val.mobile_number = res['mobile_no']
-					
-		// 		});
-		// 		}
-		// });
 		
 	});
 	this.fetch.my_alloted_donation(this.model.user_id).subscribe(res=>{
 		this.alloted_food = res['data'];
-		//console.log(this.alloted_food);
 		this.alloted_food.forEach((val,i)=>{
 			var startTime = new Date(val.updated_at); 
 			var endTime = new Date();
-			//console.log(startTime);
-			//console.log(endTime);
 			var difference = endTime.getTime() - startTime.getTime(); // This will give difference in milliseconds
 			var resultInMinutes = Math.round(difference / 60000);
 			val.resultInMinutes = resultInMinutes;
 		});
+		$('#add_location_spinner').hide();
 	});
 	
-	this.fetch.my_food_request(this.model.user_id).subscribe(res=>{
-		this.request_food = res['data'];
-		//console.log(this.request_food.length);
-		
-	});
-
-	this.fetch.my_alloted_request(this.model.user_id).subscribe(res=>{
-		this.alloted_request_food = res['data'];
-		//console.log(this.alloted_request_food.length);
-	});
+	
+	
   }
   ionViewWillEnter() {
-	
+	this.options = {
+		enableHighAccuracy: false,
+		};
+	  this.geolocation.getCurrentPosition(this.options).then((resp) => {
+		this.model.recLat = resp.coords.latitude;
+		this.model.recLng = resp.coords.longitude;
+	  }); 
 	
 	var lang_code = JSON.parse(localStorage.getItem('lang'));
 	let res = this.storage.getScope();
@@ -173,27 +158,52 @@ slideOpts = {
 			let item19 = res.find(i => i.key_text === 'AS_A_RECEIVER');
 				this.model.key_text19 = item19[lang_code];
 			let item20 = res.find(i => i.key_text === 'AS_A_DONAR');
-				this.model.key_text20 = item20[lang_code];				
-			
+				this.model.key_text20 = item20[lang_code];		
+			let item21 = res.find(i => i.key_text === 'CANCEL_DONATION_MSG');
+				this.model.key_text21 = item21[lang_code];	
+			let item22 = res.find(i => i.key_text === 'OKAY');
+				this.model.key_text22 = item22[lang_code];	
+			let item23 = res.find(i => i.key_text === 'CANCEL');
+				this.model.key_text23 = item23[lang_code];	
+			let item24 = res.find(i => i.key_text === 'ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_REQUEST');
+				this.model.key_text24 = item24[lang_code];						
+			let item25 = res.find(i => i.key_text === 'CANCEL_ALLOTED_DONATION_MSG');
+				this.model.key_text25 = item25[lang_code];
+			let item26 = res.find(i => i.key_text === 'FOOD_QUALITY');
+				this.model.key_text26 = item26[lang_code];
+			let item27 = res.find(i => i.key_text === 'PACKAGING');
+				this.model.key_text27 = item27[lang_code];
+			let item28 = res.find(i => i.key_text === 'BEHAVIOUR');
+				this.model.key_text28 = item28[lang_code];
+			let item29 = res.find(i => i.key_text === 'EXCELLENT');
+				this.model.key_text29 = item29[lang_code];
+			let item30 = res.find(i => i.key_text === 'GOOD');
+				this.model.key_text30 = item30[lang_code];
+			let item31 = res.find(i => i.key_text === 'BAD');
+				this.model.key_text31 = item31[lang_code];
 		//});
 	
 	this.weekly_donation_graph();
 	this.weekly_pieChart();
   }
-  ionViewDidEnter(){
-	  
-	//$('.receivertab').hide();
-	 
-		
-  }
   handleTab(id){
 	  if(id == 1){
+	$('#add_location_spinner').show();
+
 		this.model.receivertab = 1;
 		this.model.donartab = 0;
 		  $('.rec').addClass('btn1 active');
 		  $('.rec').css('border','1px solid #419B95');
 		  $('.donar').removeClass('btn1 active');
 		  $('.donar').css('border','none');
+		  this.fetch.my_food_request(this.model.user_id).subscribe(res=>{
+			this.request_food = res['data'];
+		});
+	
+		this.fetch.my_alloted_request(this.model.user_id).subscribe(res=>{
+			$('#add_location_spinner').hide();
+			this.alloted_request_food = res['data'];
+		});
 	  }
 	  else{
 		this.model.receivertab = 0;
@@ -206,31 +216,32 @@ slideOpts = {
 	  }
   }
   share(message){
-	  
+	const m = message+'\n\n';
 	document.addEventListener("deviceready", function() {
-		window.plugins.socialsharing.share(message,'Khana app','','http://15.206.48.179/admin/login');
+		window.plugins.socialsharing.share(m,'Khana app','','https://play.google.com/store/apps/details?id=com.food.forAll');
 	}, false);	
 }
   call(number){
 	
 	let data = JSON.stringify({'caller_id':this.model.user_id,'callee_mobile_no':number  });
-			$('#add_location_spinner').show();
+			
 				this.fetch.add_call_detail(data).subscribe(res => {
-					this.callNumber.callNumber("08069010223", true)
-					.then(res => { $('#add_location_spinner').show(); console.log('Launched dialer!', res); })
+					this.callNumber.callNumber(environment.phone_no, true)
+					.then(res => {  console.log('Launched dialer!', res); })
 					.catch(err => console.log('Error launching dialer', err));
 				});
  }
   
   async cancelAllotedRequest(id,food_id,donar_id,no_of_person,food_type) {
-	  
+	$('#add_location_spinner').show();
     const modal = await this.modalController.create({
 		component: CancelAllotedfoodPage,
-		cssClass: 'custom_filter_modal',
+		cssClass: 'custom_filter_modal cancel_allot_food_popup',
 		componentProps: {
 			"paramID": 123,
 			"paramTitle": "Test Title",
-			"id" : id
+			"id" : id,
+			"type" : 'get_food'
 		}
     });
 
@@ -242,10 +253,11 @@ slideOpts = {
 				let data = JSON.stringify({'food_id':food_id,'logged_in_user':this.model.login_username, 'no_of_person':no_of_person, 'app_user_id' : this.model.user_id, 'food_type' : food_type, 'notification_type' : 3, 'to' : donar_id, 'from' : this.model.user_id, 'getFoodId' : id  });
 			//console.log(data);
 				this.fetch.notify_donar(data).subscribe(res => {
-						// this.router.navigate(['/home']);
-						localStorage.setItem('isReceiverTab','1');
-						this.ngOnInit();
-						//this.ionViewDidEnter();
+						this.fetch.my_alloted_request(this.model.user_id).subscribe(res=>{
+							this.alloted_request_food = res['data'];
+							$('#add_location_spinner').hide();
+							//console.log(this.alloted_request_food.length);
+						});
 				});
 				
 			}
@@ -257,31 +269,42 @@ slideOpts = {
     return await modal.present();
   }
   async presentAlertPrompt(id) {
+	$('#add_location_spinner').show();
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class custom_alert_1',
-	  header: 'Alert',
-	  message: 'Are you sure want to cancel this donation!',
+	  //header: 'Alert',
+	  message: this.model.key_text21,
       buttons: [
         {
-          text: 'Cancel',
+          text: this.model.key_text23,
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
+			$('#add_location_spinner').hide();
             console.log('Confirm Cancel');
           }
         }, {
-          text: 'Okay',
+          text: this.model.key_text22,
           handler: () => {
-            
-			
-			
-				//$("#req_list_"+id).hide();
 				let data = JSON.stringify({'donate_food_id' : id});
 				this.fetch.cancel_donation_food(data).subscribe(res => {
-					console.log(res);
-					localStorage.setItem('isReceiverTab','0');
-					this.ngOnInit();
-					//this.ionViewDidEnter();
+
+					this.fetch.pending_donation(this.model.user_id).subscribe(res => {
+						this.pending_data = res['data'];
+						
+					});
+					this.fetch.my_alloted_donation(this.model.user_id).subscribe(res=>{
+						this.alloted_food = res['data'];
+						this.alloted_food.forEach((val,i)=>{
+							var startTime = new Date(val.updated_at); 
+							var endTime = new Date();
+							var difference = endTime.getTime() - startTime.getTime(); // This will give difference in milliseconds
+							var resultInMinutes = Math.round(difference / 60000);
+							val.resultInMinutes = resultInMinutes;
+							
+						});
+						$('#add_location_spinner').hide();
+					});
 				});
 			
 			
@@ -293,31 +316,30 @@ slideOpts = {
     await alert.present();
   }
   async cancelRequestFood(id) {
+	$('#add_location_spinner').show();
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-	  header: 'Alert',
-	  message: 'Are you sure want to cancel this request!',
+	  //header: 'Alert',
+	  message: this.model.key_text24,
       buttons: [
         {
-          text: 'Cancel',
+          text: this.model.key_text23,
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
+			$('#add_location_spinner').show();
             console.log('Confirm Cancel');
           }
         }, {
-          text: 'Okay',
+          text: this.model.key_text22,
           handler: () => {
-            
-			
-			
-				//$("#req_list_"+id).hide();
 				let data = JSON.stringify({'id' : id});
 				this.fetch.cancel_requested_food(data).subscribe(res => {
-					console.log(res);
-					localStorage.setItem('isReceiverTab','1');
-					this.ngOnInit();
-					//this.ionViewDidEnter();
+					this.fetch.my_food_request(this.model.user_id).subscribe(res=>{
+						this.request_food = res['data'];
+						$('#add_location_spinner').hide();
+						
+					});
 				});
 			
 			
@@ -332,36 +354,44 @@ slideOpts = {
 	let data = JSON.stringify({'id' : id});
 	this.fetch.active_donation(data).subscribe(res => {
 		this.ngOnInit();
-		//this.ionViewDidEnter();
 	});
   }
   async cancelAllotedFood(id,donate_food_id,donar_id,receiver_id,no_of_person) {
+	$('#add_location_spinner').show();
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-	  header: 'Alert',
-	  message: 'Are you sure want to cancel this alloted donation!',
+	  //header: 'Alert',
+	  message: this.model.key_text25,
       buttons: [
         {
-          text: 'Cancel',
+          text: this.model.key_text23,
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
+			$('#add_location_spinner').hide();
             console.log('Confirm Cancel');
           }
         }, {
-          text: 'Okay',
+          text: this.model.key_text22,
           handler: () => {
-            
-			
-			
-				//$("#req_list_"+id).hide();
-				
 				let data = JSON.stringify({'id' : id,'donate_food_id':donate_food_id, 'donar_id':donar_id,'receiver_id':receiver_id,'notification_type':4,'logged_in_username':this.model.login_username,'no_of_person':no_of_person});
 				this.fetch.cancel_alloted_food(data).subscribe(res => {
-					console.log(res);
-					localStorage.setItem('isReceiverTab','0');
-					this.ngOnInit();
-					//this.ionViewDidEnter();
+					this.fetch.pending_donation(this.model.user_id).subscribe(res => {
+						this.pending_data = res['data'];
+						
+					});
+					this.fetch.my_alloted_donation(this.model.user_id).subscribe(res=>{
+						this.alloted_food = res['data'];
+						this.alloted_food.forEach((val,i)=>{
+							var startTime = new Date(val.updated_at); 
+							var endTime = new Date();
+							var difference = endTime.getTime() - startTime.getTime(); // This will give difference in milliseconds
+							var resultInMinutes = Math.round(difference / 60000);
+							val.resultInMinutes = resultInMinutes;
+							
+						});
+						$('#add_location_spinner').hide();
+					});
 				});
 			
 			
@@ -372,18 +402,7 @@ slideOpts = {
 
     await alert.present();
   }
-  
-  async presentAlert() {
-	const alert = await this.alertController.create({
-		cssClass: 'my-custom-class',
-		header: 'Alert',
-		message: 'Please fill all the details',
-		buttons: ['Okay']
-	});
-	await alert.present();
-  }
   plotSimpleBarChart(data, cat, min, max, tickInterval) {
-	console.log(data);
 	let myChart = HighCharts.chart('highcharts', {
 		chart: {
 			type: 'spline',
@@ -485,7 +504,6 @@ slideOpts = {
   }
 
   pie_chart_food_quality(e, g, b){
-	console.log(e+", "+g+", "+b);
 	let myChart = HighCharts.chart('food_quality', {
 		chart: {
 			type: 'pie',
@@ -499,7 +517,7 @@ slideOpts = {
 			enabled: false
 		},
 		title: {
-			text: 'Food Quality'
+			text: this.model.key_text26
 		},
 		plotOptions: {
 			pie: {
@@ -515,15 +533,15 @@ slideOpts = {
 			name: '',
 			type: undefined,
 			data: [{
-				name: 'Excellent',
+				name: this.model.key_text29,
 				y: e,
 				color: "#32CD32"
 			}, {
-				name: 'Good',
+				name: this.model.key_text30,
 				y: g,
 				color: "orange"
 			}, {
-				name: 'Bad',
+				name: this.model.key_text31,
 				y: b,
 				color: "red"
 			}]
@@ -542,7 +560,7 @@ slideOpts = {
 		height:300
       },
 	  title: {
-        text: 'Packaging'
+        text: this.model.key_text27
       },
 	 credits: {
 			enabled: false
@@ -561,15 +579,15 @@ slideOpts = {
         name: '',
 		type: undefined,
         data: [{
-          name: 'Excellent',
+          name: this.model.key_text29,
           y: e,
 		  color: "#32CD32"
         }, {
-          name: 'Good',
+          name: this.model.key_text30,
           y: g,
 		   color: "orange"
         }, {
-          name: 'Bad',
+          name: this.model.key_text31,
           y: b,
 		   color: "red"
         }]
@@ -588,7 +606,7 @@ let myChart = HighCharts.chart('behaviour', {
 		height:300
       },
 	  title: {
-        text: 'Behaviour'
+        text: this.model.key_text28
       },
 	 credits: {
 			enabled: false
@@ -607,15 +625,15 @@ let myChart = HighCharts.chart('behaviour', {
         name: '',
 		type: undefined,
         data: [{
-          name: 'Excellent',
+          name: this.model.key_text29,
           y: e,
 		  color: "#32CD32"
         }, {
-          name: 'Good',
+          name: this.model.key_text30,
           y: g,
 		   color: "orange"
         }, {
-          name: 'Bad',
+          name: this.model.key_text31,
           y: b,
 		   color: "red"
         }]
@@ -628,8 +646,6 @@ let myChart = HighCharts.chart('behaviour', {
 	
 		$('#activity_normal_content').css('display', 'none');
 		$('#activity_normal_spinner').css('display', 'block');
-	
-	console.log($('input[name=switch-one]:checked', '#myForm').val());
 	if($('input[name=switch-one]:checked', '#myForm').val() == "no"){
 		$('#u_week_blessing_div').css('display', 'none');
 		$('#u_month_blessing_div').css('display', 'block');
@@ -653,11 +669,11 @@ let myChart = HighCharts.chart('behaviour', {
 		this.model.good_cnt = res.good.cnt;
 		this.model.bad_cnt = res.bad.cnt;
 		if(this.model.excellent_cnt > this.model.good_cnt && this.model.excellent_cnt > this.model.bad_cnt){
-			this.model.quality_rating = "Excellent";
+			this.model.quality_rating = this.model.key_text29;
 		}else if(this.model.good_cnt > this.model.excellent_cnt && this.model.good_cnt > this.model.bad_cnt){
-			this.model.quality_rating = "Good";
+			this.model.quality_rating = this.model.key_text30;
 		}else if(this.model.bad_cnt > this.model.excellent_cnt && this.model.bad_cnt > this.model.good_cnt){
-			this.model.quality_rating = "Bad";
+			this.model.quality_rating = this.model.key_text31;
 		}
 		this.pie_chart_food_quality(this.model.excellent_cnt, this.model.good_cnt, this.model.bad_cnt);
 	});
@@ -666,11 +682,11 @@ let myChart = HighCharts.chart('behaviour', {
 		this.model.good_cnt = res.good.cnt;
 		this.model.bad_cnt = res.bad.cnt;
 		if(this.model.excellent_cnt > this.model.good_cnt && this.model.excellent_cnt > this.model.bad_cnt){
-			this.model.packaging_rating = "Excellent";
+			this.model.packaging_rating = this.model.key_text29;
 		}else if(this.model.good_cnt > this.model.excellent_cnt && this.model.good_cnt > this.model.bad_cnt){
-			this.model.packaging_rating = "Good";
+			this.model.packaging_rating = this.model.key_text30;
 		}else if(this.model.bad_cnt > this.model.excellent_cnt && this.model.bad_cnt > this.model.good_cnt){
-			this.model.packaging_rating = "Bad";
+			this.model.packaging_rating = this.model.key_text31;
 		}
 		this.packagingPieChart(this.model.excellent_cnt, this.model.good_cnt, this.model.bad_cnt);
 	});
@@ -679,11 +695,11 @@ let myChart = HighCharts.chart('behaviour', {
 		this.model.good_cnt = res.good.cnt;
 		this.model.bad_cnt = res.bad.cnt;
 		if(this.model.excellent_cnt > this.model.good_cnt && this.model.excellent_cnt > this.model.bad_cnt){
-			this.model.behaviour_rating = "Excellent";
+			this.model.behaviour_rating = this.model.key_text29;
 		}else if(this.model.good_cnt > this.model.excellent_cnt && this.model.good_cnt > this.model.bad_cnt){
-			this.model.behaviour_rating = "Good";
+			this.model.behaviour_rating = this.model.key_text30;
 		}else if(this.model.bad_cnt > this.model.excellent_cnt && this.model.bad_cnt > this.model.good_cnt){
-			this.model.behaviour_rating = "Bad";
+			this.model.behaviour_rating = this.model.key_text31;
 		}
 		this.behaviourPieChart(this.model.excellent_cnt, this.model.good_cnt, this.model.bad_cnt);
 	});  
@@ -699,11 +715,11 @@ let myChart = HighCharts.chart('behaviour', {
 		this.model.good_cnt = res.good.cnt;
 		this.model.bad_cnt = res.bad.cnt;
 		if(this.model.excellent_cnt > this.model.good_cnt && this.model.excellent_cnt > this.model.bad_cnt){
-			this.model.quality_rating = "Excellent";
+			this.model.quality_rating = this.model.key_text29;
 		}else if(this.model.good_cnt > this.model.excellent_cnt && this.model.good_cnt > this.model.bad_cnt){
-			this.model.quality_rating = "Good";
+			this.model.quality_rating = this.model.key_text30;
 		}else if(this.model.bad_cnt > this.model.excellent_cnt && this.model.bad_cnt > this.model.good_cnt){
-			this.model.quality_rating = "Bad";
+			this.model.quality_rating = this.model.key_text31;
 		}
 		this.pie_chart_food_quality(this.model.excellent_cnt, this.model.good_cnt, this.model.bad_cnt);
 	});
@@ -712,11 +728,11 @@ let myChart = HighCharts.chart('behaviour', {
 		this.model.good_cnt = res.good.cnt;
 		this.model.bad_cnt = res.bad.cnt;
 		if(this.model.excellent_cnt > this.model.good_cnt && this.model.excellent_cnt > this.model.bad_cnt){
-			this.model.packaging_rating = "Excellent";
+			this.model.packaging_rating = this.model.key_text29;
 		}else if(this.model.good_cnt > this.model.excellent_cnt && this.model.good_cnt > this.model.bad_cnt){
-			this.model.packaging_rating = "Good";
+			this.model.packaging_rating = this.model.key_text30;
 		}else if(this.model.bad_cnt > this.model.excellent_cnt && this.model.bad_cnt > this.model.good_cnt){
-			this.model.packaging_rating = "Bad";
+			this.model.packaging_rating = this.model.key_text31;
 		}
 		this.packagingPieChart(this.model.excellent_cnt, this.model.good_cnt, this.model.bad_cnt);
 	});
@@ -725,11 +741,11 @@ let myChart = HighCharts.chart('behaviour', {
 		this.model.good_cnt = res.good.cnt;
 		this.model.bad_cnt = res.bad.cnt;
 		if(this.model.excellent_cnt > this.model.good_cnt && this.model.excellent_cnt > this.model.bad_cnt){
-			this.model.behaviour_rating = "Excellent";
+			this.model.behaviour_rating = this.model.key_text29;
 		}else if(this.model.good_cnt > this.model.excellent_cnt && this.model.good_cnt > this.model.bad_cnt){
-			this.model.behaviour_rating = "Good";
+			this.model.behaviour_rating = this.model.key_text30;
 		}else if(this.model.bad_cnt > this.model.excellent_cnt && this.model.bad_cnt > this.model.good_cnt){
-			this.model.behaviour_rating = "Bad";
+			this.model.behaviour_rating = this.model.key_text31;
 		}
 		this.behaviourPieChart(this.model.excellent_cnt, this.model.good_cnt, this.model.bad_cnt);
 	});   

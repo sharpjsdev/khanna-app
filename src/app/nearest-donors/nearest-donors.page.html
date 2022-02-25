@@ -97,7 +97,7 @@
         <img src="assets/images/grey_footer_activity.svg">
         <ion-label class="size_12 medium">{{model.key_text10}}</ion-label>    
       </ion-segment-button>
-      <ion-segment-button value="volunteer" [routerLink]="model.is_volunteer== 1 ? ['/volunteer'] : ['/volunteer-request']">
+      <ion-segment-button value="volunteer" *ngIf="model.is_volunteer== 1 " [routerLink]="['/volunteer-detail']">
         <!--<ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>-->
         <img src="assets/images/grey_footer_volunteer.svg">
         <ion-label class="size_12 medium">{{model.key_text11}}</ion-label>    

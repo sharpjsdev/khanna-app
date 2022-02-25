@@ -1,0 +1,37 @@
+<ion-content class="modal_content">
+  <div class="ion-padding">  
+    <a (click)="closeModal()">
+      <img src="assets/images/close_btn.svg" class="close_btn">
+    </a>
+    <div class="modal_inner">
+      <br>
+      <div class="center">
+        <img src="assets/images/smile_green.svg">
+      </div>
+      <br>
+      <div class="medium size_18 green center" style="width: 100%; margin: 0 auto;">
+        {{model.key_text1}}
+      </div> 
+       <br><br>
+      <div class="medium size_14 center" style="width: 100%; margin: 0 auto;">
+        {{model.key_text2}}
+      </div> 
+	  <br>
+       <div class="medium size_14 center" style="width: 100%; margin: 0 auto;">
+        {{model.key_text3}}
+      </div>
+      <br><br><br><br><br><br><br>
+      <div class="medium size_14 center" style="color:#b8b8b8; width: 100%; margin: 0 auto;">
+        {{model.key_text4}}
+      </div>
+    </div>
+    
+  </div> 
+</ion-content> 
+<ion-footer>
+  <ion-toolbar>    
+    <div class="app_button">      
+        <button type="btn" (click)="redirectToNext()" class="app_btn">{{model.key_text5}}</button>    
+    </div>
+  </ion-toolbar>
+</ion-footer>

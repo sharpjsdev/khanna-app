@@ -16,8 +16,8 @@
       
       <input type="number" placeholder="OTP" id="check_otp" [(ngModel)]='value' (input)='check_otp($event.target.value)'>
       
-      <img src="assets/images/done.svg" class="green_check" id="right" style="display:none;">
-      <img src="assets/images/wrong_sign.svg" class="green_check" id="wrong" style="display:none;">
+      <img src="assets/images/done.svg" class="green_check" id="right_otp" style="display:none;">
+      <img src="assets/images/wrong_sign.svg" class="green_check" id="wrong_otp" style="display:none;">
       
       <div class="input_text_bottom">
         <div class="otp_left">
@@ -41,9 +41,6 @@
   <ion-footer>
     <ion-toolbar>    
       <div class="app_button">
-        <!-- <ion-router-link href="register-as-volunteer">
-          <button class="app_btn">Next</button>
-        </ion-router-link> -->
 		<button class="app_btn" (click)="next()">{{model.key_text6}}</button>
       </div>
     </ion-toolbar>

@@ -3,18 +3,18 @@
 	<div class="map current_location">
 		<img src="assets/images/close_btn.svg" class="close_btn" (click)="closeModal()">
 	</div>
+	<div id="my_custom_on" style="margin-top: 18px;">
+		<input type="text" id="my_test" (keyup)="updateSources()" placeholder="{{model.key_text2}}"> <ion-icon *ngIf="autocomplete.start" (click)="blank('start')" class="cross_on_the" name="close-outline"></ion-icon>
+	  </div>
+	  <ion-button shape="round" class="address_button" *ngFor="let add of saved_address;" (click)="addMarker2(add.latitude, add.longitude)" fill="outline">{{add.adress_type}}</ion-button>
 	<div #map id="map"></div> 
 	<div class="ion-padding">
     <div class="map-icon">
 		<img src="assets/images/location_red.svg">
     </div>
     <div class="map_desc">
-		<div class="size_18"> 
+		<div class="size_16 map_desc_text"> 
 			{{model.colony_name}}
-		</div>
-		<div class="regular size_12">
-			{{model.colony_name}}
-			<!-- {{model.city}}, {{model.state}} {{model.postalCode}}, {{model.country}} -->
 		</div>
     </div>
   </div>
@@ -27,7 +27,6 @@
 			<span (click)="current_location()">
 				<button class="app_btn">{{model.key_text1}}</button>
 			</span>
-			<!--  <button class="app_btn" (click)="confirm_location()">Confirm Location</button> -->
 		</div>
     </ion-toolbar>
 </ion-footer>

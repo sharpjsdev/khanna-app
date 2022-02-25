@@ -3,10 +3,15 @@ import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router } from '@angular/router';
 import { FetchService } from './fetch.service';
 import { StorageService } from './storage.service';
-import { AlertController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
+import { PushNotificationPage } from './modal/push-notification/push-notification.page';
+import { DeliverFoodVolunteerPage } from './modal/deliver-food-volunteer/deliver-food-volunteer.page';
+import { PickupSuccessModalPage } from './modal/pickup-success-modal/pickup-success-modal.page';
+import { SimplePushNotificationPage } from './modal/simple-push-notification/simple-push-notification.page';
+import { JsonpClientBackend } from '@angular/common/http';
 declare var FCMPlugin: any;
 @Component({
   selector: 'app-root',
@@ -19,40 +24,7 @@ user_id:any;
 isLanguageChanged: boolean;
 
   public selectedIndex = 0;
-  public appPages = [
-    {
-      title: 'Inbox',
-      url: '/folder/Inbox',
-      icon: 'mail'
-    },
-    {
-      title: 'Outbox',
-      url: '/folder/Outbox',
-      icon: 'paper-plane'
-    },
-    {
-      title: 'Favorites',
-      url: '/folder/Favorites',
-      icon: 'heart'
-    },
-    {
-      title: 'Archived',
-      url: '/folder/Archived',
-      icon: 'archive'
-    },
-    {
-      title: 'Trash',
-      url: '/folder/Trash',
-      icon: 'trash'
-    },
-    {
-      title: 'Spam',
-      url: '/folder/Spam',
-      icon: 'warning'
-    }
-  ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-
+  public appPages = [];
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -60,9 +32,16 @@ isLanguageChanged: boolean;
 	  private router: Router,
     private fetch: FetchService,
     private storage : StorageService,
-    private alertController : AlertController
+    private modalController : ModalController
     
   ) {
+    
+    var self = this;
+    setInterval(function(){ 
+      self.checkVolunteer();
+      self.checkLoginUser();
+    }, 1000);//run this thang every 2 seconds
+    
     this.model.fromNotification = false;
      document.addEventListener('deviceready',() => {
       FCMPlugin.getToken((token: any) => {
@@ -72,23 +51,37 @@ isLanguageChanged: boolean;
         });
        
        FCMPlugin.onNotification((data: any) => {
-        //alert(JSON.stringify(data.message));
-        
-       
-        
         this.model.fromNotification = true;
-  
+        var self = this;
         if (data.wasTapped) 
           {
+            
+            var jd = JSON.parse(data.message);
+            if(jd.check_val == '1' ){
+              self.showNotification(jd.body,jd.my_array,jd.donor_details,jd.request_id);
+            }else if(jd.check_val == '2' ){
+              self.showFoodDeliverPopupToVolunteer(jd.my_array);
+            }else if(jd.check_val == '3' ){
+              self.showFoodDeliverPopupToDonor(jd.my_array);
+            }
             // Notification was received on device tray and tapped by the user.
              
-             
-           this.router.navigate(['/notification']);
 
           } else {
-            // alert(JSON.stringify(data.));
-            this.showAlert(data.body);
-            console.log("Received in foreground");
+            //alert("Received in foreground");
+             var jd = JSON.parse(data.message);
+            //;
+            if(jd.check_val == '1' ){
+              this.showNotification(data.body,jd.my_array,jd.donor_details,jd.request_id);
+            }else if(jd.check_val == '2' ){
+              this.showFoodDeliverPopupToVolunteer(jd.my_array);
+            }else if(jd.check_val == '3' ){
+              this.showFoodDeliverPopupToDonor(jd.my_array);
+            }else{
+              this.showAlert(data.body);
+            }
+            
+            
           }
         },(success:any)=>{
           if(!this.model.fromNotification){
@@ -96,9 +89,12 @@ isLanguageChanged: boolean;
                     this.fetch.isLanguageChanged.next(JSON.parse(localStorage.getItem('lang')));
                     this.router.navigate(['/home']);
                     //this.navCtrl.navigateBack(['/home']);
-                  }else if(JSON.parse(localStorage.getItem('user_id')) != null && localStorage.getItem('isotpverified') == '1'){
-                    this.fetch.isLanguageChanged.next(JSON.parse(localStorage.getItem('lang')));
-                    this.router.navigate(['/register-as-volunteer']);
+                  }else if((localStorage.getItem('user_id')) != undefined && localStorage.getItem('isotpverified') == '1'){
+                    if(JSON.parse(localStorage.getItem('user_id')) != null){
+                      this.fetch.isLanguageChanged.next(JSON.parse(localStorage.getItem('lang')));
+                      this.router.navigate(['/register-as-volunteer']);
+                    }
+                    
                     //this.navCtrl.navigateBack(['/register-as-volunteer']);
                   }else if(localStorage.getItem('isotpverified') == '0'){
                     this.router.navigate(['/otp']);
@@ -114,13 +110,17 @@ isLanguageChanged: boolean;
       });
     
       if(!this.model.fromNotification){
+        console.log((localStorage.getItem('isotpverified')));
         if(JSON.parse(localStorage.getItem('user_registerd')) != null){
           this.fetch.isLanguageChanged.next(JSON.parse(localStorage.getItem('lang')));
           this.router.navigate(['/home']);
           //this.navCtrl.navigateBack(['/home']);
-        }else if(JSON.parse(localStorage.getItem('user_id')) != null && localStorage.getItem('isotpverified') == '1'){
-          this.fetch.isLanguageChanged.next(JSON.parse(localStorage.getItem('lang')));
-          this.router.navigate(['/register-as-volunteer']);
+        }else if((localStorage.getItem('user_id')) != undefined  && localStorage.getItem('isotpverified') == '1'){
+          if(JSON.parse(localStorage.getItem('user_id')) != null){
+            this.fetch.isLanguageChanged.next(JSON.parse(localStorage.getItem('lang')));
+            this.router.navigate(['/register-as-volunteer']);
+          }
+          
           //this.navCtrl.navigateBack(['/register-as-volunteer']);
         }else if(localStorage.getItem('isotpverified') == '0'){
           this.router.navigate(['/otp']);
@@ -134,14 +134,11 @@ isLanguageChanged: boolean;
   
 	this.fetch.isLanguageChanged.subscribe( value => {
 	    this.isLanguageChanged = value;
-	    //console.log(this.isLanguageChanged);
-		//var lang_code = value;
 		var lang_code = JSON.parse(localStorage.getItem('lang'));
 		this.fetch.getKeyText(lang_code).subscribe(rs => {
       this.storage.setScope(rs);
       let res = this.storage.getScope();
-      
-			let item1 = res.find(i => i.key_text === 'REGISTER_AS_VOLUNTEER');
+      let item1 = res.find(i => i.key_text === 'REGISTER_AS_VOLUNTEER');
 				this.model.key_text1 = item1[lang_code];
 			let item2 = res.find(i => i.key_text === 'SIDEBAR_QUOTE1');
 				this.model.key_text2 = item2[lang_code];
@@ -167,6 +164,8 @@ isLanguageChanged: boolean;
         this.model.key_text12 = item12[lang_code];
       let item13 = res.find(i=> i.key_text === 'SHOW_IN_BETWEEN');
          this.model.key_text13 = item13[lang_code];  
+      let item14 = res.find(i=> i.key_text === 'LOGOUT');
+         this.model.key_text14 = item14[lang_code];  
 			
 	    });
 	});
@@ -183,46 +182,16 @@ isLanguageChanged: boolean;
       this.splashScreen.hide();
      
     });
+    this.checkVolunteer();
+    //alert('dsd');
+    
   }
-//   ngAfterViewInit(){
-//     document.addEventListener('deviceready', () => {
-//     alert(this.model.fromNotification);
-//     if(!this.model.fromNotification){
-//       if(JSON.parse(localStorage.getItem('user_registerd')) != null){
-//         this.fetch.isLanguageChanged.next(JSON.parse(localStorage.getItem('lang')));
-//         this.router.navigate(['/home']);
-//         //this.navCtrl.navigateBack(['/home']);
-//       }else if(JSON.parse(localStorage.getItem('user_id')) != null && localStorage.getItem('isotpverified') == '1'){
-//         this.fetch.isLanguageChanged.next(JSON.parse(localStorage.getItem('lang')));
-//         this.router.navigate(['/register-as-volunteer']);
-//         //this.navCtrl.navigateBack(['/register-as-volunteer']);
-//       }else if(localStorage.getItem('isotpverified') == '0'){
-//         this.router.navigate(['/otp']);
-//       }else{
-//         this.router.navigate(['/language']);
-//       }
-//   }
-// });
-//   }
   ngOnInit() {
     
     var self = this;
     var lang_code = JSON.parse(localStorage.getItem('lang'));
-    console.log(lang_code);
       const path = window.location.pathname.split('folder/')[1];
-    this.user_id = JSON.parse(localStorage.getItem('user_registerd'));
-    this.fetch.v_check(this.user_id).subscribe(res => {
-      if(res.success == true){
-        if(res.status == 1){
-          localStorage.setItem('volunteer_approve','1');
-        }
-        else{
-          localStorage.setItem('volunteer_approve','0');
-        }
-      }else{
-        localStorage.setItem('volunteer_approve','0');
-      }
-    });
+    
 	//console.log("app.component"); 
 
  
@@ -234,24 +203,36 @@ isLanguageChanged: boolean;
 
 	
   }
-  async showAlert(msg){
-    const alert = await this.alertController.create({
-      cssClass: 'my-custom-class custom_alert_1',
-      header: 'Alert',
-      message: msg,
-      buttons: [
-        {
-          text: 'Close',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Confirm Cancel');
+  checkVolunteer(){
+    this.user_id = JSON.parse(localStorage.getItem('user_registerd'));
+    if(this.user_id){
+      this.fetch.v_check(this.user_id).subscribe(res => {
+        if(res.success == true){
+          if(res.status == 1){
+            localStorage.setItem('volunteer_approve','1');
           }
+          else{
+            localStorage.setItem('volunteer_approve','0');
+          }
+        }else{
+          localStorage.setItem('volunteer_approve','0');
         }
-      ]
+      });
+    }
+    
+  }
+  checkLoginUser(){
+    if(localStorage.getItem('user_id')!=undefined ){
+      if(JSON.parse(localStorage.getItem('user_id')) !=null ){
+        let data = JSON.stringify({'id': JSON.parse(localStorage.getItem('user_id'))});
+        this.fetch.profile(data).subscribe(res => {
+        if(res['status']!=1){
+          this.logout();
+        }
     });
-  
-    await alert.present();
+      }
+    }
+    
   }
   save_address(){
 	  var id = JSON.parse(localStorage.getItem('user_registerd'));
@@ -264,4 +245,67 @@ isLanguageChanged: boolean;
   side_bar_route(route){
 	this.router.navigate(['/'+route]);  
   }
+  async showNotification(msg,array,donor_details,request_id) {
+      const modal = await this.modalController.create({
+      component: PushNotificationPage,
+      cssClass: 'custom_current_location_modal notification-modal',
+      backdropDismiss : false,
+      componentProps: {
+        "array": array,
+        "donor_details": donor_details,
+        "request_id": request_id,
+        "message": msg
+      }
+      });  
+      modal.onDidDismiss().then((dataReturned) => {
+      
+      });
+  
+      return await modal.present();
+    } 
+    async showFoodDeliverPopupToVolunteer(array) {
+      const modal = await this.modalController.create({
+      component: DeliverFoodVolunteerPage,
+      cssClass: 'custom_feedback_modal  my_volunteer_completed_modal',
+      backdropDismiss : false,
+      componentProps: {
+        "array": array,
+      }
+      });  
+      modal.onDidDismiss().then((dataReturned) => {
+      
+      });
+  
+      return await modal.present();
+    } 
+    async showFoodDeliverPopupToDonor(array) {
+      const modal = await this.modalController.create({
+      component: PickupSuccessModalPage,
+      cssClass: 'custom_filter_modal cancel_allot_food_popup',
+      backdropDismiss : false,
+      componentProps: {
+        "array": array,
+      }
+      });  
+      modal.onDidDismiss().then((dataReturned) => {
+      
+      });
+  
+      return await modal.present();
+    } 
+    async showAlert(msg) {
+      const modal = await this.modalController.create({
+      component: SimplePushNotificationPage,
+      cssClass: 'custom_current_location_modal notification-modal',
+      backdropDismiss : false,
+      componentProps: {
+        "msg": msg,
+      }
+      });  
+      modal.onDidDismiss().then((dataReturned) => {
+      
+      });
+  
+      return await modal.present();
+    } 
 }

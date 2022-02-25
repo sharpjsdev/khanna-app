@@ -19,7 +19,8 @@
 <ion-footer>
   <ion-toolbar>    
     <div class="app_button">
-		 <button class="app_btn" (click)="choose_lang()">{{model.choose_btn}}</button>
+		 <button class="app_btn" *ngIf="!model.search" (click)="choose_lang()">{{model.choose_btn}}</button>
+     <button class="app_btn" *ngIf="model.search"><ion-spinner class="current_location_sppiner"></ion-spinner></button>
       <!-- <ion-router-link href="mobile-number">
        
       </ion-router-link> -->

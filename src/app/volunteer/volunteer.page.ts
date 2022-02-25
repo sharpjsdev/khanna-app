@@ -22,6 +22,7 @@ food_request:any=[];
 food_request_fulfill:any=[];
 volunteer_data:any=[];
 dataReturned: any;
+okay:any;
   constructor(
 	public modalController: ModalController,
 	public alertController: AlertController,
@@ -118,7 +119,9 @@ dataReturned: any;
 		let item14 = res.find(i => i.key_text === 'REQUEST_FOOD');
 			this.model.key_text14 = item14[lang_code];
 		let item15 = res.find(i => i.key_text === 'FOOD_RECEIVED');
-			this.model.key_text15 = item15[lang_code];	
+			this.model.key_text15 = item15[lang_code];
+		let item16 = res.find(i => i.key_text === 'OKAY');
+			this.okay = item16[lang_code];			
 	//});
 
   }
@@ -156,9 +159,19 @@ dataReturned: any;
 		this.fetch.volunteer_request(data).subscribe(res => {
 			console.log(res);
 			this.food_request.push(res['data']);
+			this.presentError('food request is uploaded');
 		});
 	}
   }
+  async presentError(msg) {
+	const alert = await this.alertController.create({
+	  cssClass: 'my-custom-class',
+	  message: msg,
+	  buttons: [this.okay]
+	});
+
+	await alert.present();
+}
   updateVolunteer(){
 	  
 	  if(this.food_request.length>0 && this.model.app_status == false){
@@ -226,7 +239,7 @@ cancelReceivedFood(id){
   async presentAlert() {
 	const alert = await this.alertController.create({
 		cssClass: 'my-custom-class',
-		header: 'Please fill all the details',
+		message: 'Please fill all the details',
 		buttons: ['Okay']
 	});
 	await alert.present();

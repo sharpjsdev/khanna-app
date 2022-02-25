@@ -4,8 +4,9 @@ import { OtpContentPage } from '../modal/otp/otp-content/otp-content.page';
 import { HttpClient } from '@angular/common/http';
 import { FetchService } from '../fetch.service';
 import { StorageService } from '../storage.service';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-
+import { Router, ActivatedRoute } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+import { ErrorMsgService } from '../error-msg.service';
 declare var $: any;
 declare var SMSReceive : any;
 
@@ -16,14 +17,15 @@ declare var SMSReceive : any;
 })
 export class OtpPage implements OnInit {
 model:any={};
+okay:any;
   dataReturned: any;
   constructor(
+	private errorMsg : ErrorMsgService,
     public modalController: ModalController,
-	private http: HttpClient,
-	private route: ActivatedRoute,
 	private router: Router,
 	private fetch: FetchService,
 	private storage: StorageService,
+	public alertController: AlertController
   ) { }
 
   ngOnInit() {
@@ -38,6 +40,9 @@ model:any={};
 	this.model.key_text4 = 'Fill Automatically';
 	this.model.key_text5 = 'Resend OTP';
 	this.model.key_text6 = 'Next';
+	this.model.key_text8 = 'Incorrect OTP !';
+	this.model.key_text9 = 'Please try again';
+	this.okay = "Okay";
 	var lang_code = JSON.parse(localStorage.getItem('lang'));
 	//this.fetch.getKeyText(lang_code).subscribe(res => {
 		let res = this.storage.getScope();
@@ -53,6 +58,13 @@ model:any={};
 			this.model.key_text4 = item5[lang_code];
 		let item6 = res.find(i => i.key_text === 'RESEND_OTP');
 			this.model.key_text5 = item6[lang_code];
+		let item8 = res.find(i => i.key_text === 'INCORRECT_OTP');
+			this.model.key_text8 = item8[lang_code];
+		let item9 = res.find(i => i.key_text === 'PLEASE_TRY_AGAIN');
+			this.model.key_text9 = item9[lang_code];
+		let item7 = res.find(i => i.key_text === 'OKAY');
+			this.okay = item7[lang_code];
+			
 			
 	//});
 	this.model.user_id = JSON.parse(localStorage.getItem('user_id'));
@@ -65,7 +77,6 @@ model:any={};
 	let data = JSON.stringify({'id':this.model.user_id});
 	this.openModal();
 	this.fetch.resendOTP(data).subscribe(res => {
-		console.log(res);
 		if(res.success == true){
 			localStorage.setItem('otp', JSON.stringify(res['otp']));
 		}
@@ -97,16 +108,16 @@ model:any={};
   check_otp(value){
 	if(value == JSON.parse(localStorage.getItem('otp')) || value == 1234){
 		localStorage.setItem('isotpverified', '1');
-		$('#right').css('display','block');
-		$('#wrong').css('display','none');
+		$('#right_otp').css('display','block');
+		$('#wrong_otp').css('display','none');
 	}else if(value == ''){
 		localStorage.setItem('isotpverified', '0');
-		$('#right').css('display','none');
-		$('#wrong').css('display','none');
+		$('#right_otp').css('display','none');
+		$('#wrong_otp').css('display','none');
 	}else{
 		localStorage.setItem('isotpverified', '0');
-		$('#right').css('display','none');
-		$('#wrong').css('display','block');
+		$('#right_otp').css('display','none');
+		$('#wrong_otp').css('display','block');
 	}
   }
   
@@ -116,7 +127,10 @@ model:any={};
 	if(check_otp == JSON.parse(localStorage.getItem('otp')) || check_otp == 1234){
 		localStorage.removeItem('otp'); 
 		$('#check_otp').val('');
+		this.model.value = '';
 		this.router.navigate(['/register-as-volunteer']);
+	}else{	
+		this.errorMsg.showModal(this.model.key_text8+' '+this.model.key_text9);
 	}
   }
   fill_automatically(){
@@ -137,8 +151,9 @@ model:any={};
     // Check SMS for a specific string sequence to identify it is you SMS
     // Design your SMS in a way so you can identify the OTP quickly i.e. first 6 letters
     // In this case, I am keeping the first 6 letters as OTP
-    const message = data.body;
-	var otp = data.body.slice(0, 4);
+    let message = data.body;
+	message = message.replace('Dear User, ','');
+	var otp = message.slice(0, 4);
 	$('#check_otp').val(otp);
 	document.addEventListener("deviceready", function() {
 		SMSReceive.stopWatch(

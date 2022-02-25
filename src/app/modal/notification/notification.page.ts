@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FetchService } from '../../fetch.service';
 import { StorageService } from '../../storage.service';
-// import { 
-//   ModalController, 
-//   NavParams 
-//   } from '@ionic/angular';
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.page.html',
@@ -14,8 +10,6 @@ export class NotificationPage implements OnInit {
   model:any={};
   notifications:any=[]; 
   constructor( 
-    // private modalController: ModalController,
-    // private navParams: NavParams,
 	private fetch: FetchService,
   private storage: StorageService) { }
 
@@ -84,8 +78,6 @@ export class NotificationPage implements OnInit {
       
       
     });
-    // const onClosedData: string = "Wrapped Up!";
-    // await this.modalController.dismiss(onClosedData);
   } 
 
 }

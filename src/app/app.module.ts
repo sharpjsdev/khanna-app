@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { RecaptchaModule } from "ng-recaptcha";
 import { HttpClientModule } from '@angular/common/http';
+import { DatePicker } from '@ionic-native/date-picker/ngx';
 import { DatePipe } from '@angular/common';
 
 
@@ -30,6 +31,7 @@ import { DatePipe } from '@angular/common';
     StatusBar,
     SplashScreen,
     SocialSharing,
+    DatePicker,
 	Geolocation,
   NativeGeocoder,
   BrowserTab,

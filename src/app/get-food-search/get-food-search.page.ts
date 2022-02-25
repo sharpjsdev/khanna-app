@@ -1,19 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { CurrentLocationContentPage } from '../modal/current-location-content/current-location-content.page';
 import { OnTheWayPage } from '../modal/on-the-way/on-the-way.page';
 import { ReceiverConfirmPage } from '../modal/receiver-confirm/receiver-confirm.page';
 import { LocationErrorContentPage } from '../modal/location-error-content/location-error-content.page';
-import { HttpClient } from '@angular/common/http';
 import { FetchService } from '../fetch.service';
 import { StorageService } from '../storage.service';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { Location } from "@angular/common";
 import { AlertController } from '@ionic/angular';
-import { NO_ERRORS_SCHEMA } from '@angular/compiler';
-import { NotificationPage } from '../modal/notification/notification.page';
+import { Geolocation,GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation/ngx';
+import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 declare var $:any;
+declare var google: any;
 
 @Component({
   selector: 'app-get-food-search',
@@ -27,10 +26,15 @@ export class GetFoodSearchPage implements OnInit {
   dataReturned: any;
   ontheway_data :any=[];
   notification:any=[];
+  options : GeolocationOptions;
+  geoencoderOptions: NativeGeocoderOptions = {
+    useLocale: true,
+    maxResults: 5
+  };
   constructor(
+	private geolocation: Geolocation,
+    private nativeGeocoder: NativeGeocoder,
     public modalController: ModalController,
-	private http: HttpClient,
-	private route: ActivatedRoute,
 	private router: Router,
 	private fetch: FetchService,
 	private storage: StorageService,
@@ -59,10 +63,6 @@ export class GetFoodSearchPage implements OnInit {
 	
 	var receiver_location = JSON.parse(localStorage.getItem('receiver_location'));
 	this.location_data = receiver_location;
-	console.log(this.location_data);
-	// this.location_data={
-	// 	"latitude":23.165166,"longitude":75.7888409,"colony_name":"Sarthak Nagar","city":"Ujjain","state":"Madhya Pradesh","country":"India","postalCode":"456010"
-	// }
 	if(this.location_data){
 		let data = JSON.stringify({'app_user_id' : this.model.user_id,'latitude' : this.location_data.latitude, 'longitude' : this.location_data.longitude, 'colony_name' : this.location_data.colony_name, 'city' : this.location_data.city, 'state' : this.location_data.state, 'country' : this.location_data.country, 'postal_code' : this.location_data.postalCode});
 		this.fetch.recomended_distance(data).subscribe(res => {
@@ -73,6 +73,40 @@ export class GetFoodSearchPage implements OnInit {
 	if(receiver_food_type != null){
 		$('#g_food_'+receiver_food_type).addClass('active'); 
 	}
+
+	this.options = {
+		enableHighAccuracy: false,
+		};
+	  this.geolocation.getCurrentPosition(this.options).then((resp) => {
+		this.model.currLat = resp.coords.latitude;
+		this.model.currLng = resp.coords.longitude;
+		var self = this;
+		localStorage.setItem('nearby_lat',self.model.currLat);
+		localStorage.setItem('nearby_lng',self.model.currLng);
+		self.nativeGeocoder.reverseGeocode(resp.coords.latitude, resp.coords.longitude, this.geoencoderOptions)
+	  .then((result: NativeGeocoderResult[]) => {
+		self.model.curr_address = self.generateAddress(result[0]);
+		
+		localStorage.setItem('nearby_address',this.model.curr_address);
+	  })
+	  .catch((error: any) => {
+	  });
+	  }); 
+
+  }
+  //Return Comma saperated address
+  generateAddress(addressObj) {
+    let obj = [];
+    let address = "";
+    for (let key in addressObj) {
+      obj.push(addressObj[key]);
+    }
+    obj.reverse();
+    for (let val in obj) {
+      if (obj[val].length)
+        address += obj[val] + ', ';
+    }
+    return address.slice(0, -2);
   }
   ionViewDidEnter(){
 	var lang_code = JSON.parse(localStorage.getItem('lang'));
@@ -108,6 +142,8 @@ export class GetFoodSearchPage implements OnInit {
 			this.model.key_text14 = item14[lang_code];
 		let item15 = res.find(i=> i.key_text === 'SHOW_IN_BETWEEN');
 			this.model.key_text15 = item15[lang_code]; 	
+		let item16 = res.find(i=> i.key_text === 'THIS_FIELD_IS_REQUIRED');
+			this.model.key_text16 = item16[lang_code]; 	
 			
 	//}); 
 	 
@@ -135,18 +171,14 @@ export class GetFoodSearchPage implements OnInit {
 	this.model.search = true;
 	var receiver_food_type = JSON.parse(localStorage.getItem('receiver_food_type'));
 	var number_of_person = $('#get_food_number').val();
-	var distance = $('#distance').val();
-	if(receiver_food_type == null && (number_of_person == '' || number_of_person== 0) && (distance == '' || distance == 0)){
+	localStorage.setItem('number_of_person',number_of_person);
+	if(receiver_food_type == null && (number_of_person == '' || number_of_person== 0)){
 		$('.receiver_error_border').addClass('error-line');
 		$('.minus').addClass('error-minus');
 		$('.food_value').addClass('error-value');
 		$('.plus').addClass('error-plus');
-		$('.minus-distance').addClass('error-minus');
-		$('.distance_value').addClass('error-value');
-		$('.plus-distance').addClass('error-plus');
 		$('.receiver_food_type-error-text').show();
 		$('.number-error-text').show();
-		$('.distance-error-text').show();
 		this.model.search = false;
 	}
 	else if(receiver_food_type == null){
@@ -154,12 +186,8 @@ export class GetFoodSearchPage implements OnInit {
 		$('.minus').removeClass('error-minus');
 		$('.food_value').removeClass('error-value');
 		$('.plus').removeClass('error-plus');
-		$('.minus-distance').removeClass('error-minus');
-		$('.distance_value').removeClass('error-value');
-		$('.plus-distance').removeClass('error-plus');
 		$('.receiver_food_type-error-text').show();
 		$('.number-error-text').hide();
-		$('.distance-error-text').hide();
 		this.model.search = false;
 		// this.presentAlert();
 	}else if(number_of_person == '' || number_of_person == 0){
@@ -167,117 +195,20 @@ export class GetFoodSearchPage implements OnInit {
 		$('.minus').addClass('error-minus');
 		$('.food_value').addClass('error-value');
 		$('.plus').addClass('error-plus');
-		$('.minus-distance').removeClass('error-minus');
-		$('.distance_value').removeClass('error-value');
-		$('.plus-distance').removeClass('error-plus');
 		$('.receiver_food_type-error-text').hide();
 		$('.number-error-text').show();
-		$('.distance-error-text').hide(); 
 		this.model.search = false;
 		//this.presentAlert();
-	}else if(distance == '' || distance == 0){
+	} else{
 		$('.receiver_error_border').removeClass('error-line');
 		$('.minus').removeClass('error-minus');
 		$('.food_value').removeClass('error-value');
 		$('.plus').removeClass('error-plus');
-		$('.minus-distance').addClass('error-minus');
-		$('.distance_value').addClass('error-value');
-		$('.plus-distance').addClass('error-plus');
-		$('.receiver_food_type-error-text').hide();
-		$('.number-error-text').hide();
-		$('.distance-error-text').show(); 
-		this.model.search = false;
-		//this.presentAlert();
-	} else if(this.location_data == null && this.ontheway_data.length ==0){
-		$('.receiver_error_border').removeClass('error-line');
-		$('.minus').removeClass('error-minus');
-		$('.food_value').removeClass('error-value');
-		$('.plus').removeClass('error-plus');
-		$('.minus-distance').removeClass('error-minus');
-		$('.distance_value').removeClass('error-value');
-		$('.plus-distance').removeClass('error-plus');
 		$('.receiver_food_type-error-text').hide();
 		$('.number-error-text').hide(); 
-		$('.distance-error-text').hide(); 
-		this.model.search = false;
-		this.openModalError();
-	}else{
-		$('.receiver_error_border').removeClass('error-line');
-		$('.minus').removeClass('error-minus');
-		$('.food_value').removeClass('error-value');
-		$('.plus').removeClass('error-plus');
-		$('.minus-distance').removeClass('error-minus');
-		$('.distance_value').removeClass('error-value');
-		$('.plus-distance').removeClass('error-plus');
-		$('.receiver_food_type-error-text').hide();
-		$('.number-error-text').hide(); 
-		$('.distance-error-text').hide(); 
 		this.model.user_id = JSON.parse(localStorage.getItem('user_id'));
-		if(this.location_data != null){
-			let data = JSON.stringify({'app_user_id' : this.model.user_id,'food_type' : receiver_food_type, 'no_of_person' : number_of_person, 'latitude' : this.location_data.latitude, 'longitude' : this.location_data.longitude, 'colony_name' : this.location_data.colony_name, 'city' : this.location_data.city, 'state' : this.location_data.state, 'country' : this.location_data.country, 'postal_code' : this.location_data.postalCode, 'distance': distance});
-			//console.log(data);
-			this.fetch.receiver_food_details(data).subscribe(res => {
-				console.log(res);
-				if(res.data != null && res.data.total_food_for != 0){
-					this.data = res;
-				}else{
-					this.data = {'success' : true, 'data' : null};
-				}
-				this.model.search = false;
-				
-				this.model.food_type = receiver_food_type;
-				this.model.no_of_person = number_of_person;
-				this.model.distance = distance;
-				this.openReceiverConfirmPage();
-				//this.router.navigate(['/nearest-donors',res.receiver_food_id]);
-			});
-		}
-		if(this.ontheway_data.length>0){
-			let data = JSON.stringify({startLat:this.ontheway_data[0].startLat,startLng:this.ontheway_data[0].startLng,endLat:this.ontheway_data[0].endLat,endLng:this.ontheway_data[0].endLng,city:this.ontheway_data[0].city,choice:"receiver",'app_user_id' : this.model.user_id,'food_type' : receiver_food_type, 'no_of_person' : number_of_person});
-     			this.fetch.get_waypoints(data).subscribe(res => {
-					this.model.search = false;
-					if(res.data != null && res.data.total_food_for != 0){
-						this.data = res;
-					}else{
-						this.data = {'success' : true, 'data' : null};
-					}
-					
-					this.model.food_type = receiver_food_type;
-					this.model.no_of_person = number_of_person;
-					this.model.distance = distance;
-					this.openReceiverConfirmPage();
-				 })
-		}
+		this.router.navigate(['/search-food-screen-two']);
 	}
-  }
-
-  async openModalCurrentLocation() {
-	localStorage.setItem('set_confirm_location_route', JSON.stringify('get-food-search'));
-    const modal = await this.modalController.create({
-      component: CurrentLocationContentPage,
-      cssClass: 'custom_current_location_modal',
-      componentProps: {
-        "paramID": 123,
-        "paramTitle": "Test Title"
-      }
-    }); 
-
-    modal.onDidDismiss().then((dataReturned) => {
-      if (dataReturned !== null) {
-        this.dataReturned = dataReturned.data;
-        //alert('Modal Sent Data :'+ dataReturned);
-		this.location_data = JSON.parse(this.dataReturned);
-		this.ontheway_data = [];
-		var receiver_food_type = JSON.parse(localStorage.getItem('receiver_food_type'));
-		let data = JSON.stringify({'app_user_id' : this.model.user_id,'latitude' : this.location_data.latitude, 'longitude' : this.location_data.longitude, 'colony_name' : this.location_data.colony_name, 'city' : this.location_data.city, 'state' : this.location_data.state, 'country' : this.location_data.country, 'postal_code' : this.location_data.postalCode,'food_type' : receiver_food_type});
-		this.fetch.recomended_distance(data).subscribe(res => {
-			this.model.recommended_distance = res.data;
-		});
-
-      }
-    });
-
-    return await modal.present();
   }
   async openOnTheWay() {
 	localStorage.setItem('set_confirm_location_route', JSON.stringify('get-food-search'));
@@ -293,17 +224,10 @@ export class GetFoodSearchPage implements OnInit {
     modal.onDidDismiss().then((dataReturned) => {
       if (dataReturned !== null) {
         this.dataReturned = dataReturned.data;
-        //alert('Modal Sent Data :'+ dataReturned);
-		console.log(this.dataReturned);
 		if(this.dataReturned.length>0){
 			this.ontheway_data = this.dataReturned;
 			this.location_data = null;
 		}
-		// let data = JSON.stringify({'app_user_id' : this.model.user_id,'latitude' : this.location_data.latitude, 'longitude' : this.location_data.longitude, 'colony_name' : this.location_data.colony_name, 'city' : this.location_data.city, 'state' : this.location_data.state, 'country' : this.location_data.country, 'postal_code' : this.location_data.postalCode});
-		// this.fetch.recomended_distance(data).subscribe(res => {
-		// 	this.model.recommended_distance = res.data;
-		// });
-
       }
     });
 
@@ -347,8 +271,6 @@ export class GetFoodSearchPage implements OnInit {
 				this.router.navigate(['/get-food-nearest-donors',JSON.stringify(this.data),this.ontheway_data[0].startLat,this.ontheway_data[0].startLng,this.model.user_id,receiver_food_id]);
 			}
 		}
-        //alert('Modal Sent Data :'+ dataReturned);
-		//this.location_data = JSON.parse(this.dataReturned);
       }
     });
 
@@ -373,14 +295,6 @@ export class GetFoodSearchPage implements OnInit {
     });
 
     return await modal.present();
-  }
-  async presentAlert() {
-		const alert = await this.alertController.create({
-		  cssClass: 'my-custom-class',
-		  header: this.model.alert_text,
-		  buttons: [this.model.okay]
-		});
-		await alert.present();
   }
 
 } 

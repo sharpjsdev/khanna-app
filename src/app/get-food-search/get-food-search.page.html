@@ -1,25 +1,8 @@
-<!-- <ion-header class="ion-no-border ion-padding">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button>
-        <img src="assets/images/icon_menu.svg">
-      </ion-menu-button>
-    </ion-buttons>
-   
-    <ion-buttons slot="end" (click)="openModalNotification()">
-      <span *ngIf="notification.length>0" style="position: absolute;height: 10px;width: 10px;background-color: #000;border-radius: 50%;color: #fff;
-        top: -3px;
-        right: 3px;
-        text-align: center;"></span>       
-        <img src="assets/images/icon_notification.svg">
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header> -->
-<!-- <center style="position: absolute;z-index: 999;margin-top: 50%;margin-left: 40%;" class="current_location_spinner_position" id="location_spinner"></center> -->
+
 <app-captcha></app-captcha>
 <ion-content>
 <div class="ion-padding theme_width"> 
-  <div class="search_food_bg">
+  <div class="search_food_bg custome_search_css">
     <div class="search_single">
       <div class="start_number left_padding">
         <div class="s_number">1.</div>
@@ -32,7 +15,7 @@
           <button class="grey regular btn1 receiver_error_border" id="g_food_3" (click)="food_type(3)">{{model.key_text13}}</button>
         </div>
       </div>
-      <span class="receiver_food_type-error-text">This field is required</span>  
+      <span class="receiver_food_type-error-text">{{model.key_text16}}</span>  
     </div>
 
     <div class="search_single">
@@ -52,72 +35,14 @@
           </div>
         </ion-col>
       </ion-row>
-      <span class="number-error-text">This field is required</span> 
-    </div>
-    <div class="search_single">
-      <ion-row>
-        <ion-col size="6" class="custom_left left_padding" style="padding-left: 12px;margin-top:10px">
-          <div class="s_number">3.</div>
-          <div class="heading">{{model.key_text14}}<span class="star"> *</span></div>            
-        </ion-col>
-        <ion-col size="1" class="center" style="margin-top:10px">
-          :
-        </ion-col>
-        <ion-col size="5" class="custom_right">
-          <div class="how_food">
-            <input type="button" class="minus-distance" onclick="getDistanceDecrementValue()" value="-" />
-            <input type="text" class="distance_value" name="distance" value="1" maxlength="2" max="20" size="1" id="distance" disabled/>
-            <input type="button" class="plus-distance" onclick="getDistanceIncrementValue()" value="+" />
-          </div>
-        </ion-col>
-      </ion-row>
-      <div class="green"   *ngIf="model.recommended_distance && model.recommended_distance > 0">Recommended distance {{ model.recommended_distance }} Km</div>
-      <span class="distance-error-text">This field is required</span> 
-    </div>
-    
-    <div class="search_single">
-      <div class="food_location">
-
-        <div class="start_number left_padding">
-          <p>4.</p>
-          <div class="location_input" (click)="openModalCurrentLocation()">
-            <img src="assets/images/food_location_icon.svg">
-            <input type="text" placeholder="{{model.key_text6}}">
-           
-          </div>
-          <div class="size_15 regular green" style="padding-left: 20px;" *ngIf="location_data || location_data != null">
-            {{location_data.colony_name}}<br>
-               
-            </div>
-          
-          <div class="location_input" (click)="openOnTheWay()" style="padding-left: 20px;">
-            <img src="assets/images/food_location_icon.svg" style="margin-top:22px;">
-            <input type="text" placeholder="{{model.key_text15}}" style="margin-top:22px;">
-           
-          </div>
-          <div class="size_15 regular green" style="padding-left: 20px;" *ngIf="ontheway_data.length>0">
-            From : {{ontheway_data[1].start }}<br><br>
-            To : {{ontheway_data[1].end }}   
-            </div>
-        </div>
-         
-      </div>
-    </div> 
-
-	
-
-  </div>   
+      <span class="number-error-text">{{model.key_text16}}</span> 
+    </div></div>   
 </div>
 
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>    
-   <!--  <div class="app_button" (click)="openModalError()">
-      
-        <button class="app_btn">Search Food</button>
-      
-    </div> -->
+  <ion-toolbar>
 	<div class="app_button" >
 		<ion-router-link (click)="search_food()">
 			<button class="app_btn" *ngIf="!model.search">{{model.key_text7}}</button>
@@ -137,7 +62,7 @@
         <img src="assets/images/grey_footer_activity.svg">
         <ion-label class="size_12 medium">{{model.key_text9}}</ion-label>    
       </ion-segment-button>
-      <ion-segment-button value="volunteer" [routerLink]="model.is_volunteer== 1 ? ['/volunteer'] : ['/volunteer-request']">
+      <ion-segment-button value="volunteer" *ngIf="model.is_volunteer== 1 " [routerLink]="['/volunteer-detail']">
         <!--<ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>-->
         <img src="assets/images/grey_footer_volunteer.svg">
         <ion-label class="size_12 medium">{{model.key_text10}}</ion-label>    

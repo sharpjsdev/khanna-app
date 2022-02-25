@@ -1,12 +1,8 @@
 import { Component, OnInit, Input  } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { HomeContentPage } from '../modal/home-content/home-content.page';
-import { NotificationPage } from '../modal/notification/notification.page';
-import { HttpClient } from '@angular/common/http';
-import { HttpHeaders } from '@angular/common/http';
-import { FetchService } from '../fetch.service';
 import { StorageService } from '../storage.service';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { Geolocation,GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation/ngx';  
 declare var FCMPlugin: any;
@@ -22,12 +18,10 @@ export class HomePage implements OnInit {
 model:any={};
 options : GeolocationOptions;
   dataReturned: any;
+	user_id: any;
   constructor(
     public modalController: ModalController,
-	private http: HttpClient,
-	private route: ActivatedRoute,
 	private router: Router,
-	private fetch: FetchService,
 	private storage : StorageService,
 	private platform: Platform,
 	private geolocation: Geolocation,
@@ -39,16 +33,11 @@ options : GeolocationOptions;
   }
 
   ngOnInit() { 
-	 
   }
 
   ionViewWillEnter(){
-	this.model.is_volunteer = 0;
-	console.log(localStorage.getItem('volunteer_approve'));
-	if(localStorage.getItem('volunteer_approve') != null){
-		this.model.is_volunteer = localStorage.getItem('volunteer_approve');
-	}  
 	localStorage.removeItem('receiver_food_type'); 
+	localStorage.removeItem('number_of_person'); 
 	localStorage.removeItem('set_confirm_location_route'); 
 	localStorage.removeItem('receiver_location'); 
 	localStorage.removeItem('food_for_no_of_person');
@@ -80,14 +69,14 @@ options : GeolocationOptions;
 		  });
 	});
 		
-			
-		
-		 
-		
-		
 	});
   }
 	ionViewDidEnter(){
+
+		localStorage.removeItem('temp_start_address');
+		localStorage.removeItem('temp_end_address');
+		this.model.is_volunteer = localStorage.getItem('volunteer_approve');
+		
 		this.model.key_text1 = "Those who are happiest are those";
 		this.model.key_text2 = "who do the most for others.";
 		this.model.key_text3 = "Get Food";
@@ -95,9 +84,12 @@ options : GeolocationOptions;
 		this.model.key_text5 = "Home";
 		this.model.key_text6 = "Activity";
 		this.model.key_text7 = "Volunteer";
+		this.model.key_text8 = "Volunteer Food Request";
 		var lang_code = JSON.parse(localStorage.getItem('lang'));
+		console.log(lang_code);
 		//this.fetch.getKeyText(lang_code).subscribe(res => {
 			let res = this.storage.getScope();
+			//alert(JSON.stringify(res));
 			let item1 = res.find(i => i.key_text === 'THOSE_WHO_ARE_HAPPIEST_ARE_THOSE');
 				this.model.key_text1 = item1[lang_code];
 			let item2 = res.find(i => i.key_text === 'WHO_DO_THE_MOST_FOR_OTHERS.');
@@ -112,6 +104,8 @@ options : GeolocationOptions;
 				this.model.key_text6 = item6[lang_code];
 			let item7 = res.find(i => i.key_text === 'VOLUNTEER');
 				this.model.key_text7 = item7[lang_code];
+			let item8 = res.find(i => i.key_text === 'VOLUNTEER_FOOD_REQUEST');
+				this.model.key_text8 = item8[lang_code];
 		//});
 	
 	}
@@ -140,7 +134,7 @@ options : GeolocationOptions;
 	if(JSON.parse(localStorage.getItem('donor_location')) != null){
 		localStorage.removeItem('donor_location');
 	}
-	this.router.navigate(['/donate-food']);
+	this.router.navigate(['/donate-food-members']);
   }
   get_food_search(){
 	if(JSON.parse(localStorage.getItem('get-food-search')) != null){
@@ -149,5 +143,7 @@ options : GeolocationOptions;
 	this.router.navigate(['/get-food-search']);  
   }
  
-
+  go_to_volunteer(){
+	this.router.navigate(['/volunteer-food-request']);  
+  }
 }

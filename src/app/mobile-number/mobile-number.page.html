@@ -14,7 +14,8 @@
 <div class="ion-padding">
   <div class="app_input_text center_input vertical_center">
     <input type="number" placeholder="{{mobile_no}}" [(ngModel)]='value' (input)='check_no($event.target.value)' class="check_number"  (ionChange)="check_no(value)">
-    <img src="assets/images/done.svg" class="green_check" style="display:none" >
+    <img src="assets/images/done.svg" class="green_check" id="right" style="display:none" >
+    <img src="assets/images/wrong_sign.svg" class="green_check" id="wrong"  style="display:none" >
   </div>  
 </div>
 
@@ -23,9 +24,6 @@
 <ion-footer>
   <ion-toolbar>    
     <div class="app_button">
-      <!-- <ion-router-link href="otp">
-        <button class="app_btn">{{next_btn}}</button>
-      </ion-router-link> -->
 	   <button class="app_btn" (click)="save()">{{next_btn}}</button>
     </div>
   </ion-toolbar>

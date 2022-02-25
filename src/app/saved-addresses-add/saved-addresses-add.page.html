@@ -6,27 +6,31 @@
     </a>
     
   </div>
+  <ion-searchbar [(ngModel)]="autocomplete.start" placeholder="{{model.key_text12}}" [showCancelButton]="true"   (ionInput)="updateSources()" (ionCancel)="dismissSource()"></ion-searchbar>
+  <ion-list style="position: absolute;z-index: 999;">
+  <ion-item *ngFor="let item of sources" tappable   (click)="chooseSource(item)">
+    {{ item }}
+  </ion-item>
+  </ion-list>
   <div #map id="map"></div>
   <div class="ion-padding">
     <div class="map-icon">
       <img src="assets/images/location_red.svg">
     </div>
     <div class="map_desc">
-      <div class="size_18">
+      <div class="size_16">
         {{model.colony_name}}
       </div>
       <div class="regular size_12">
         <!-- {{model.colony_name}}<br> -->
         <!-- {{model.city}}, {{model.state}} {{model.postalCode}}, {{model.country}} -->
       </div>
-      <br>
       <div class="map_input">
-        <ion-item lines="none">
+        <ion-item lines="none" style="display: none;">
           <ion-label position="stacked" class="size_10 regular" style="color: #DADADA;">{{model.key_text1}} / {{model.key_text2}} / {{model.key_text3}} NO.</ion-label>
           <ion-input class="size_12 regular" id="add_location_house_no"></ion-input>
           <hr class="input_line">
         </ion-item>
-        <br>
         <ion-item lines="none"> 
           <ion-label position="stacked" class="size_10 regular" style="color: #DADADA;">{{model.key_text4}}</ion-label>
           <ion-input class="size_12 regular" id="add_location_landmark"></ion-input>

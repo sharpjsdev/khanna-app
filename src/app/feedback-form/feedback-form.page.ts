@@ -60,7 +60,10 @@ export class FeedbackFormPage implements OnInit {
 			this.model.key_text9 = item9[lang_code];
 		let item10 = res.find(i => i.key_text === 'SUBMIT');
 			this.model.key_text10 = item10[lang_code];
-		
+		let item11 = res.find(i => i.key_text === 'PLEASE_FILL_ALL_THE_DETAILS');
+			this.model.alert_text = item11[lang_code]; 
+		let item12 = res.find(i => i.key_text === 'OKAY');
+			this.model.okay = item12[lang_code]; 
 	//});
   }
   food_quality(val){
@@ -155,8 +158,8 @@ export class FeedbackFormPage implements OnInit {
   async presentAlert() {
 	const alert = await this.alertController.create({
 		cssClass: 'my-custom-class',
-		header: 'Please fill all the details',
-		buttons: ['Okay']
+		header: this.model.alert_text,
+		buttons: [this.model.okay]
 	});
 	await alert.present();
   }

@@ -1,0 +1,144 @@
+<center style="position: absolute;display: none;z-index:999;margin-left:45%;" class="current_location_spinner_position" id="add_location_spinner"><ion-spinner class="current_location_sppiner"></ion-spinner></center>
+<app-captcha></app-captcha>
+<ion-content style="display: flex;flex-direction: column;height: 100%;">
+<div class="ion-padding theme_width">
+  <div class="food_request_heading size_18">{{model.key_text9}}</div><br>
+  <ion-segment class="volunteer-tab" [(ngModel)] = "head_tab" value="tab-1" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="tab-1" >
+        <ion-label class="size_12 medium" >{{model.key_text1}}</ion-label>    
+    </ion-segment-button>
+    <ion-segment-button value="tab-2">
+      <ion-label class="size_12 medium">{{model.key_text2}}</ion-label>    
+    </ion-segment-button>        
+    <ion-segment-button value="tab-3">    
+      <ion-label class="size_12 medium">{{model.key_text3}}</ion-label>                
+    </ion-segment-button>        
+  </ion-segment>      
+</div>
+<div [ngSwitch]="head_tab">
+  <div class="food_request_new" *ngSwitchCase="'tab-1'">
+    <div class="food_request_entry" *ngFor="let x of food_request;let i = index; " id="req_list_{{x.id}}" style="position:relative;">
+      <div class="entry_number green" style="width: 7%;">{{i+1}}.</div>
+      <div class="entry_name" style="width: 70%;" *ngIf="mylang!='hi'">
+        <span class="green">{{x.name}}</span> 
+        <br>
+        {{x.food_type | foodType}} {{model.key_text23}} {{x.no_of_person_leftfor_food}} {{model.key_text30}}
+        
+      </div> 
+      <div class="entry_name" style="width: 70%;" *ngIf="mylang=='hi'">
+        <span class="green">{{x.name}}</span> 
+        <br>
+        {{x.food_type | foodType}} {{model.key_text32}} {{x.no_of_person_leftfor_food}} <span *ngIf="x.no_of_person_leftfor_food > 1">{{model.key_text24}}</span><span *ngIf="x.no_of_person_leftfor_food == 1">{{model.key_text30}}</span> {{model.key_text33}}
+        
+      </div> 
+      <div class="custom_new_close_btn entry_delete" style="width: 11%;">
+        <img src="assets/images/round_cross.svg" style="margin-top:0px;" (click)="presentAlertPrompt(x.id)">
+      </div>      
+    </div>
+  
+  </div>
+  
+  <div class="food_request_new" *ngSwitchCase="'tab-2'">
+    <ion-row *ngFor="let x of onthe_way;let i = index;" class="custom_new_single_row">
+      <ion-col size="1" style="padding: 0;">	
+        {{i+1}}.
+      </ion-col>
+      <ion-col size="8" style="padding: 0; padding-right: 10px;" >
+        {{ x.username }} {{x.food_type | foodType}}. {{model.key_text23}} {{x.no_of_person}} {{model.key_text24}}
+      </ion-col>			  
+      <ion-col size="3" style="padding: 0;" >
+        <div class="grey_font right">{{x.updated_at | date:'shortTime'}}</div> 
+      </ion-col>
+    </ion-row> 
+  </div>
+  <div class="ion-padding theme_width" *ngSwitchCase="'tab-3'">
+
+    
+
+    <ion-segment class="volunteer-graph-tab"  value="today" (ionChange)="segmentChangedCompleted($event)">  
+      <ion-segment-button value="today" >
+          <ion-label class="size_12 medium" >{{model.key_text8}}</ion-label>    
+      </ion-segment-button>
+      <ion-segment-button value="week">
+        <ion-label class="size_12 medium">{{model.key_text18}}</ion-label>    
+      </ion-segment-button>        
+      <ion-segment-button value="month">    
+        <ion-label class="size_12 medium">{{model.key_text19}}</ion-label>                
+      </ion-segment-button> 
+      <ion-segment-button value="year">    
+        <ion-label class="size_12 medium">{{model.key_text20}}</ion-label>                
+      </ion-segment-button>        
+    </ion-segment>   
+    <div class="count_detail">
+      <ion-row>
+        <ion-col size="8">
+          <ion-label class="size_14 medium" >{{model.key_text21}}</ion-label> 
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="3">
+          <ion-label class="size_14 medium" >{{active_count}}</ion-label> 
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="8">
+          <ion-label class="size_14 medium" >{{model.key_text22}}</ion-label> 
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="3">
+          <ion-label class="size_14 medium" >{{full_count}} {{model.key_text29}}</ion-label> 
+        </ion-col>
+      </ion-row>
+     </div> 
+    
+     <div id="my_highcharts" style="width:100%;"></div>
+    <div class="border-bottom"></div>
+    <div class="count_detail">
+  
+      <div class="food_request_entry" *ngFor="let x of completed_way;let i = index; " id="req_list_{{x.id}}" style="position:relative;">
+        <div class="entry_number green" style="width: 7%;">{{i+1}}.</div>
+        <div class="entry_name" style="width: 65%;">
+          <span class="green">{{x.username}}</span> 
+          <br>
+          {{x.food_type | foodType}}. {{model.key_text23}} {{x.no_of_person}} {{model.key_text24}}
+        </div> 
+        <div  routerLink="/view-feedback/{{x.feedback_id}}" class="custom_new_close_btn entry_delete" style="width: 28%;" *ngIf="x.feedback_id">
+          {{model.key_text25}}
+        </div>
+        <div routerLink="/feedback-form/{{x.app_user_id}}/{{x.id}}" class="custom_new_close_btn entry_delete" style="width: 28%;" *ngIf="x.feedback_id =='' || x.feedback_id ==null">
+          {{model.key_text26}}
+        </div>      
+      </div>
+    </div>
+    
+  </div>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>    
+    <ion-segment color="transparent" value="volunteer">
+      <ion-segment-button value="home" [routerLink]="['/home']">
+          <!--<img src="assets/images/red_footer_home.svg">-->
+          <ion-img src="assets/images/grey_footer_home.svg"></ion-img>
+          <ion-label class="size_12 medium" >{{model.key_text10}}</ion-label>    
+      </ion-segment-button>
+      <ion-segment-button value="activity" [routerLink]="['/activity-normal']">
+        <!--<ion-img src="assets/images/red_footer_activity.svg"></ion-img>-->
+        <img src="assets/images/grey_footer_activity.svg">
+        <ion-label class="size_12 medium">{{model.key_text11}}</ion-label>    
+      </ion-segment-button>        
+      <ion-segment-button value="volunteer" *ngIf="model.is_volunteer== 1 " [routerLink]="['/volunteer-detail']">            
+        <ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>
+        <!--<img src="assets/images/grey_footer_volunteer.svg">-->
+        <ion-label class="size_12 medium" color="tertiary">{{model.key_text12}}</ion-label>                
+      </ion-segment-button>        
+    </ion-segment>      
+</ion-toolbar>
+</ion-footer>
+
+
+  
+

@@ -1,0 +1,41 @@
+<ion-content class="modal_content">
+  <div class="ion-padding">
+      <!-- <img (click)="closeModal('Wrapped Up!')" src="assets/images/close_btn.svg" class="close_btn">     -->
+    
+      <div class="modal_inner">      
+      <br>
+      <div class="medium size_16 grey center">
+        {{model.key_text3}} <br>
+        {{model.key_text4}}
+        <span class="how_food">
+          <input type="button" class="minus-distance" onclick="getDistanceDecrementValue()" value="-" />
+          <input type="text" class="distance_value" name="distance" value="5" maxlength="2" max="20" size="1" id="distance" disabled/>
+          <input type="button" class="plus-distance" onclick="getDistanceIncrementValue()" value="+" /> kms
+        </span>
+      </div>
+      <br>
+      <div class="medium size_14">
+        <ion-row>
+          <ion-col size="6">
+            <button class="app_btn custom_reject_btn size_14 new_btn_css"  (click)="search_again()">{{model.key_text1}}</button>
+          </ion-col>
+          <ion-col size="6" *ngIf="!model.search">
+            <button class="app_btn custom_accept_btn size_14 new_btn_css"  (click)="accept_food_request()">{{model.key_text2}}</button>
+          </ion-col>
+          <ion-col size="6" *ngIf="model.search">
+            <button class="app_btn custom_accept_btn size_14 new_btn_css"><ion-spinner class="current_location_sppiner"></ion-spinner></button>
+          </ion-col>
+        </ion-row>
+      </div>
+      <!-- <br><br> -->
+      <!-- <div class="medium size_16 center" style="max-width: 240px; width: 100%; margin: 0 auto;">
+        {{model.key_text2}}
+      </div> -->
+	  <!-- <br> -->
+      <!-- <div class="medium size_16 center" style="max-width: 240px; width: 100%; margin: 0 auto;">
+        {{model.key_text3}}
+      </div> -->
+    </div>
+
+  </div> 
+</ion-content> 

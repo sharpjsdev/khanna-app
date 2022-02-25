@@ -1,5 +1,6 @@
 import { Component, OnInit,Input } from '@angular/core';
 import { FetchService } from '../../fetch.service';
+import { StorageService } from '../../storage.service';
 import { 
   ModalController, 
   NavParams 
@@ -13,10 +14,13 @@ import {
 
 export class CancelAllotedfoodPage implements OnInit {
   @Input() id;
+  @Input() type;
+  @Input() paramTitle;
   model:any={};
   reasons:any=[];
   constructor(private modalController: ModalController,
     private navParams: NavParams,
+    private storage : StorageService,
 	private fetch: FetchService) { }
 
   ngOnInit() {
@@ -32,6 +36,19 @@ export class CancelAllotedfoodPage implements OnInit {
     });
     
   })
+  let res = this.storage.getScope();
+  if(this.paramTitle == 'get_food'){
+    let item1 = res.find(i => i.key_text === 'CANCEL_PICK_UP');
+			this.model.key_text1 = item1[lang_code];
+  }else{
+    let item1 = res.find(i => i.key_text === 'CANCEL_DROP');
+			this.model.key_text1 = item1[lang_code];
+  }
+  
+  let item2 = res.find(i => i.key_text === 'REASON_FOR_CANCELLATION');
+  this.model.key_text2 = item2[lang_code];
+  let item3 = res.find(i => i.key_text === 'COMMENT');
+  this.model.key_text3 = item3[lang_code];
   }
   select_reason(value){
     
@@ -48,12 +65,18 @@ export class CancelAllotedfoodPage implements OnInit {
       $('#reason_msg').hide();
       let comment = $('#comments').val();
       let data = JSON.stringify({'id' : this.id, 'reason' : reason, 'comment' : comment });
-     
-
-      this.fetch.cancel_alloted_request(data).subscribe(res=>{
-        this.model.search = false;
-        this.closeModal(1);
-      });
+      if(this.type =="get_food"){
+        this.fetch.get_food_cancel_alloted_request(data).subscribe(res=>{
+          this.model.search = false;
+          this.closeModal(1);
+        });
+      }else{
+        this.fetch.cancel_alloted_request(data).subscribe(res=>{
+          this.model.search = false;
+          this.closeModal(1);
+        });
+      }
+      
     }
   }
   async closeModal(isDone) {

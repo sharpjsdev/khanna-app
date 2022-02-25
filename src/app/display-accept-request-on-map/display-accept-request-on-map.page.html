@@ -1,0 +1,86 @@
+
+<app-captcha></app-captcha>
+<ion-content>
+  <div class="custom_map_design">
+  <div style="margin-left: 20px;">
+    <div class="map-icon">
+      <ion-icon name="warning-outline" style="font-size: 14px; margin-top: 10px;"></ion-icon>
+    </div>
+    <div class="map_desc">      
+      <div class="regular size_12">
+        Wearning a mask in some public spaces is required due to COVID - 19
+      </div> 
+    </div>
+  </div>
+  <div class="ion-padding res_ion_padding">
+    <div class="btn-group" style="margin-top: -12px;">
+      <button class="grey regular btn4" id="btn_drive">
+        <div class="donor_icon" (click)="calculate_route('DRIVING', 2)">
+          <img src="assets/images/{{model.bike_image}}">
+          <!--<img src="assets/images/icon_donor_bike_white.svg">-->
+        </div>
+        <div class="grey size_12" id="text_bike_time">
+          {{model.drive_time}}
+        </div>
+      </button>
+
+      <button class="grey regular btn4" id="btn_bus">
+        <div class="donor_icon" (click)="calculate_route('TRANSIT', 2)">
+          <img src="assets/images/{{model.bus_image}}">
+          <!-- <img src="assets/images/icon_donor_bus_white.svg"> -->
+        </div>
+        <div class="grey size_12" id="text_bus_time">
+          {{model.public_time}}
+        </div>
+      </button>
+
+      <button class="grey regular btn4" id="btn_walk">
+        <div class="donor_icon" (click)="calculate_route('WALKING', 2)">
+          <img src="assets/images/{{model.walk_image}}">
+          <!--<img src="assets/images/icon_donor_walk_white.svg">-->
+        </div>
+        <div class="grey size_12" id="text_walk_time">
+         {{model.walk_time}}
+        </div>
+      </button>      
+      
+    </div>
+  </div>
+ 
+ <!--  <div class="map volunteer_location">    
+    <img src="assets/images/map_volunteer.svg">
+  </div> -->
+  <div #map id="map"></div>
+  <div class="" style="margin-left:10px;">
+    <p class="regular medium size_14 green">{{time_c}} <span class="grey size_14">({{distance_c}})</span></p>
+  </div>
+  <div style="margin-left:10px;">
+    <div class="map-icon">
+      <img src="assets/images/location_black.svg">
+    </div>
+    <div class="map_desc">      
+      <div class="regular size_14"><span  style=" color: orange;">Food Drop Location</span>
+       <p class="address_size_2">{{model.colony_name}}</p>
+      </div>      
+      
+    </div>
+
+  </div>
+</div>
+  
+  </ion-content> 
+  <ion-footer style="padding-top: 0px!important;">
+  <div class="medium size_16">
+    <ion-row>
+      <ion-col size="6">
+        <button class="app_btn custom_reject_btn new_btn_css"  (click)="rejectRequest()">{{model.key_text1}}</button>
+      </ion-col>
+      <ion-col size="6">
+        <button class="app_btn custom_accept_btn new_btn_css"  (click)="acceptRequest()">{{model.key_text5}}</button>
+      </ion-col>
+    </ion-row>
+     
+  </div>
+  </ion-footer>
+  
+  

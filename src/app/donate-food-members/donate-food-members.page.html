@@ -1,65 +1,18 @@
-<!-- <ion-header class="ion-no-border ion-padding">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button>
-        <img src="assets/images/icon_menu.svg">
-      </ion-menu-button>
-    </ion-buttons>
-  
-    <ion-buttons slot="end"  (click)="openModalNotification()">
-      <span *ngIf="notification.length>0" style="position: absolute;height: 10px;width: 10px;background-color: #000;border-radius: 50%;color: #fff;
-        top: -3px;
-        right: 3px;
-        text-align: center;"></span>       
-        <img src="assets/images/icon_notification.svg">
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header> -->
+
 <app-captcha></app-captcha>
 <ion-content>
 <div class="ion-padding theme_width"> 
   <div class="search_food_bg" style="min-height: 370px;">
     <div class="">
-      <span id="error" style="color:red;display:none;margin-left: 1rem;">Please Select food type.</span>
+      <!-- <span id="error" style="color:red;display:none;margin-left: 1rem;">Please Select food type.</span> -->
 	    <div class="start_number left_padding green">
-        <!-- <div class="s_number">1.</div> -->
-        <!-- <div class="heading" style="font-size: 22px;text-align: center;">{{model.key_text2}} </div>  -->
+        <div class="size_16 medium big_heading">{{model.key_text1}}</div>
         <div class="checkbox">
-          <input type="checkbox" id="vegcheckbox" name="" value="veg" (change)="showCount($event)" checked="true">
+          <input type="checkbox" id="vegcheckbox" name="" value="veg" (change)="showCount($event)" >
           <label for="vegcheckbox" class="green"><span>{{model.key_text2}}</span></label>
        </div>
-        <!-- <input style="margin-right: 6px;" type="checkbox" id="vegcheckbox" value="veg" /> {{model.key_text2}} -->
-      </div>       
-
-         
-	
-      
-      <!-- <div class="search_food_buttons">
-        <div class="btn-group">
-          <button class="grey regular btn1" id="d_food_1" (click)="food_type(1)">{{model.key_text2}}.</button>
-          <button class="grey regular btn1" id="d_food_2" (click)="food_type(2)">{{model.key_text3}}.</button>
-          <button class="grey regular btn1" id="d_food_3" (click)="food_type(3)">{{model.key_text4}}</button> 
-        </div>
-      </div>  
-      <br><br> -->
-     <!--  <ion-row>
-        <ion-col size="6" class="custom_left left_padding" style="padding-left: 12px;">
-          <div class="s_number">2.</div>
-          <div class="heading">{{model.key_text5}}</div>   
-        </ion-col>
-        <ion-col size="1" class="center vertical_col">
-          :
-        </ion-col>
-        <ion-col size="5" class="custom_right">
-          <div class="how_food">
-            <input type="button" class="minus" onclick="decrementValue()" value="-" />
-            <input type="text" class="food_value" name="quantity" value="1" maxlength="2" max="10" size="1" id="number" disabled/>
-            <input type="button" class="plus" onclick="incrementValue()" value="+" />
-          </div>
-        </ion-col>
-      </ion-row>
-      <br><br> -->
-      <ion-row id="veg">
+      </div>   
+      <ion-row id="veg" style="display: none;">
         <ion-col size="6" class="custom_left left_padding" style="padding-left: 12px;margin-top:10px">
           <!-- <div class="s_number">2.</div> -->
           <div>{{model.key_text6}}</div>
@@ -111,9 +64,6 @@
 <ion-footer>
   <ion-toolbar>    
     <div class="app_button">
-      <!-- <ion-router-link href="donate-food-review">
-        <button class="app_btn">Review your Donation</button>
-      </ion-router-link> -->
 	  <button class="app_btn" (click)="review()" *ngIf="!model.search">{{model.key_text7}}</button>
     <button class="app_btn" *ngIf="model.search"><ion-spinner class="current_location_sppiner"></ion-spinner></button>
     </div>
@@ -129,7 +79,7 @@
         <img src="assets/images/grey_footer_activity.svg">
         <ion-label class="size_12 medium">{{model.key_text9}}</ion-label>    
       </ion-segment-button>
-      <ion-segment-button value="volunteer" [routerLink]="model.is_volunteer== 1 ? ['/volunteer'] : ['/volunteer-request']">
+      <ion-segment-button value="volunteer" *ngIf="model.is_volunteer== 1 " [routerLink]="['/volunteer-detail']">
         <!--<ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>-->
         <img src="assets/images/grey_footer_volunteer.svg">
         <ion-label class="size_12 medium">{{model.key_text10}}</ion-label>    

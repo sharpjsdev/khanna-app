@@ -43,25 +43,28 @@
   <div class="single_page_title medium size_18" style="margin-left: 0px;">{{ model.key_text3 }}</div>
   <div class="about_contact">
     <div class="app_input_text">   
-      <span style="color:red;display:none;margin-left:1rem" id="full_name_msg">This field is required</span>     
       <input type="text" placeholder="{{ model.key_text8 }} * " name="full_name" id="full_name">  
-        
+      <span style="color:red;display:none;margin-left:1rem" id="full_name_msg">{{model.key_text13}}</span>     
+       
     </div>
     
     <div class="app_input_text">     
-      <span style="color:red;display:none;margin-left:1rem" id="email_msg">This field is required</span>
-      <span style="color:red;display:none;margin-left:1rem" id="correct_email_msg">Enter a valid email address</span> 
-      <input type="email" placeholder="{{ model.key_text9 }} *" name="email" id="email">      
+      
+      <input type="email" placeholder="{{ model.key_text9 }} *" name="email" id="email">
+      <span style="color:red;display:none;margin-left:1rem" id="email_msg">{{model.key_text13}}</span>
+      <span style="color:red;display:none;margin-left:1rem" id="correct_email_msg">{{model.key_text14}}</span>       
     </div>
     
     <div class="app_input_text">
-      <span style="color:red;display:none;margin-left:1rem" id="phone_no_msg">This field is required</span>
-      <span style="color:red;display:none;margin-left:1rem" id="correct_phone_msg">Enter a valid 10 digit phone number</span>       
-      <input type="number" placeholder="{{ model.key_text10 }} *" name="phone_no" id="phone_no">      
+             
+      <input type="number" placeholder="{{ model.key_text10 }} *" name="phone_no" id="phone_no"> 
+      <span style="color:red;display:none;margin-left:1rem" id="phone_no_msg">{{model.key_text13}}</span>
+      <span style="color:red;display:none;margin-left:1rem" id="correct_phone_msg">{{model.key_text15}}</span>     
     </div>
    
     <div class="app_input_text">      
       <ion-textarea rows="4" placeholder="{{ model.key_text11 }}" class="custom_textarea" name="message" id="message"></ion-textarea>      
+      <span style="color:red;display:none;margin-left:1rem" id="message_msg">{{model.key_text13}}</span>
     </div>
   </div>
   <div class="about_contact">
@@ -70,7 +73,7 @@
       siteKey="6LfqyzIaAAAAAOCq3d6w-ArhGUNkP_TXWPJPJbPQ"
     ></re-captcha>
   </div>
-  <span style="color:red;display:none;margin-left:1rem" id="captcha_msg">Captcha required</span>
+  <span style="color:red;display:none;margin-left:1rem" id="captcha_msg">{{model.key_text16}}</span>
   <div class="app_button">
     <button  class="app_btn about_btn" *ngIf="!model.search" (click)="saveForm()">{{ model.key_text12 }}</button>
     <button class="app_btn" style="padding:10px" *ngIf="model.search"><ion-spinner class="current_location_sppiner"></ion-spinner></button>

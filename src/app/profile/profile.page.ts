@@ -36,7 +36,6 @@ model:any={};
 	this.model.key_both = 'Both';
 	this.model.key_save_changes = 'Save Changes';
 	var lang_code = JSON.parse(localStorage.getItem('lang'));
-	console.log(lang_code);
 	
     let maxDate=  new Date((new Date().getFullYear() - 18),new Date().getMonth(), new Date().getDate());
 	let latest_date =this.datepipe.transform(maxDate, 'yyyy-MM-dd');
@@ -59,11 +58,16 @@ model:any={};
 			this.model.key_both = item7[lang_code];
 		let item8 = res.find(i => i.key_text === 'SAVE_CHANGES');
 			this.model.key_save_changes = item8[lang_code];
+		let item9 = res.find(i => i.key_text === 'THIS_FIELD_IS_REQUIRED');
+			this.model.key_valid = item9[lang_code];
+		let item10 = res.find(i => i.key_text === 'PROFILE_UPDATE_MSG');
+			this.model.succ_msg = item10[lang_code];
+		let item11 = res.find(i => i.key_text === 'OKAY');
+			this.model.okay = item11[lang_code];
 	//});
 	this.model.user_id = JSON.parse(localStorage.getItem('user_registerd'));
 	let data = JSON.stringify({'id': this.model.user_id});
 	this.fetch.profile(data).subscribe(res => {
-		console.log(res);
 		this.model.username = res['username'];
 		this.model.dob = res['dob'];
 		this.model.food_type = res['type_of_food_you_prefer'];
@@ -117,9 +121,9 @@ model:any={};
 			if(res.success == true){
 				const alert = await this.alertController.create({
 					cssClass: 'my-custom-class',
-					header: 'alert',
-					message : "Profile updated successfully",
-					buttons: ['Okay']
+					//header: 'alert',
+					message : this.model.succ_msg,
+					buttons: [this.model.okay]
 				});
 				await alert.present();
 			}

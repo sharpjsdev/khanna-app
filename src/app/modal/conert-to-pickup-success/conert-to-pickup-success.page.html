@@ -1,0 +1,18 @@
+<ion-content class="modal_content">
+  <div class="ion-padding">  
+    <a (click)="closeModal()">
+      <img src="assets/images/close_btn.svg" class="close_btn">
+    </a>
+    <div class="modal_inner">
+      <br>
+      <div class="center">
+        <img src="assets/images/icon_registered.svg">
+      </div>
+      <br>
+      <div class="medium size_18 green center" style="max-width: 200px; width: 100%; margin: 0 auto;">
+        <span *ngIf="food != 0  && model.username">{{ model.key_text1 }} {{ model.username }} {{ model.key_text2 }} {{ food }}  {{ model.key_text3 }}, {{ model.key_text4 }}</span>
+      </div>
+    </div>
+
+  </div> 
+</ion-content> 

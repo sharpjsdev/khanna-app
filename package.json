@@ -24,6 +24,7 @@
     "@ionic-native/browser-tab": "^5.29.0",
     "@ionic-native/call-number": "^5.32.0",
     "@ionic-native/core": "^5.0.0",
+    "@ionic-native/date-picker": "^5.34.0",
     "@ionic-native/geolocation": "^5.28.0",
     "@ionic-native/native-geocoder": "^5.28.0",
     "@ionic-native/social-sharing": "^5.31.1",
@@ -32,11 +33,13 @@
     "@ionic/angular": "^5.0.0",
     "cordova-browser": "^6.0.0",
     "cordova-plugin-add-swift-support": "^2.0.2",
+    "cordova-plugin-datepicker": "^0.9.3",
     "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-nativegeocoder": "^3.4.1",
     "cordova-res": "^0.15.1",
     "highcharts": "^8.2.0",
     "ng-recaptcha": "^7.0.1",
+    "ng2-google-charts": "^6.1.0",
     "ngx-captcha": "^8.0.1",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
@@ -78,6 +81,7 @@
     "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~3.3.0",
     "karma-jasmine-html-reporter": "^1.5.0",
+    "mx.ferreyra.callnumber": "0.0.2",
     "phonegap-plugin-multidex": "^1.0.0",
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
@@ -91,7 +95,9 @@
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-ionic-webview": {},
+      "cordova-plugin-ionic-webview": {
+        "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
+      },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-geolocation": {},
       "cordova-plugin-nativegeocoder": {},
@@ -106,7 +112,9 @@
       "cordova-plugin-androidx": {},
       "cordova-plugin-androidx-adapter": {},
       "cordova-plugin-x-socialsharing": {},
-      "mx.ferreyra.callnumber": {}
+      "mx.ferreyra.callnumber": {},
+      "call-number": {},
+      "cordova-plugin-datepicker": {}
     },
     "platforms": [
       "browser",

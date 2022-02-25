@@ -1,0 +1,32 @@
+<ion-header>
+  <div class="regular size_18 white center">
+  </div>
+    <ion-searchbar [(ngModel)]="autocomplete.start" placeholder="{{model.key_text4}}" [showCancelButton]="true"   (ionChange)="updateSources()" (ionCancel)="dismissSource()" (click)="goToAddressSelection(1)"></ion-searchbar>
+    
+    <ion-searchbar [(ngModel)]="autocomplete.end" placeholder="{{model.key_text5}}" [showCancelButton]="true"   (ionChange)="updateDestinations()" (ionCancel)="dismissDestination()" (click)="goToAddressSelection(2)"></ion-searchbar>
+    <div style="margin-left: 20px;">
+      <div class="map-icon">
+        <ion-icon name="warning-outline" style="font-size: 14px; margin-top: 10px;"></ion-icon>
+      </div>
+      <div class="map_desc">      
+        <div class="regular size_12">
+          Wearning a mask in some public spaces is required due to COVID - 19
+        </div> 
+      </div>
+    </div> 
+</ion-header>
+<ion-content class="current_location_page_show">
+  <div #map id="map"></div>
+  </ion-content>
+  <ion-footer class="current_location_page_show">
+    <ion-toolbar>    
+		<div class="app_button" *ngIf="model.startLat && model.startLng && model.endLat && model.endLng">
+			<span (click)="confirm()">
+				<button class="app_btn">{{model.key_text1}}</button>
+			</span>
+			<!--  <button class="app_btn" (click)="confirm_location()">Confirm Location</button> -->
+		</div>
+    </ion-toolbar>
+</ion-footer>
+  
+  

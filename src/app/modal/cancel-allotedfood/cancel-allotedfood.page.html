@@ -6,10 +6,10 @@
   <div class="ion-padding">   
   
     <div class="modal_inner">
-      <label>Reasons <span style="color:red">*</span></label><br/>
+      <div class="regular medium size_16" style="border-bottom: 1px solid;"><label>{{model.key_text2}} <span style="color:red">*</span></label></div><br/>
 
       <ion-radio-group (ionChange)="select_reason($event)"> 
-        <ion-item *ngFor="let x of reasons" lines="none">
+        <ion-item *ngFor="let x of reasons" lines="none" class="cancel_radio">
           <ion-label class="regular size_14">{{ x.label }}</ion-label>
           <ion-radio name="reason" slot="start" value="{{x.label}}" (ionChange)="radioGroupChange($event)"></ion-radio>
         </ion-item>
@@ -21,7 +21,7 @@
       </label>-->
 
       <div id="reason_msg" style="color:red;display:none;">Reason is required</div><br/>
-      <label>Comments</label><br/>      
+      <label>{{model.key_text3}}</label><br/>      
       <div class="btn-group">
         <ion-textarea rows="4" name="comments" placeholder="" class="custom_textarea" id="comments"></ion-textarea>
       </div>      
@@ -33,7 +33,7 @@
 <ion-footer>
   <ion-toolbar>    
     <div class="app_button">      
-        <button type="btn" (click)="cancelDonation()" *ngIf="!model.search" class="app_btn">Okay</button>
+        <button type="btn" (click)="cancelDonation()" *ngIf="!model.search" class="app_btn">{{model.key_text1}}</button>
         <button class="app_btn"  *ngIf="model.search"><ion-spinner class="current_location_sppiner"></ion-spinner></button>      
     </div>
   </ion-toolbar>

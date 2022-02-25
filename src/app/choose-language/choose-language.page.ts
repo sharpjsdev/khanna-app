@@ -27,8 +27,9 @@ model:any={};
 	
   }
   ionViewWillEnter() {
+	this.model.search = false;
 	this.model.lang_code = JSON.parse(localStorage.getItem('lang'));
-	console.log(this.model.lang_code);
+	this.model.user_id = JSON.parse(localStorage.getItem('user_registerd'));
 	$('#choose_lang_'+this.model.lang_code).prop("checked", true);
 	this.model.choose_btn = 'Choose Language';
 	this.fetch.getLanguage().subscribe(res => {
@@ -45,9 +46,16 @@ model:any={};
 		});
   }
   choose_lang(){
+	this.model.search = true;
 	if(JSON.parse(localStorage.getItem('lang')) != null){
+		let lang_data = JSON.stringify({'id' : this.model.user_id, 'language' : JSON.parse(localStorage.getItem('lang'))});
+		this.fetch.updateLanguage(lang_data).subscribe(async(res) => {
+		})
 		this.fetch.isLanguageChanged.next(JSON.parse(localStorage.getItem('lang')));
-		this.router.navigate(['/home']);
+		var self = this;
+		setTimeout(function(){ 
+			self.router.navigate(['/home']);
+		}, 3000);
 	}else{
 		this.presentAlert();
 	}

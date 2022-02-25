@@ -4,9 +4,10 @@
 
 export const environment = {
   production: false,
-  base_url: 'http://khana.app/api/api/',
-  image_url : 'http://khana.app/',
-  phone_no : '08069010223'
+  base_url: 'https://khana.app/api/api/',
+  image_url : 'https://khana.app/',
+  //phone_no : '08069038801'
+  phone_no : '08069010173'
 };
 
 /*

@@ -30,15 +30,6 @@
       <button class="grey regular btn2" id="r_food_2" (click)="food_type(2)">{{model.non_veg}}.</button>
       <button class="grey regular btn2" id="r_food_3" (click)="food_type(3)">{{model.both}}</button>
     </div>
-         
-    <div class="input_text_bottom new_class_for_checkbox"> 
-      <div class="otp_left">
-        <input type="checkbox" id="terms" name="fruit-1" value="terms">
-        <label for="terms" class="light light_grey size_12 left_space_2" (click)="openTermsAndConditions()">{{ model.terms }}</label>
-      </div>      
-    </div>
-
-    
   </div>
   
   </ion-content>
@@ -46,10 +37,7 @@
   <ion-footer> 
     <ion-toolbar>     
       <div class="app_button">
-        <!-- <ion-router-link href="home">
-          <button class="app_btn">Get Started</button>
-        </ion-router-link> -->
-		<button class="app_btn" (click)="save()">{{model.get_start}}</button>
+		<button class="app_btn" (click)="save()">{{model.next}}</button>
       </div>
     </ion-toolbar>
   </ion-footer>

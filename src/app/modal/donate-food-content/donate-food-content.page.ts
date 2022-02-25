@@ -6,7 +6,7 @@ import {
   ModalController, 
   NavParams 
   } from '@ionic/angular';
-
+  declare var $: any;
 @Component({
   selector: 'app-donate-food-content',
   templateUrl: './donate-food-content.page.html',
@@ -27,11 +27,15 @@ model:any={};
   ) { }
 
   ngOnInit() { 
+  $("#donate_food_spinner").show();
+  $(".modal_content").css("opacity",0);
   var lang_code = JSON.parse(localStorage.getItem('lang'));
   this.model.user_id = JSON.parse(localStorage.getItem('user_registerd'));
   let data = JSON.stringify({'id': this.model.user_id});
 	this.fetch.profile(data).subscribe(res => {
 	  //	console.log(res);
+    $("#donate_food_spinner").hide();
+    $(".modal_content").css("opacity",1);
 		this.model.username = res['username'];
 		// this.model.dob = res['dob'];
 		// this.model.food_type = res['type_of_food_you_prefer'];
@@ -51,6 +55,8 @@ model:any={};
         this.model.key_text5 = item5[lang_code];
         let item6 = res.find(i => i.key_text === 'DONATE_MSG_4');
         this.model.key_text6 = item6[lang_code];
+        let item7 = res.find(i => i.key_text === 'THANK_YOU_FOR_YOUR_KIND_GESTURE');
+        this.model.key_text7 = item7[lang_code];
       
       // let item1 = res.find(i => i.key_text === 'THANK_YOU_FOR_YOUR_KIND_GESTURE');
       //   this.model.key_text1 = item1[lang_code]; 

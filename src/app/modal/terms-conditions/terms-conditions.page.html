@@ -1,12 +1,24 @@
-<ion-content class="modal_content">
-  <div class="ion-padding">  
-  
-    <img (click)="closeModal()" src="assets/images/close_btn.svg" class="close_btn">
-    <div class="modal_inner custom_modal_padding">
-        <div class="terms_condition">
-          {{ content  }}
-        </div>        
+<ion-content>
+  <div class="big_header">
+    <div class="ion-padding">
+      <div class="title light poiret">
+        {{app_title}}
+      </div>
+      <div class="big_header_bottom regular size_18">
+       {{page_key1}}
+      </div>
     </div>
-
   </div>
+  <div class="ion-padding">
+    <div class="app_input_text">
+      {{content}}
+    </div>  
+  </div>
+  <ion-footer>
+    <ion-toolbar>    
+      <div class="app_button">
+       <button class="app_btn"  (click)="closeModal(true)">{{model.accept_btn}}</button>
+      </div>
+    </ion-toolbar>
+  </ion-footer>
 </ion-content> 

@@ -8,6 +8,7 @@ import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@io
 import { AlertController } from '@ionic/angular';
 import { Platform } from '@ionic/angular';
 import { Location } from "@angular/common";
+import { ErrorMsgService } from '../error-msg.service';
 
 declare var google: any;
 declare var $: any;
@@ -23,7 +24,7 @@ location_data:any=[];
 options : GeolocationOptions;
 @ViewChild('map') mapElement: ElementRef;
 map: any;
-  constructor(private storage:StorageService, private http: HttpClient,private route: ActivatedRoute,private router: Router,private fetch: FetchService, private geolocation: Geolocation,
+  constructor(private storage:StorageService, private http: HttpClient,private route: ActivatedRoute,private router: Router,private fetch: FetchService, private geolocation: Geolocation,public errorMsg : ErrorMsgService,
 	private nativeGeocoder: NativeGeocoder,public alertController: AlertController,private platform: Platform,private location: Location) {
 		this.platform.backButton.subscribeWithPriority(10, () => {
 			this.location.back();
@@ -64,7 +65,12 @@ map: any;
 			this.model.okay = item10[lang_code];
 		let item11 = res.find(i => i.key_text === 'SAVE_AS');
 			this.model.key_text11 = item11[lang_code];	
-			 
+		let item12 = res.find(i => i.key_text === 'SEARCH_HERE');
+			this.model.key_text12 = item12[lang_code];
+		let item13 = res.find(i => i.key_text === 'LANDMARK_FIELD_IS_REQUIRED');
+			this.model.key_text13 = item13[lang_code];	
+		let item14 = res.find(i => i.key_text === 'SAVE_AS_FIELD_REQUIRED');
+			this.model.key_text14= item14[lang_code];		 
 				
 	//});
 	this.model.location_id = this.route.snapshot.params['id'];
@@ -161,18 +167,6 @@ map: any;
 	
 		  });
 	});
-	// let options: NativeGeocoderOptions = {
-	// 	useLocale: true,
-	// 	maxResults: 5
-    // };
-
-	// this.nativeGeocoder.reverseGeocode(lat, lon, options).then((result: NativeGeocoderResult[]) => {
-	// 	this.location_data.colony_name = result[0].areasOfInterest[0]+' '+result[0].subLocality;
-	// 	this.location_data.city = result[0].locality;
-	// 	this.location_data.state = result[0].administrativeArea;
-	// 	this.location_data.country = result[0].countryName;
-	// 	this.location_data.postalCode = result[0].postalCode
-	// }).catch((error: any) => console.log(error));
   }
 
   address_type(val){
@@ -197,15 +191,12 @@ map: any;
 	var landmark = $('#edit_landmark').val();
 	// var address_type = this.model.address_type;
 	var save_as = $('#save_as').val();
-	// if(house_no == ""){
-	// 	this.presentAlert("House No. field is required");
-	// }else 
 	if(landmark == ""){
 		this.model.search = false;
-		this.presentAlert("Landmark field is required");
+		this.errorMsg.showModal(this.model.key_text13);
 	}else if(save_as == ""){
 		this.model.search = false;
-		this.presentAlert("Save as field is required");
+		this.errorMsg.showModal(this.model.key_text14);
 	}else{
 		var user_id = JSON.parse(localStorage.getItem('user_id'));
 		if(this.model.LastLat== ''){
@@ -226,17 +217,8 @@ map: any;
 		});
 	}
   }
-  async presentAlert(msg) {
-	const alert = await this.alertController.create({
-		cssClass: 'my-custom-class',
-		header: msg,
-		buttons: [this.model.okay]
-	});
-	await alert.present();
-  }
   close_btn(){
 	  this.location.back();
-	 
   }
 
 }

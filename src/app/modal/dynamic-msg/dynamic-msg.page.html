@@ -1,0 +1,19 @@
+<ion-content class="modal_content">
+  <div class="ion-padding"> 
+    <img (click)="closeModal()" src="assets/images/close_btn.svg" class="close_btn">
+    <div class="modal_inner">
+      <br>
+      <br>
+      <div class="medium size_16 green center" style="width: 100%; margin: 0 auto;">
+        {{msg}}.
+      </div>
+    </div>
+  </div> 
+</ion-content> 
+<ion-footer>
+  <ion-toolbar>    
+    <div class="app_button">      
+        <button type="btn" (click)="closeModal()" class="app_btn">{{model.key_text1}}</button>    
+    </div>
+  </ion-toolbar>
+</ion-footer>

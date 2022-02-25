@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild ,ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild ,ElementRef,NgZone } from '@angular/core';
 import { Geolocation,GeolocationOptions ,Geoposition ,PositionError } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { AlertController } from '@ionic/angular';
@@ -8,6 +8,7 @@ import { StorageService } from '../storage.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { Location } from "@angular/common";
+import { ErrorMsgService } from '../error-msg.service';
 
 declare var google: any;
 declare var $: any;
@@ -19,9 +20,14 @@ declare var $: any;
 })
 export class SavedAddressesAddPage implements OnInit {
   model:any={};
+  marker: any;
+  sources;
   options : GeolocationOptions;
   @ViewChild('map') mapElement: ElementRef;
   map: any;
+  autocomplete:any={};
+  geo: any;
+  service = new google.maps.places.AutocompleteService();
   constructor(
 	private geolocation: Geolocation,
 	private nativeGeocoder: NativeGeocoder,
@@ -32,7 +38,9 @@ export class SavedAddressesAddPage implements OnInit {
 	private fetch: FetchService,
 	private storage: StorageService,
 	private platform: Platform, 
-	private location: Location
+	private zone: NgZone,
+	private location: Location,
+	public errorMsg : ErrorMsgService
 	) { 
 	this.platform.backButton.subscribeWithPriority(10, () => {
 		this.location.back();
@@ -42,7 +50,7 @@ export class SavedAddressesAddPage implements OnInit {
 	this.model.search = false;
   }
   ionViewWillEnter() {
-	
+
 	//$('.current_location_page_show').hide();  
 	//$('#add_t_1').addClass('active');
 	this.model.alert_text = 'Please fill all the details';
@@ -72,7 +80,13 @@ export class SavedAddressesAddPage implements OnInit {
 		let item10 = res.find(i => i.key_text === 'OKAY');
 			this.model.okay = item10[lang_code];
 		let item11 = res.find(i => i.key_text === 'SAVE_AS');
-			this.model.key_text11 = item11[lang_code];		 
+			this.model.key_text11 = item11[lang_code];
+		let item12 = res.find(i => i.key_text === 'SEARCH_HERE');
+			this.model.key_text12 = item12[lang_code];
+		let item13 = res.find(i => i.key_text === 'LANDMARK_FIELD_IS_REQUIRED');
+			this.model.key_text13 = item13[lang_code];	
+		let item14 = res.find(i => i.key_text === 'SAVE_AS_FIELD_REQUIRED');
+			this.model.key_text14= item14[lang_code];				 
 				
 	//});
 	var self = this;
@@ -105,24 +119,24 @@ export class SavedAddressesAddPage implements OnInit {
 	
   }
   addMarker(){
-
-    let marker = new google.maps.Marker({
-		map: this.map,
-		animation: google.maps.Animation.DROP,
-		position: this.map.getCenter(),
-		draggable: true
+	console.log(this.map.getCenter());
+    this.marker = new google.maps.Marker({
+    map: this.map,
+    animation: google.maps.Animation.DROP,
+    position: this.map.getCenter(),
+	draggable: true
     });
 
     let content = "<p>This is your current position !</p>";          
     let infoWindow = new google.maps.InfoWindow({
-		content: content
+    content: content
     });
 
-    google.maps.event.addListener(marker, 'click', () => {
-		infoWindow.open(this.map, marker);
+    google.maps.event.addListener(this.marker, 'click', () => {
+    infoWindow.open(this.map, this.marker);
     });
-	this.lastLatLng(marker);
-  }
+	this.lastLatLng(this.marker);
+}
   lastLatLng(marker){
     google.maps.event.addListener(marker, 'dragend', () =>{
 		
@@ -204,10 +218,10 @@ export class SavedAddressesAddPage implements OnInit {
 	// }else 
 	if(landmark == ""){
 		this.model.search = false;
-		this.presentAlert("Landmark field is required");
+		this.errorMsg.showModal(this.model.key_text13);
 	}else if(save_as == ""){
 		this.model.search = false;
-		this.presentAlert("Save as field is required");
+		this.errorMsg.showModal(this.model.key_text14);
 	}else{
 		this.model.user_id = JSON.parse(localStorage.getItem('user_id'));
 		let data = JSON.stringify({'zoom':this.model.zoom,'app_user_id' : this.model.user_id, 'house_no' : house_no, 'landmark' : landmark, 'address_type' : save_as, 'latitude' : this.model.LastLat, 'longitude' : this.model.LastLng,'colony_name' : this.model.colony_name, 'city' : this.model.city, 'state' : this.model.state, 'country' : this.model.country, 'postalCode' : this.model.postalCode });
@@ -234,5 +248,100 @@ export class SavedAddressesAddPage implements OnInit {
 	  this.location.back();
 	 
   }
+  chooseSource(item: any) {
+    this.sources = [];
+    this.autocomplete.start = item;
+    this.geo = item;
+    this.geoCode(this.geo,'start');//convert Address to lat and long
+  }
+  dismissSource(){
+	this.sources = [];
+}
+  updateSources() {
+    
+    if ( this.autocomplete.start == '') {
+     this.sources = [];
+    return;
+    }
+      let me = this;
+        this.service.getPlacePredictions({
+        input: this.autocomplete.start,
+        componentRestrictions: {
+          country: 'in'
+        }
+      }, (predictions, status) => {
+      me.sources = [];
 
+      me.zone.run(() => {
+        if (predictions != null) {
+            predictions.forEach((prediction) => {
+              me.sources.push(prediction.description);
+            });
+          }
+        });
+		//console.log(this.sources);
+      });
+    
+  }
+  geoCode(address:any,path) {
+    let geocoder = new google.maps.Geocoder();
+    
+    geocoder.geocode({ 'address': address }, (results, status) => {
+     var address_components = results[0].address_components;
+     var self = this;
+      address_components.forEach(function(val,i){
+        
+        if (val.types[0] == "locality"){
+            
+            self.model.city = val.long_name;
+        }
+        if (val.types[0] == "administrative_area_level_1"){
+				
+          self.model.state = val.long_name;
+        } 
+        if (val.types[0] == "country"){
+          
+          self.model.country = val.long_name;
+        }
+        if (val.types[0] == "postal_code"){
+          
+          self.model.postalCode = val.long_name;
+        }  
+
+      });
+      if(path == 'start'){
+        this.model.startLat = results[0].geometry.location.lat();
+        this.model.startLng = results[0].geometry.location.lng();
+		this.addMarker2(this.model.startLat,this.model.startLng );
+      }
+    // alert("lat: " + this.latitude + ", long: " + this.longitude);
+   });
+   
+ }
+ addMarker2(lat, lng){
+	this.marker.setMap(null);
+	this.showAddress(lat , lng)
+	let mapOptions = {
+		center: new google.maps.LatLng(lat, lng),
+		zoom: 15,
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+		}
+
+	this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+    this.marker = new google.maps.Marker({
+    map: this.map,
+    animation: google.maps.Animation.DROP,
+    position: new google.maps.LatLng(lat, lng),
+	draggable: true
+    });
+    let content = "<p>This is your current position !</p>";          
+    let infoWindow = new google.maps.InfoWindow({
+    content: content
+    });
+
+    google.maps.event.addListener(this.marker, 'click', () => {
+    infoWindow.open(this.map, this.marker);
+    });
+	this.lastLatLng(this.marker);
+}
 }

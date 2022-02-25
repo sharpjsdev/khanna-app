@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { DonateFoodContentPage } from '../modal/donate-food-content/donate-food-content.page';
-import { HttpClient } from '@angular/common/http';
 import { FetchService } from '../fetch.service';
 import { StorageService } from '../storage.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { NotificationPage } from '../modal/notification/notification.page';
 declare var $:any;
 
 @Component({
@@ -24,7 +22,6 @@ dataReturned: any;
 notification:any=[];
   constructor(
     public modalController: ModalController,
-	private http: HttpClient,
 	private route: ActivatedRoute,
 	private router: Router,
 	private fetch: FetchService,
@@ -52,7 +49,7 @@ notification:any=[];
 			this.model.key_text2 = item2[lang_code]; 
 		let item3 = res.find(i => i.key_text === 'PERSONS');
 			this.model.key_text3 = item3[lang_code]; 
-		let item4 = res.find(i => i.key_text === 'YOUR_CURRENT_DONATION');
+		let item4 = res.find(i => i.key_text === 'YOUR_NEW_DONATION');
 			this.model.key_text4 = item4[lang_code]; 
 		let item5 = res.find(i => i.key_text === 'TOTAL_NO._OF_PACKETS');
 			this.model.key_text5 = item5[lang_code]; 
@@ -75,7 +72,9 @@ notification:any=[];
 		let item14 = res.find(i => i.key_text === 'PLEASE_FILL_ALL_THE_DETAILS');
 			this.model.alert_text = item14[lang_code]; 
 		let item15 = res.find(i => i.key_text === 'OKAY');
-			this.model.okay = item15[lang_code]; 	
+			this.model.okay = item15[lang_code]; 
+		let item16 = res.find(i => i.key_text === 'CONFIRM_DONATE_REQUEST');
+			this.model.key_text16 = item16[lang_code];	
 		
 	//});
 	var id = parseInt(this.route.snapshot.params['id']);
@@ -84,35 +83,30 @@ notification:any=[];
 	this.model.nonveg = id2;
 	var user_id = JSON.parse(localStorage.getItem('user_registerd'));
 	this.fetch.pending_donation(user_id).subscribe(res => {
-		console.log(res);
 		this.pending_data = res['data'];
 	});
 	if(id != 0){
 	this.fetch.reviewFood(id).subscribe(res => {
-		console.log(res);
 		this.veg_food = res['data'];
 	});
 	}
 	if(id2 != 0){
 	this.fetch.reviewFood(id2).subscribe(res => {
-		console.log(res);
 		this.nonveg_food = res['data'];
 	});
 	}
   }
   
   packets(){
-	console.log($("#number3").val()); 
 	this.food_data.total_no_of_packet = $("#number3").val();
 	this.food_data.total_food_for = this.food_data.each_packet_contain_food_for * this.food_data.total_no_of_packet;
-	console.log(this.food_data.total_no_of_packet);
+	
   }
-  food_for(){
-	console.log($("#number4").val()); 
+  food_for(){ 
 	this.food_data.each_packet_contain_food_for = $("#number4").val();
 	//this.food_data.total_food_for = this.food_data.each_packet_contain_food_for * this.food_data.total_no_of_packet;  
 	this.food_data.total_food_for = this.food_data.each_packet_contain_food_for;  
-	console.log(this.food_data.each_packet_contain_food_for);
+	
   }
   async openModalDonateFood() { 
     const modal = await this.modalController.create({
@@ -144,30 +138,12 @@ notification:any=[];
     return await modal.present();
   }
   donate_food(){
-	/* if(this.food_data.total_no_of_packet == 0){
-		this.presentAlert();
-	}else  if(this.food_data.each_packet_contain_food_for == 0){
-		this.presentAlert();
-	}else{*/
-		//var id = parseInt(this.route.snapshot.params['id']);
 		this.model.search = true;
 		let data = JSON.stringify({'id' : this.model.veg, 'id2' : this.model.nonveg});
-		// console.log(data);
-		this.fetch.update_food_details(data).subscribe(res => {
-			this.model.search = false;
-			console.log(res);
-			this.openModalDonateFood();
-		});
+		this.router.navigate(['/donate-food-pickup-drop',this.model.veg,this.model.nonveg])
 	// }
 	
   }
-  async presentAlert() {
-	const alert = await this.alertController.create({
-		cssClass: 'my-custom-class',
-		header: this.model.alert_text,
-		buttons: [this.model.okay]
-	});
-	await alert.present();
-  }
+
 
 }

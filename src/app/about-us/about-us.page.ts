@@ -55,7 +55,18 @@ export class AboutUsPage implements OnInit {
         let item11 = res.find(i => i.key_text === 'MESSAGE');
         this.model.key_text11 = item11[lang_code]; 
         let item12 = res.find(i => i.key_text === 'SUBMIT');
-        this.model.key_text12 = item12[lang_code];         
+        this.model.key_text12 = item12[lang_code];
+        let item13 = res.find(i => i.key_text === 'THIS_FIELD_IS_REQUIRED');
+        this.model.key_text13 = item13[lang_code];
+        let item14 = res.find(i => i.key_text === 'ENTER_VALID_EMAIL_ADDRESS');
+        this.model.key_text14 = item14[lang_code];
+        let item15 = res.find(i => i.key_text === 'ENTER_VALID_PHONE_NUMBER');
+        this.model.key_text15 = item15[lang_code];
+        let item16 = res.find(i => i.key_text === 'CAPTCHA_REQUIRED');
+        this.model.key_text16 = item16[lang_code]; 
+        let item17 = res.find(i => i.key_text === 'CLOSE');
+        this.model.key_text17 = item17[lang_code]; 
+                
            		
         	
 			
@@ -90,15 +101,7 @@ saveForm(){
    let mobile = $('#phone_no').val();
    let message = $('#message').val();
    this.model.search = true;
-   if(!(full_name && email && mobile)){
-    this.model.search = false;
-      $('#full_name_msg').show();
-      $('#email_msg').show();
-      $('#phone_no_msg').show();
-      $('#captcha_msg').hide();
-      $('#correct_email_msg').hide();
-      $('#correct_phone_msg').hide();
-   }else if(!full_name){
+   if(!full_name){
     this.model.search = false;
       $('#full_name_msg').show();
       $('#email_msg').hide();
@@ -106,6 +109,7 @@ saveForm(){
       $('#captcha_msg').hide();
       $('#correct_email_msg').hide();
       $('#correct_phone_msg').hide();
+      $('#message_msg').hide();
    }else if(!email){
     this.model.search = false;
     $('#full_name_msg').hide();
@@ -114,6 +118,7 @@ saveForm(){
     $('#phone_no_msg').hide();
     $('#captcha_msg').hide();
     $('#correct_phone_msg').hide();
+    $('#message_msg').hide();
   }else if(re_email.test(email)==false){
     this.model.search = false;
     $('#full_name_msg').hide();
@@ -122,6 +127,7 @@ saveForm(){
     $('#phone_no_msg').hide();
     $('#captcha_msg').hide();
     $('#correct_phone_msg').hide();
+    $('#message_msg').hide();
   }else if(!mobile){
     this.model.search = false;
     $('#full_name_msg').hide();
@@ -130,6 +136,17 @@ saveForm(){
     $('#phone_no_msg').show();
     $('#correct_phone_msg').hide();
     $('#captcha_msg').hide();
+    $('#message_msg').hide();
+  }else if(!message){
+    this.model.search = false;
+    $('#full_name_msg').hide();
+    $('#email_msg').hide();
+    $('#correct_email_msg').hide();
+    $('#phone_no_msg').hide();
+    $('#correct_phone_msg').hide();
+    $('#captcha_msg').hide();
+    $('#message_msg').show();
+    
   }
   else if(re_mobile.test(mobile)==false || mobile.length != 10){
     this.model.search = false;
@@ -138,6 +155,7 @@ saveForm(){
     $('#correct_phone_msg').show();
     $('#phone_no_msg').hide();
     $('#captcha_msg').hide();
+    $('#message_msg').hide();
   }else if(!this.captchaPassed){
     this.model.search = false;
     $('#full_name_msg').hide();
@@ -146,6 +164,7 @@ saveForm(){
     $('#correct_phone_msg').hide();
     $('#phone_no_msg').hide();
     $('#captcha_msg').show();
+    $('#message_msg').hide();
   }else{
     $('#full_name_msg').hide();
     $('#email_msg').hide();
@@ -153,6 +172,7 @@ saveForm(){
     $('#correct_phone_msg').hide();
     $('#phone_no_msg').hide();
     $('#captcha_msg').hide();
+    $('#message_msg').hide();
     let data = JSON.stringify({'name' : full_name,'mobile': mobile, 'email' : email, 'message' : message});
     this.fetch.save_contact_us(data).subscribe((res)=>{
         //if(res.success){
@@ -170,11 +190,11 @@ saveForm(){
 async showAlert(){
   const alert = await this.alertController.create({
     cssClass: 'my-custom-class custom_alert_1',
-    header: 'Alert',
+    //header: 'Alert',
     message: this.model.key_text6,
     buttons: [
       {
-        text: 'Close',
+        text: this.model.key_text17,
         role: 'cancel',
         cssClass: 'secondary',
         handler: () => {

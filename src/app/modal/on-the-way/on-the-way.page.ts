@@ -34,6 +34,8 @@ export class OnTheWayPage implements OnInit {
   options : GeolocationOptions;
   @ViewChild('map') mapElement: ElementRef;
   map: any;
+  time_c: any;
+  distance_c: any;
   constructor(
     private geolocation: Geolocation,
     private nativeGeocoder: NativeGeocoder,
@@ -68,8 +70,8 @@ export class OnTheWayPage implements OnInit {
     
       self.model.LastLat = resp.coords.latitude;
       self.model.LastLng = resp.coords.longitude;
-     
-   
+      //self.getCurrentCity(resp.coords.latitude,resp.coords.longitude);
+      
       let latLng = new google.maps.LatLng(self.model.LastLat, self.model.LastLng);
       let mapOptions = {
         center: latLng,
@@ -90,6 +92,10 @@ export class OnTheWayPage implements OnInit {
      let res = this.storage.getScope(); 
       let item1 = res.find(i => i.key_text === 'CONFIRM_LOCATION');
 			this.model.key_text1 = item1[lang_code]; 
+      let item2 = res.find(i => i.key_text === 'CHOOSE_STARTING_POINT');
+			this.model.key_text2 = item2[lang_code]; 
+      let item3 = res.find(i => i.key_text === 'CHOOSE_DESTINATION');
+			this.model.key_text3 = item3[lang_code]; 
 		   
     //});
   }
@@ -114,64 +120,131 @@ export class OnTheWayPage implements OnInit {
   }
 
   updateSources() {
-    
-    if ( this.autocomplete.start == '') {
-     this.sources = [];
-    return;
-    }
-
+    //alert(this.model.LastLat);
+    //alert(this.model.LastLng);
     
      
-      let me = this;
-        this.service.getPlacePredictions({
-        input: this.autocomplete.start,
-        componentRestrictions: {
-          country: 'in'
-        }
-      }, (predictions, status) => {
-      me.sources = [];
+    //console.log('-',input);
+    // if ( this.autocomplete.start == '') {
+    //  this.sources = [];
+    // return;
+    // }
 
-      me.zone.run(() => {
-        if (predictions != null) {
-            predictions.forEach((prediction) => {
-              me.sources.push(prediction.description);
-            });
-          }
-        });
-      });
+    var center = { lat: this.model.LastLat, lng: this.model.LastLng };
+// Create a bounding box with sides ~10km away from the center point
+    var defaultBounds = {
+      north: center.lat + 0.3,
+      south: center.lat - 0.3,
+      east: center.lng + 0.3,
+      west: center.lng - 0.3,
+    };
+  
+    var options = {
+      bounds: defaultBounds,
+      componentRestrictions: { country: "in" },
+      //fields: ["address_components", "geometry","icon", "name"],
+      strictBounds: true,
+      types: ["establishment"],
+    };
+    var input = document.getElementById("my_test") as HTMLInputElement;
+    var autocomplete = new google.maps.places.Autocomplete(input, options);
+    autocomplete.addListener("place_changed", () => {
+    var start_address = autocomplete.getPlace();
+    this.autocomplete.start = start_address.formatted_address
+    console.log(this.autocomplete.start)
+    this.geoCode(this.autocomplete.start,'start');
+     //console.log(place);
+
+    })
+    // var options = {
+    //   //language: 'en-GB',
+    //   types: ['(Ujjain)'],
+    //   componentRestrictions: { country: "in" }
+    // }
+
+    // var input = $('.address-search');
+    // var d = new google.maps.places.Autocomplete(input[0],options);
+    // console.log(input[0]);
+    // this.sources.push(d);
+      // let me = this;
+      //   this.service.getPlacePredictions({
+      //   input: this.autocomplete.start,
+      //   types: [this.model.currnet_city_name],
+      //   componentRestrictions: {
+      //     country: 'in'
+      //   }
+      // }, (predictions, status) => {
+      // me.sources = [];
+
+      // me.zone.run(() => {
+      //   if (predictions != null) {
+      //       predictions.forEach((prediction) => {
+      //         me.sources.push(prediction.description);
+      //       });
+      //     }
+      //   });
+      // });
     
   }
   updateDestinations() {
     
-    if ( this.autocomplete.end == '') {
-     this.destination = [];
-    return;
-    }
+    var center = { lat: this.model.LastLat, lng: this.model.LastLng };
+    // Create a bounding box with sides ~10km away from the center point
+        var defaultBounds = {
+          north: center.lat + 0.3,
+          south: center.lat - 0.3,
+          east: center.lng + 0.3,
+          west: center.lng - 0.3,
+        };
+      
+        var options = {
+          bounds: defaultBounds,
+          componentRestrictions: { country: "in" },
+          //fields: ["address_components", "geometry","icon", "name"],
+          strictBounds: true,
+          types: ["establishment"],
+        };
+        var input = document.getElementById("my_test2") as HTMLInputElement;
+        var autocomplete = new google.maps.places.Autocomplete(input, options);
+        autocomplete.addListener("place_changed", () => {
+        var end_address = autocomplete.getPlace();
+        this.autocomplete.end = end_address.formatted_address;
+        this.geoCode(this.autocomplete.end,'end');
+         //console.log(place);
+    
+        })
+
+
+    // if ( this.autocomplete.end == '') {
+    //  this.destination = [];
+    // return;
+    // }
 
     
      
-      let me = this;
-        this.service.getPlacePredictions({
-        input: this.autocomplete.end,
-        componentRestrictions: {
-          country: 'in'
-        }
-      }, (predictions, status) => {
-      me.destination = [];
+    //   let me = this;
+    //     this.service.getPlacePredictions({
+    //     input: this.autocomplete.end,
+    //     componentRestrictions: {
+    //       country: 'in'
+    //     }
+    //   }, (predictions, status) => {
+    //   me.destination = [];
 
-      me.zone.run(() => {
-        if (predictions != null) {
-            predictions.forEach((prediction) => {
-              me.destination.push(prediction.description);
-            });
-          }
-        });
-      });
+    //   me.zone.run(() => {
+    //     if (predictions != null) {
+    //         predictions.forEach((prediction) => {
+    //           me.destination.push(prediction.description);
+    //         });
+    //       }
+    //     });
+    //   });
     
   }
 
   //convert Address string to lat and long
   geoCode(address:any,path) {
+    console.log(address);
     let geocoder = new google.maps.Geocoder();
     
     geocoder.geocode({ 'address': address }, (results, status) => {
@@ -200,11 +273,15 @@ export class OnTheWayPage implements OnInit {
       if(path == 'start'){
         this.model.startLat = results[0].geometry.location.lat();
         this.model.startLng = results[0].geometry.location.lng();
+        console.log(this.model.startLat);
+        console.log(this.model.startLng);
         this.showRoutes();
       }
       if(path ==  'end'){
         this.model.endLat = results[0].geometry.location.lat();
         this.model.endLng = results[0].geometry.location.lng();
+        console.log(this.model.endLat);
+        console.log(this.model.endLng);
         this.showRoutes();
       }
     // alert("lat: " + this.latitude + ", long: " + this.longitude);
@@ -245,6 +322,8 @@ export class OnTheWayPage implements OnInit {
             for (var i = 0; i < legs.length; i++) {
               if (i == 0) {
                 startLocation = legs[i].start_location;
+                this.time_c = legs[i].duration.text;
+                this.distance_c = legs[i].distance.text;
                
               }
               // if (i != 0 && i != legs.length - 1) { 
@@ -311,5 +390,30 @@ current_location(){
   }
     this.modalController.dismiss(data);
   }
-
+  blank(val){
+    if(val == 'start'){
+      this.autocomplete.start = '';
+      $("#my_test").val('');
+    }else{
+      this.autocomplete.end = '';
+      $("#my_test2").val('');
+    }
+  }
+  // getCurrentCity(lat, lon){
+  //   var self = this;
+  //   let latLng = new google.maps.LatLng(lat, lon);
+  //   let geocoder = new google.maps.Geocoder();
+  //   geocoder.geocode({ 'latLng': latLng }, (results, status) => {
+      
+  //     this.model.colony_name = results[0].formatted_address;
+  //     results[0].address_components.forEach(function(val,i){
+        
+  //       if (val.types[0] == "locality"){
+          
+  //         self.model.currnet_city_name = val.long_name;
+  //       }
+    
+  //       });
+  //   });
+  // }
 }

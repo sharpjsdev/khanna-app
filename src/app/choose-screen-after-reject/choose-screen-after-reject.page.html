@@ -1,0 +1,47 @@
+
+<app-captcha></app-captcha>
+<ion-content style="display: flex;flex-direction: column;height: 100%;">
+<div class="ion-padding theme_width my_custome_theme_width">
+  <div class="big_content_new noto_medium size_18">
+  </div>
+  <div class="horizontal_center">
+    <a (click)="pickupRequest()">
+      <button class="app_btn big button">
+        {{model.key_text1}}
+      </button>
+    </a>
+    <a (click)="donateLater()">
+      <button class="app_btn big button">
+        {{model.key_text2}}
+      </button>  
+    </a>
+  </div>
+</div>
+
+</ion-content>
+
+<ion-footer>
+	<ion-toolbar>    
+		<ion-segment color="transparent" value="home">
+			<ion-segment-button value="home" [routerLink]="['/home']">
+			  <img src="assets/images/red_footer_home.svg">
+			  <!--<ion-img src="assets/images/grey_footer_home.svg"></ion-img>-->
+			  <ion-label class="size_12 medium" color="tertiary">{{model.key_text5}}</ion-label>    
+			</ion-segment-button>
+			<ion-segment-button value="activity" [routerLink]="['/activity-normal']"> 
+			  <!--<ion-img src="assets/images/red_footer_activity.svg"></ion-img>-->
+			  <img src="assets/images/grey_footer_activity.svg">
+			  <ion-label class="size_12 medium">{{model.key_text6}}</ion-label>    
+			</ion-segment-button>
+			<ion-segment-button value="volunteer" *ngIf="model.is_volunteer== 1 " [routerLink]="['/volunteer-detail']">
+			  <!--<ion-img src="assets/images/red_footer_volunteer.svg"></ion-img>-->
+			  <img src="assets/images/grey_footer_volunteer.svg">
+			  <ion-label class="size_12 medium">{{model.key_text7}}</ion-label>    
+			</ion-segment-button>
+		</ion-segment>      
+	</ion-toolbar>
+</ion-footer>
+
+
+  
+

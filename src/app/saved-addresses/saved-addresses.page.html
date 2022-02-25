@@ -1,3 +1,4 @@
+<center style="position: absolute;display: none;z-index:999;margin-left:45%;" class="current_location_spinner_position" id="view_location_spinner"><ion-spinner class="current_location_sppiner"></ion-spinner></center>
 <ion-content>
 
   <div class="ion-padding">
@@ -6,12 +7,9 @@
 
   <div class="ion-padding">
     <div  class="t" *ngFor="let x of model.data" id="add_{{x.id}}"> 
-    <div class="medium green size_16">{{ x.adress_type }}</div>  
+    <div class="medium green size_16 capital">{{ x.adress_type }}</div>  
     <div class="saved address regular">
       {{ x.colony_name }}
-      <!-- H.No. {{x.house_no}}, {{x.colony_name}}<br> -->
-      <!-- {{x.city}} - {{x.postalCode}}<br> -->
-      <!-- {{x.state}} -->
     </div>
  
     <div class="blank_buttons">
@@ -20,10 +18,10 @@
     </div>
     <br><br>
     <hr class="app_divider"></div>
-	<div class="no_adress">No Saved Address</div>
+	<div class="no_adress">{{model.key_text6}}</div>
     <br><br>
     <div class="add_btn">
-      <a [routerLink]="['/saved-addresses-add']">
+      <a routerLink="/saved-addresses-add">
         <img src="assets/images/icon_add.svg">
       </a>
     </div>
@@ -31,12 +29,10 @@
 
 </ion-content>
 
-<!-- <ion-footer>
+<ion-footer>
   <ion-toolbar>    
     <div class="app_button">
-      <ion-router-link href="">
-        <button class="app_btn">Save Changes</button>
-      </ion-router-link>
+        <button class="app_btn" (click)="saveChanges()">{{model.key_text4}}</button>
     </div>
   </ion-toolbar>
-</ion-footer> -->
+</ion-footer>
